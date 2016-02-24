@@ -1,9 +1,18 @@
 package cli;
 
+import logic.Game;
+
 public class Interaction {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		//Game Config
+		/*	TODO	*/
+	
+		//Create Game
+		Game myGame = new Game();
+		
+		//Run Game
+		myGame.run();
 
 	}
 

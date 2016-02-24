@@ -1,5 +1,5 @@
 package logic;
 
-public class Exit {
+public class Exit extends Element {
 
 }

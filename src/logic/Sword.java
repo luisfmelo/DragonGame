@@ -1,5 +1,5 @@
 package logic;
 
-public class Sword {
+public class Sword extends Element {
 
 }

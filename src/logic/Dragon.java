@@ -1,5 +1,5 @@
 package logic;
 
-public class Dragon {
+public class Dragon extends Element {
 
 }
