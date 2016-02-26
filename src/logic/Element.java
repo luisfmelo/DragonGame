@@ -27,11 +27,11 @@ public class Element {
 	}
 	
 	public void setPos(Maze maze, int x, int y){
-		char c = maze.maze[this.posX][this.posY];
-		maze.maze[this.posX][this.posY] = c;
+		//char c = maze.maze[this.posX][this.posY];
+		maze.maze[this.posY][this.posX] = ' ';
 		this.posX = x;
 		this.posY = y;
-		maze.maze[this.posX][this.posY] = this.letter;
+		maze.maze[this.posY][this.posX] = this.letter;
 	}
 
 }

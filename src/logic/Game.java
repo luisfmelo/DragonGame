@@ -13,10 +13,11 @@ public class Game {
 	public Game(){
 		maze.setLen(10);
 		maze.newMaze();
+		
+		dragon.setPos(maze, 1, 3);
+		sword.setPos(maze, 1, 8);
+		exit.setPos(maze, 9, 5);
 		hero.setPos(maze, 1, 1);
-		dragon.setPos(maze, 3, 1);
-		sword.setPos(maze, 8, 1);
-		exit.setPos(maze, 5, 9);
 		maze.print();
 	}
 
@@ -54,17 +55,17 @@ public class Game {
 		int newPosX = -1, newPosY = -1;
 		
 		switch(c.toUpperCase().charAt(0)){
-			case 'S': 	newPosX = hero.getPosX() + 1; 
-					  	newPosY = hero.getPosY();
-					  	break;
-			case 'A': 	newPosY = hero.getPosY() - 1;
+			case 'S': 	newPosY = hero.getPosY() + 1; 
 					  	newPosX = hero.getPosX();
 					  	break;
-			case 'W': 	newPosX = hero.getPosX() - 1; 
+			case 'A': 	newPosX = hero.getPosX() - 1;
 					  	newPosY = hero.getPosY();
 					  	break;
-			case 'D': 	newPosY = hero.getPosY() + 1;
+			case 'W': 	newPosY = hero.getPosY() - 1; 
 					  	newPosX = hero.getPosX();
+					  	break;
+			case 'D': 	newPosX = hero.getPosX() + 1;
+					  	newPosY = hero.getPosY();
 					  	break;
 			default: newPosY = -1; newPosX = -1;
 		}
@@ -73,8 +74,8 @@ public class Game {
 		// DEBUG
 		//*********************************************************
 		System.out.println("input:" + c.toUpperCase().charAt(0));
-		System.out.println("ANTIGAS POSICOES: (" + hero.getPosY() + ";" + hero.getPosX() + ")");
-		System.out.println("NOVAS POSICOES: (" + newPosY + ";" + newPosX + ")");
+		System.out.println("ANTIGAS POSICOES: (" + hero.getPosX() + ";" + hero.getPosY() + ")");
+		System.out.println("NOVAS POSICOES: (" + newPosX + ";" + newPosY + ")");
 		
 		if ( newPosX > -1 )
 			System.out.println("ESTAVA: \'" + maze.maze[newPosY][newPosX] + "\'");
@@ -82,19 +83,21 @@ public class Game {
 		
 		
 		//check if it is a wall
-		if( maze.maze[newPosY][newPosX] == 'X' )
+		if( maze.maze[newPosX][newPosY] == 'X' )
 		{
 			newPosX = hero.getPosX();
 			newPosY = hero.getPosY();
 		}
 		//check if it reach sword
-		else if ( maze.maze[newPosY][newPosX] == 'E' )
+		else if ( maze.maze[newPosX][newPosY] == 'E' )
 		{
+			System.out.println("YEAYYYYY");
 			hero.setArmed(true);
 			sword.setVisible(false);
-			hero.setPos(maze, newPosX, newPosY);
+			hero.setLetter('A');
 		}
-			
+
+		hero.setPos(maze, newPosX, newPosY);	
 		//System.out.println("NOVA POSICAO: " + newPosX + "|" + newPosY + "..");
 		
 		return true;
