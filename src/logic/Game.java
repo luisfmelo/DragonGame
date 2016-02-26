@@ -10,11 +10,13 @@ public class Game {
 	private Exit exit = new Exit(); 		//pos (9,5)
 	private boolean GameRunning = false;
 	private Scanner sc;
+	private int level;
 
 	
-	public Game(){
+	public Game(int level){
 		maze.setLen(10);
 		maze.newMaze();
+		this.level = level;
 		
 		dragon.setPos(maze, 1, 3);
 		sword.setPos(maze, 1, 8);
@@ -40,9 +42,7 @@ public class Game {
 			
 			//4. print maze
 			maze.print();
-		}
-		sc.close();
-		
+		}		
 	}
 	
 	private String receiveCommand(){
@@ -144,5 +144,10 @@ public class Game {
 	//TODO
 	private boolean pcMove(){
 		return true;
+	}
+
+	public void config() {
+		// TODO Auto-generated method stub
+		
 	};
 }
