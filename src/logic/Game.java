@@ -3,21 +3,17 @@ package logic;
 import java.util.Scanner;
 
 public class Game {
-	private Maze maze = new Maze();
 	private Hero hero = new Hero(); 		//pos (1,1)
 	private Dragon dragon = new Dragon(); 	//pos (1,3)
 	private Sword sword = new Sword(); 		//pos (1,8)
 	private Exit exit = new Exit(); 		//pos (9,5)
 	private boolean GameRunning = false;
-	private Scanner sc;
 	private int level;
 
 	
-	public Game(int level){
-		maze.setLen(10);
-		maze.newMaze();
+	public Game(Maze maze, int level){
 		this.level = level;
-		
+
 		dragon.setPos(maze, 1, 3);
 		sword.setPos(maze, 1, 8);
 		exit.setPos(maze, 9, 5);
@@ -25,39 +21,10 @@ public class Game {
 		maze.print();
 	}
 
-	public void run() {
-		String key;
-		GameRunning = true;
-
-		//Running: acho que e melhor meter isto na class Game(faz parte da logica do jogo
-		while(GameRunning)
-		{
-			//1. receive command
-			key = receiveCommand();
-			
-			//2. Check
-			try {
-				checkPos(key);
-			} catch (IllegalArgumentException e) {
-				System.out.println("Invalid command! Try again.");
-				continue;
-			}
-			
-			//3. pc faz o seu move -> DO NOT DO NOW
-			
-			//4. print maze
-			maze.print();
-		}		
-	}
 	
-	private String receiveCommand(){
-		sc = new Scanner(System.in);
-		return sc.next();
-	};
-
 	//TODO
-	private void checkPos(String c) throws IllegalArgumentException {
-		int newPosX = -1, newPosY = -1;
+	public void checkPos(Maze maze, String c) throws IllegalArgumentException {
+		int newPosX, newPosY;
 		
 		switch(c.toUpperCase().charAt(0)){
 			case 'S': 	newPosY = hero.getPosY() + 1; 
@@ -116,6 +83,20 @@ public class Game {
 			hero.setPos(maze, hero.getPosX(), hero.getPosY());
 			endGame("lose");
 		}
+		//check if dragon alive and hero wants to get out
+		else if( !dragon.isDead() && maze.maze[newPosY][newPosX] == 'S' )
+		{
+			newPosX = hero.getPosX();
+			newPosY = hero.getPosY();
+			System.out.println("Dragon is still alive!");
+		}
+		//check if dragon is dead and hero wants to get out -> WIN
+		else if( dragon.isDead() && maze.maze[newPosY][newPosX] == 'S' )
+		{
+			hero.setPos(maze, exit.getPosX(), exit.getPosY());
+			endGame("win");
+		}
+				
 		hero.setPos(maze, newPosX, newPosY);	
 	}
 	
@@ -123,7 +104,6 @@ public class Game {
 	private boolean nearDragon(int h_y, int h_x)
 	{
 		int d_y = dragon.getPosY(), d_x = dragon.getPosX();
-		boolean adjPos = false;
 		
 		if(	h_y >= d_y - 1 && h_y <= d_y + 1 &&
 			h_x >= d_x - 1 && h_x <= d_x + 1 )
@@ -144,7 +124,7 @@ public class Game {
 			//handle Victory
 		}
 		
-		GameRunning = false;
+		setGameRunning(false);
 	};
 	
 	//TODO
@@ -155,5 +135,15 @@ public class Game {
 	public void config() {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	public boolean isGameRunning() {
+		return GameRunning;
+	}
+
+
+	public void setGameRunning(boolean gameRunning) {
+		GameRunning = gameRunning;
 	};
 }
