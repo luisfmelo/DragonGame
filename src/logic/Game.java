@@ -9,6 +9,7 @@ public class Game {
 	private Sword sword = new Sword(); 		//pos (1,8)
 	private Exit exit = new Exit(); 		//pos (9,5)
 	private boolean GameRunning = false;
+	private Scanner sc;
 
 	
 	public Game(){
@@ -44,11 +45,12 @@ public class Game {
 			//4. print maze
 			maze.print();
 		}
+		sc.close();
 		
 	}
 	
 	private String receiveCommand(){
-		Scanner sc = new Scanner(System.in);
+		sc = new Scanner(System.in);
 		return sc.next();
 	};
 
@@ -109,7 +111,7 @@ public class Game {
 		{
 			hero.setDead(true);
 			hero.setLetter(' ');
-			hero.setPos(maze, dragon.getPosX(), dragon.getPosY());
+			hero.setPos(maze, hero.getPosX(), hero.getPosY());
 			endGame("lose");
 		}
 		hero.setPos(maze, newPosX, newPosY);	
@@ -139,7 +141,7 @@ public class Game {
 		}
 		else if (state.equals("win"))
 		{
-			System.out.println("\n\nCONGRATULATIONS\n\n");
+			System.out.println("\n\nCONGRATULATION\n\n");
 			//handle Victory
 		}
 		
