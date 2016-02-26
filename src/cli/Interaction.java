@@ -20,9 +20,11 @@ public class Interaction {
 		//Create Game
 		Game myGame = new Game(level);
 		
-		
 		//Run Game
 		myGame.run();
+		
+		
+		sc.close();
 
 	}
 

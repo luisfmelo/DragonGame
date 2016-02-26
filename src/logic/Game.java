@@ -36,7 +36,12 @@ public class Game {
 			key = receiveCommand();
 			
 			//2. Check
-			checkPos(key);
+			try {
+				checkPos(key);
+			} catch (IllegalArgumentException e) {
+				System.out.println("Invalid command! Try again.");
+				continue;
+			}
 			
 			//3. pc faz o seu move -> DO NOT DO NOW
 			
@@ -51,7 +56,7 @@ public class Game {
 	};
 
 	//TODO
-	private void checkPos(String c) {
+	private void checkPos(String c) throws IllegalArgumentException {
 		int newPosX = -1, newPosY = -1;
 		
 		switch(c.toUpperCase().charAt(0)){
@@ -67,7 +72,8 @@ public class Game {
 			case 'D': 	newPosX = hero.getPosX() + 1;
 					  	newPosY = hero.getPosY();
 					  	break;
-			default: newPosY = -1; newPosX = -1;
+			default: 	throw new IllegalArgumentException();
+						
 		}
 
 		
