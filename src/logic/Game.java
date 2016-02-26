@@ -88,19 +88,42 @@ public class Game {
 			newPosX = hero.getPosX();
 			newPosY = hero.getPosY();
 		}
-		//check if it reach sword
+		//check if he picked sword
 		else if ( maze.maze[newPosY][newPosX] == 'E' )
 		{
 			hero.setArmed(true);
 			sword.setVisible(false);
 			hero.setLetter('A');
 		}
-
+		//hero kills dragon
+		else if ( nearDragon(newPosY, newPosX) && hero.isArmed())
+		{
+			dragon.setDead(true);
+			dragon.setLetter(' ');
+			dragon.setPos(maze, dragon.getPosX(), dragon.getPosY());
+		}
+		//check if he can Win the game
+		/*else if ( maze.maze[newPosY][newPosX] == 'S' && dragon.isDead() )
+			endGame('win');
+		*/
 		hero.setPos(maze, newPosX, newPosY);	
 		//System.out.println("NOVA POSICAO: " + newPosX + "|" + newPosY + "..");
 		
 		return true;
 	}
+	
+	//hero and Dragon near each other 
+	private boolean nearDragon(int h_y, int h_x)
+	{
+		int d_y = dragon.getPosY(), d_x = dragon.getPosX();
+		boolean adjPos = false;
+		
+		if(	h_y >= d_y - 1 && h_y <= d_y + 1 &&
+			h_x >= d_x - 1 && h_x <= d_x + 1 )
+			return true;
+
+		return false;
+	};
 	
 	//TODO
 	private boolean pcMove(){
