@@ -83,15 +83,14 @@ public class Game {
 		
 		
 		//check if it is a wall
-		if( maze.maze[newPosX][newPosY] == 'X' )
+		if( maze.maze[newPosY][newPosX] == 'X' )
 		{
 			newPosX = hero.getPosX();
 			newPosY = hero.getPosY();
 		}
 		//check if it reach sword
-		else if ( maze.maze[newPosX][newPosY] == 'E' )
+		else if ( maze.maze[newPosY][newPosX] == 'E' )
 		{
-			System.out.println("YEAYYYYY");
 			hero.setArmed(true);
 			sword.setVisible(false);
 			hero.setLetter('A');
