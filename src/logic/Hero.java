@@ -2,7 +2,8 @@ package logic;
 
 public class Hero extends Element{
 	private boolean armed = false;
-
+	private boolean dead = false;
+	
 	public Hero() {
 		// TODO Auto-generated constructor stub
 		this.setLetter('H');
@@ -18,6 +19,14 @@ public class Hero extends Element{
 	
 	public void receiveCommand(){
 		
+	}
+
+	public boolean isDead() {
+		return dead;
+	}
+
+	public void setDead(boolean dead) {
+		this.dead = dead;
 	};
 	
 

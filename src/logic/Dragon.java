@@ -2,7 +2,7 @@ package logic;
 
 public class Dragon extends Element {
 
-	private boolean dead;
+	private boolean dead = false;
 	
 	public Dragon() {
 		// TODO Auto-generated constructor stub

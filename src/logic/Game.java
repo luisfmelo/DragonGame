@@ -8,6 +8,7 @@ public class Game {
 	private Dragon dragon = new Dragon(); 	//pos (1,3)
 	private Sword sword = new Sword(); 		//pos (1,8)
 	private Exit exit = new Exit(); 		//pos (9,5)
+	private boolean GameRunning = false;
 
 	
 	public Game(){
@@ -24,9 +25,10 @@ public class Game {
 	public void run() {
 		String key;
 		boolean check = false;
+		GameRunning = true;
 
 		//Running: acho que e melhor meter isto na class Game(faz parte da logica do jogo
-		while(true)
+		while(GameRunning)
 		{
 			//1. receive command
 			key = receiveCommand();
@@ -102,10 +104,14 @@ public class Game {
 			dragon.setLetter(' ');
 			dragon.setPos(maze, dragon.getPosX(), dragon.getPosY());
 		}
-		//check if he can Win the game
-		/*else if ( maze.maze[newPosY][newPosX] == 'S' && dragon.isDead() )
-			endGame('win');
-		*/
+		//dragon kills hero -> GAME OVER
+		else if ( nearDragon(newPosY, newPosX) && !hero.isArmed())
+		{
+			hero.setDead(true);
+			hero.setLetter(' ');
+			hero.setPos(maze, dragon.getPosX(), dragon.getPosY());
+			endGame("lose");
+		}
 		hero.setPos(maze, newPosX, newPosY);	
 		//System.out.println("NOVA POSICAO: " + newPosX + "|" + newPosY + "..");
 		
@@ -123,6 +129,21 @@ public class Game {
 			return true;
 
 		return false;
+	};
+	
+	private void endGame(String state){
+		if (state.equals("lose"))
+		{
+			System.out.println("\n\nGAME OVER\n\n");
+			//handle game over
+		}
+		else if (state.equals("win"))
+		{
+			System.out.println("\n\nCONGRATULATIONS\n\n");
+			//handle Victory
+		}
+		
+		GameRunning = false;
 	};
 	
 	//TODO
