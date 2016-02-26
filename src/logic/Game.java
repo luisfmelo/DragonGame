@@ -25,7 +25,6 @@ public class Game {
 
 	public void run() {
 		String key;
-		boolean check = false;
 		GameRunning = true;
 
 		//Running: acho que e melhor meter isto na class Game(faz parte da logica do jogo
@@ -35,10 +34,7 @@ public class Game {
 			key = receiveCommand();
 			
 			//2. Check
-			check = checkPos(key);
-				//2.1 comando 		ok: anda
-					
-				//2.2 comando   not ok: faz algo
+			checkPos(key);
 			
 			//3. pc faz o seu move -> DO NOT DO NOW
 			
@@ -55,7 +51,7 @@ public class Game {
 	};
 
 	//TODO
-	private boolean checkPos(String c) {
+	private void checkPos(String c) {
 		int newPosX = -1, newPosY = -1;
 		
 		switch(c.toUpperCase().charAt(0)){
@@ -115,9 +111,6 @@ public class Game {
 			endGame("lose");
 		}
 		hero.setPos(maze, newPosX, newPosY);	
-		//System.out.println("NOVA POSICAO: " + newPosX + "|" + newPosY + "..");
-		
-		return true;
 	}
 	
 	//hero and Dragon near each other 
