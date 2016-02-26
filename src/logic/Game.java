@@ -103,7 +103,7 @@ public class Game {
 			dragon.setPos(maze, dragon.getPosX(), dragon.getPosY());
 		}
 		//dragon kills hero -> GAME OVER
-		else if ( nearDragon(newPosY, newPosX) && !hero.isArmed())
+		else if ( nearDragon(newPosY, newPosX) && !hero.isArmed() && (dragon.getLetter() != 'd') )
 		{
 			hero.setDead(true);
 			hero.setLetter(' ');
