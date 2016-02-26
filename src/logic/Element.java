@@ -1,8 +1,8 @@
 package logic;
 
 public class Element {
-	private int posX;
-	private int posY;
+	private int posX = 1;
+	private int posY = 1;
 	private char letter;
 	
 	public int getPosY() {
@@ -24,6 +24,14 @@ public class Element {
 	}
 	public void setLetter(char letter) {
 		this.letter = letter;
+	}
+	
+	public void setPos(Maze maze, int x, int y){
+		char c = maze.maze[this.posX][this.posY];
+		maze.maze[this.posX][this.posY] = c;
+		this.posX = x;
+		this.posY = y;
+		maze.maze[this.posX][this.posY] = this.letter;
 	}
 
 }

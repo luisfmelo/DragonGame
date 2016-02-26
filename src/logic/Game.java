@@ -11,44 +11,97 @@ public class Game {
 
 	
 	public Game(){
-		this.maze.setLen(10);
-		this.maze.newMaze();
-		this.hero.setPosX(1);
-		this.hero.setPosY(1);
-		this.dragon.setPosX(1);
-		this.dragon.setPosY(1);
-		this.exit.setPosX(1);
-		this.exit.setPosY(1);
-		this.sword.setPosX(1);
-		this.sword.setPosY(1);
+		maze.setLen(10);
+		maze.newMaze();
+		hero.setPos(maze, 1, 1);
+		dragon.setPos(maze, 3, 1);
+		sword.setPos(maze, 8, 1);
+		exit.setPos(maze, 5, 9);
+		maze.print();
 	}
 
 	public void run() {
 		String key;
+		boolean check = false;
 
 		//Running: acho que e melhor meter isto na class Game(faz parte da logica do jogo
 		while(true)
 		{
-			maze.print();
-			Scanner sc = new Scanner(System.in);
-			key = sc.next();
-			//criar metodo: move? 
-			//mas ja tenho o setPosX e o setPosY
-			//preciso de uma funçao que check se a posiçao e correta
-			if ((key == "W" || key == "w") && checkPos('H', hero.getPosX(), hero.getPosY() - 1))
-			{
-				hero.setPosY(hero.getPosY() - 1);
-			}
+			//1. receive command
+			key = receiveCommand();
 			
+			//2. Check
+			check = checkPos(key);
+				//2.1 comando 		ok: anda
+					
+				//2.2 comando   not ok: faz algo
+			
+			//3. pc faz o seu move -> DO NOT DO NOW
+			
+			//4. print maze
+			maze.print();
 		}
 		
 	}
+	
+	private String receiveCommand(){
+		Scanner sc = new Scanner(System.in);
+		return sc.next();
+	};
 
 	//TODO
-	private boolean checkPos(char c, int posX, int posY) {
-		if ( this.maze.getMaze()[posX][posY] == 'X' )
-			return false;
+	private boolean checkPos(String c) {
+		int newPosX = -1, newPosY = -1;
+		
+		switch(c.toUpperCase().charAt(0)){
+			case 'S': 	newPosX = hero.getPosX() + 1; 
+					  	newPosY = hero.getPosY();
+					  	break;
+			case 'A': 	newPosY = hero.getPosY() - 1;
+					  	newPosX = hero.getPosX();
+					  	break;
+			case 'W': 	newPosX = hero.getPosX() - 1; 
+					  	newPosY = hero.getPosY();
+					  	break;
+			case 'D': 	newPosY = hero.getPosY() + 1;
+					  	newPosX = hero.getPosX();
+					  	break;
+			default: newPosY = -1; newPosX = -1;
+		}
+
+		
+		// DEBUG
+		//*********************************************************
+		System.out.println("input:" + c.toUpperCase().charAt(0));
+		System.out.println("ANTIGAS POSICOES: (" + hero.getPosY() + ";" + hero.getPosX() + ")");
+		System.out.println("NOVAS POSICOES: (" + newPosY + ";" + newPosX + ")");
+		
+		if ( newPosX > -1 )
+			System.out.println("ESTAVA: \'" + maze.maze[newPosY][newPosX] + "\'");
+		//*********************************************************
+		
+		
+		//check if it is a wall
+		if( maze.maze[newPosY][newPosX] == 'X' )
+		{
+			newPosX = hero.getPosX();
+			newPosY = hero.getPosY();
+		}
+		//check if it reach sword
+		else if ( maze.maze[newPosY][newPosX] == 'E' )
+		{
+			hero.setArmed(true);
+			sword.setVisible(false);
+			hero.setPos(maze, newPosX, newPosY);
+		}
+			
+		//System.out.println("NOVA POSICAO: " + newPosX + "|" + newPosY + "..");
 		
 		return true;
 	}
+	
+	//TODO
+	private boolean pcMove(){
+		return true;
+	};
 }
