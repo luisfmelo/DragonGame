@@ -39,7 +39,7 @@ public class Interaction {
 			
 		//2. Check
 			try {
-				myGame.checkPos(maze, key);
+				myGame.checkHeroPos(maze, key);
 			} catch (IllegalArgumentException e) {
 				System.out.println("Invalid command! Try again.");
 				continue;

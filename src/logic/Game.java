@@ -20,8 +20,117 @@ public class Game {
 		maze.print();
 	}
 
-	//TODO
-	public void checkPos(Maze maze, String c) throws IllegalArgumentException {
+	//hero and Dragon near each other 
+	private boolean near(int y, int x, char element)
+	{
+		int next_y, next_x;
+		
+		//near Dragon
+		if(element == 'H'){
+			next_y = dragon.getPosY();
+			next_x = dragon.getPosX();
+		}
+		//near Hero
+		else if (element == 'D')
+		{
+			next_y = hero.getPosY();
+			next_x = hero.getPosX();
+		}
+		else
+		{
+			System.out.println("Parametro Incorreto");
+			throw new IllegalArgumentException();
+		}
+		
+		if(	y >= next_y - 1 && y <= next_y + 1 &&
+			x >= next_x - 1 && x <= next_x + 1 )
+			return true;
+
+		return false;
+	};
+
+	private void endGame(String state){
+		if (state.equals("lose"))
+		{
+			System.out.println("\n\nGAME OVER\n\n");
+			//handle game over
+		}
+		else if (state.equals("win"))
+		{
+			System.out.println("\n\nCONGRATULATION\n\n");
+			//handle Victory
+		}
+		
+		setGameRunning(false);
+	};
+	
+	public boolean isGameRunning() {
+		return GameRunning;
+	}
+
+	public void setGameRunning(boolean gameRunning) {
+		GameRunning = gameRunning;
+	};
+
+	public void pcMove(Maze maze){
+		if ( level == 1)
+			return;
+		else if (level == 2)
+			sleepyDragon(50); //probabilidade de o Dragao estar a dormir
+		
+		Random Rand = new Random();
+		int move = Rand.nextInt(4);//5);    // tirei o 5 para ele andar sempre pelo menos uma vez
+		boolean c;
+		if (level == 2 && dragon.isSleepy())
+			move = 4; //if dragon is taking a nap... don't do anything in switch...case
+		
+		System.out.println("----------->" + move);
+		switch (move){
+			// Cima
+			case 0:
+				c = checkDragonPos(maze, "W");
+				if ( !c )
+					pcMove(maze);
+				break;
+			//Baixo
+			case 1:
+				c = checkDragonPos(maze, "S");
+				if ( !c )
+					pcMove(maze);
+				break;
+			//Direita
+			case 2:
+				c = checkDragonPos(maze, "D");
+				if ( !c )
+					pcMove(maze);
+				break;
+			//Esquerda
+			case 3:
+				c = checkDragonPos(maze, "A");
+				if ( !c )
+					pcMove(maze);
+				break;
+			//case 4: don't move	
+		}
+	};
+	
+	private void sleepyDragon(int p) {
+		Random Rand = new Random();
+		int sleep = Rand.nextInt(100);
+		
+		if (sleep <= p) //go back to sleep
+		{
+			dragon.setSleepy(true);
+			dragon.setLetter('d');
+		}
+		else if (sleep > p && dragon.isSleepy())//wake up sunshine
+		{
+			dragon.setSleepy(false);
+			dragon.setLetter('D');
+		}
+	}
+
+	public void checkHeroPos(Maze maze, String c) throws IllegalArgumentException {
 		int newPosX, newPosY;
 		
 		switch(c.toUpperCase().charAt(0)){
@@ -97,96 +206,8 @@ public class Game {
 				
 		hero.setPos(maze, newPosX, newPosY);	
 	}
-	
-	//hero and Dragon near each other 
-	private boolean near(int y, int x, char element)
-	{
-		int next_y, next_x;
 		
-		//near Dragon
-		if(element == 'H'){
-			next_y = dragon.getPosY();
-			next_x = dragon.getPosX();
-		}
-		//near Hero
-		else if (element == 'D')
-		{
-			next_y = hero.getPosY();
-			next_x = hero.getPosX();
-		}
-		else
-		{
-			System.out.println("Parametro Incorreto");
-			throw new IllegalArgumentException();
-		}
-		
-		if(	y >= next_y - 1 && y <= next_y + 1 &&
-			x >= next_x - 1 && x <= next_x + 1 )
-			return true;
-
-		return false;
-	};
-
-	private void endGame(String state){
-		if (state.equals("lose"))
-		{
-			System.out.println("\n\nGAME OVER\n\n");
-			//handle game over
-		}
-		else if (state.equals("win"))
-		{
-			System.out.println("\n\nCONGRATULATION\n\n");
-			//handle Victory
-		}
-		
-		setGameRunning(false);
-	};
-	
-	public boolean isGameRunning() {
-		return GameRunning;
-	}
-
-	public void setGameRunning(boolean gameRunning) {
-		GameRunning = gameRunning;
-	};
-
-	//TODO
-	public boolean pcMove(Maze maze){
-		Random Rand = new Random();
-		int move = Rand.nextInt(5);
-		boolean c;
-		switch (move){
-			// Cima
-			case 0:
-				c = checkPos_Dragon(maze, "W");
-				if ( !c )
-					pcMove(maze);
-				break;
-			//Baixo
-			case 1:
-				c = checkPos_Dragon(maze, "S");
-				if ( !c )
-					pcMove(maze);
-				break;
-			//Direita
-			case 2:
-				c = checkPos_Dragon(maze, "D");
-				if ( !c )
-					pcMove(maze);
-				break;
-			//Esquerda
-			case 3:
-				c = checkPos_Dragon(maze, "A");
-				if ( !c )
-					pcMove(maze);
-				break;
-			//case 4: don't move	
-		}
-		
-		return true;
-	};
-	
-	private boolean checkPos_Dragon(Maze maze, String c) {
+	private boolean checkDragonPos(Maze maze, String c) {
 		int newPosX = -1, newPosY = -1;
 	
 		switch(c.toUpperCase().charAt(0)){
@@ -202,7 +223,7 @@ public class Game {
 			case 'D': 	newPosX = dragon.getPosX() + 1;
 					  	newPosY = dragon.getPosY();
 					  	break;
-			default: newPosY = -1; newPosX = -1;
+			default: throw new IllegalArgumentException();
 		}
 	
 		boolean dragon_sword=false;
