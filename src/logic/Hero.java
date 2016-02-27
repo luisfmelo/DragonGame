@@ -17,10 +17,6 @@ public class Hero extends Element{
 		this.armed = armed;
 	}
 	
-	public void receiveCommand(){
-		
-	}
-
 	public boolean isDead() {
 		return dead;
 	}

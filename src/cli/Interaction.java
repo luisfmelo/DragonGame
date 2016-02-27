@@ -33,11 +33,11 @@ public class Interaction {
 
 		while( myGame.isGameRunning() )
 		{
-			//1. receive command
+		//1. receive command
 			sc = new Scanner(System.in);
 			key = sc.next();
 			
-			//2. Check
+		//2. Check
 			try {
 				myGame.checkPos(maze, key);
 			} catch (IllegalArgumentException e) {
@@ -46,6 +46,7 @@ public class Interaction {
 			}
 			
 		//3. pc faz o seu move -> DO NOT DO NOW
+			myGame.pcMove(maze);
 			
 		//4. print maze
 			maze.print();
