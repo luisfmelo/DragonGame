@@ -14,11 +14,17 @@ public class Interaction {
 	//Game Config
 		//Dragao: parado/mov aleatoria/mov aleatoria + dormir
 		System.out.println("Nivel de exigência pretendido:");
-		System.out.println("1. Dragao a dormin");
+		System.out.println("1. Dragao a dormir");
 		System.out.println("2. Dragao com movimento aleatorio intercalado com dormir");
 		System.out.println("3. Dragao com movimento aleatorio sempre acordado");
 		Scanner sc = new Scanner(System.in);
 		int level = sc.nextInt();
+		
+		if( level > 3 || level < 1)
+		{
+			System.out.println("Erro na seleção do nivel. A terminar Jogo");
+			System.exit(2);
+		}
 		
 		maze.setLen(10);
 		maze.newMaze();
@@ -29,10 +35,14 @@ public class Interaction {
 	//Run Game
 		//myGame.run();
 		String key;
+		boolean c;
 		myGame.setGameRunning(true);
 
 		while( myGame.isGameRunning() )
 		{
+		//0. Print Maze
+			maze.print();
+			
 		//1. receive command
 			sc = new Scanner(System.in);
 			key = sc.next();
@@ -40,9 +50,10 @@ public class Interaction {
 		//2. Check
 			try {
 				//myGame.checkHeroPos(maze, key);
-				myGame.checkPos(maze, key, myGame.hero);
+				c = myGame.checkPos(maze, key, myGame.hero);
+				if ( !c )
+					continue;
 			} catch (IllegalArgumentException e) {
-				System.out.println("Invalid command! Try again.");
 				continue;
 			}
 			
@@ -50,7 +61,7 @@ public class Interaction {
 			//myGame.pcMove(maze);
 			
 		//4. print maze
-			maze.print();
+		//	maze.print();
 		}		
 		
 		sc.close();
