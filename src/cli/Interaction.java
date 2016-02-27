@@ -39,14 +39,15 @@ public class Interaction {
 			
 		//2. Check
 			try {
-				myGame.checkHeroPos(maze, key);
+				//myGame.checkHeroPos(maze, key);
+				myGame.checkPos(maze, key, myGame.hero);
 			} catch (IllegalArgumentException e) {
 				System.out.println("Invalid command! Try again.");
 				continue;
 			}
 			
-		//3. pc faz o seu move -> DO NOT DO NOW
-			myGame.pcMove(maze);
+		//3. pc faz o seu move
+			//myGame.pcMove(maze);
 			
 		//4. print maze
 			maze.print();

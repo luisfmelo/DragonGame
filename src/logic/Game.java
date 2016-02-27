@@ -3,7 +3,7 @@ package logic;
 import java.util.Random;
 
 public class Game {
-	private Hero hero = new Hero(); 		//pos (1,1)
+	public Hero hero = new Hero(); 		//pos (1,1)
 	private Dragon dragon = new Dragon(); 	//pos (1,3)
 	private Sword sword = new Sword(); 		//pos (1,8)
 	private Exit exit = new Exit(); 		//pos (9,5)
@@ -13,7 +13,7 @@ public class Game {
 	public Game(Maze maze, int level){
 		this.level = level;
 
-		dragon.setPos(maze, 1, 3);
+		dragon.setPos(maze, 4, 2);
 		sword.setPos(maze, 1, 4);
 		exit.setPos(maze, 9, 5);
 		hero.setPos(maze, 1, 1);
@@ -42,8 +42,8 @@ public class Game {
 			throw new IllegalArgumentException();
 		}
 		
-		if(	y >= next_y - 1 && y <= next_y + 1 &&
-			x >= next_x - 1 && x <= next_x + 1 )
+		if(	(x == next_x && (y == next_y + 1 || y == next_y - 1)) ||
+			(y == next_y && (x == next_x + 1 || x == next_x - 1)) )
 			return true;
 
 		return false;
@@ -88,7 +88,8 @@ public class Game {
 		switch (move){
 			// Cima
 			case 0:
-				c = checkDragonPos(maze, "W");
+				//c = checkDragonPos(maze, "W");
+				c = checkPos(maze, "W", dragon);
 				if ( !c )
 					pcMove(maze);
 				break;
@@ -271,4 +272,115 @@ public class Game {
 		return true;
 	}
 
+	public boolean checkPos (Maze maze, String c, Element el) throws IllegalArgumentException {
+		int newPosX, newPosY;
+		
+		switch(c.toUpperCase().charAt(0)){
+			case 'S': 	newPosY = el.getPosY() + 1; 
+					  	newPosX = el.getPosX();
+					  	break;
+			case 'A': 	newPosX = el.getPosX() - 1;
+					  	newPosY = el.getPosY();
+					  	break;
+			case 'W': 	newPosY = el.getPosY() - 1; 
+					  	newPosX = el.getPosX();
+					  	break;
+			case 'D': 	newPosX = el.getPosX() + 1;
+					  	newPosY = el.getPosY();
+					  	break;
+			default: 	throw new IllegalArgumentException();
+						
+		}
+
+		
+		// DEBUG
+		//*********************************************************
+		System.out.println(el.getLetter() + "->input:" + c.toUpperCase().charAt(0));
+		System.out.println("ANTIGAS POSICOES: (" + el.getPosX() + ";" + el.getPosY() + ")");
+		System.out.println("NOVAS POSICOES: (" + newPosX + ";" + newPosY + ")");
+		
+		if ( newPosX > -1 )
+			System.out.println("ESTAVA: \'" + maze.maze[newPosY][newPosX] + "\'");
+		//*********************************************************
+		
+	//BOTH
+		//check if it is a wall
+		if( maze.maze[newPosY][newPosX] == 'X' )
+		{
+			newPosX = el.getPosX();
+			newPosY = el.getPosY();
+			return false;
+		}
+		// encounter - hero kills dragon
+		else if ( near(newPosY, newPosX, 'H') && hero.isArmed())
+		{
+			dragon.setDead(true);
+			dragon.setLetter(' ');
+			dragon.setPos(maze, dragon.getPosX(), dragon.getPosY());
+		}
+		// encounter - dragon kills hero -> GAME OVER
+		else if ( near(newPosY, newPosX, 'H') && !hero.isArmed() && (dragon.getLetter() != 'd') )
+		{
+			hero.setDead(true);
+			hero.setLetter(' ');
+			hero.setPos(maze, hero.getPosX(), hero.getPosY());
+			endGame("lose");
+		}
+	//HERO
+		if (el.getLetter() == 'H')
+		{
+			//check if he picked sword
+			if ( maze.maze[newPosY][newPosX] == 'E' )
+			{
+				hero.setArmed(true);
+				sword.setVisible(false);
+				hero.setLetter('A');
+			}
+			
+			//check if dragon alive and hero wants to get out
+			else if( !dragon.isDead() && maze.maze[newPosY][newPosX] == 'S' )
+			{
+				newPosX = hero.getPosX();
+				newPosY = hero.getPosY();
+				System.out.println("Dragon is still alive!");
+			}
+			//check if dragon is dead and hero wants to get out -> WIN
+			else if( dragon.isDead() && maze.maze[newPosY][newPosX] == 'S' )
+			{
+				hero.setPos(maze, exit.getPosX(), exit.getPosY());
+				endGame("win");
+			}
+		}
+	//DRAGON
+		else if ( el.getLetter() == 'D')
+		{
+			boolean dragon_sword=false;
+
+			//check if dragon and sword in same position
+			if ( maze.maze[newPosY][newPosX] == 'E' )
+			{
+				sword.setLetter(' ');
+				el.setLetter('F');
+				dragon_sword=true;
+			}
+			//dragon and exit in same position - don't update
+			else if( maze.maze[newPosY][newPosX] == 'S' )
+			{
+				newPosX = el.getPosX();
+				newPosY = el.getPosY();
+			}
+			
+			// Drgaon runs away from sword
+			if(!dragon_sword )
+			{
+				el.setLetter('D');
+				sword.setLetter('E');	
+				sword.setPos(maze, sword.getPosX(), sword.getPosY());
+			}
+		}
+				
+		el.setPos(maze, newPosX, newPosY);	
+		return true;
+	}
+		
 }
