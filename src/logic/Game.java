@@ -3,7 +3,7 @@ package logic;
 import java.util.Random;
 
 public class Game {
-	public Hero hero = new Hero(); 		//pos (1,1)
+	public Hero hero = new Hero(); 			//pos (1,1)
 	private Dragon dragon = new Dragon(); 	//pos (1,3)
 	private Sword sword = new Sword(); 		//pos (1,8)
 	private Exit exit = new Exit(); 		//pos (9,5)
@@ -36,6 +36,9 @@ public class Game {
 			next_y = hero.getPosY();
 			next_x = hero.getPosX();
 		}
+		//algum deles morreu -> iria dar exceçao
+		else if (element == ' ')
+			return false;
 		else
 		{
 			System.out.println("Parametro Incorreto");
@@ -76,7 +79,7 @@ public class Game {
 		if ( !GameRunning || dragon.isDead() || level == 1) //if level 1(pc move don't exist) or game ended... return
 			return;
 		else if (level == 2)
-			sleepyDragon(50); //probabilidade de o Dragao estar a dormir. Podemos fazer: Rand.nextInt(2); 
+			sleepyDragon(maze, 50); //probabilidade de o Dragao estar a dormir. Podemos fazer: Rand.nextInt(2); 
 		
 		Random Rand = new Random();
 		int move = Rand.nextInt(4);//5);    // tirei o 5 para ele andar sempre pelo menos uma vez
@@ -85,7 +88,11 @@ public class Game {
 		if (level == 2 && dragon.isSleepy())
 			return;; //if dragon is taking a nap... 
 		
-		System.out.println("----------->" + move);
+			/*******************DEBUG*******************************/
+					System.out.println("----------->" + move);
+			/*******************DEBUG*******************************/
+					
+					
 		switch (move){
 			// Cima
 			case 0:
@@ -120,23 +127,25 @@ public class Game {
 		}
 	};
 	
-	private void sleepyDragon(int p) {
+	private void sleepyDragon(Maze maze, int p) {
 		Random Rand = new Random();
 		int sleep = Rand.nextInt(100);
 		
 		if (sleep >= 100 || sleep < 0)
-			sleepyDragon(p);
+			sleepyDragon(maze, p);
 		
 		if (sleep <= p) //go back to sleep
 		{
 			dragon.setSleepy(true);
 			dragon.setLetter('d');
+			dragon.setPos(maze, dragon.getPosX(), dragon.getPosY());	
 		}
 		else if (sleep > p && dragon.isSleepy())//wake up sunshine
 		{
 			dragon.setSleepy(false);
 			dragon.setLetter('D');
-		}
+			dragon.setPos(maze, dragon.getPosX(), dragon.getPosY());
+		}	
 	}
 
 	public boolean checkPos (Maze maze, String c, Element el) throws IllegalArgumentException {
@@ -211,6 +220,13 @@ public class Game {
 				hero.setArmed(true);
 				sword.setVisible(false);
 				hero.setLetter('A');
+			}
+			//avoids colision of coords when dragon is sleeping
+			else if ( maze.maze[newPosY][newPosX] == 'd' )
+			{
+				newPosX = hero.getPosX();
+				newPosY = hero.getPosY();
+				return false;
 			}
 			//check if dragon alive and hero wants to get out
 			else if( !dragon.isDead() && maze.maze[newPosY][newPosX] == 'S' )
