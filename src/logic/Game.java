@@ -24,14 +24,14 @@ public class Game {
 	private boolean near(int y, int x, char element)
 	{
 		int next_y, next_x;
-		
+			
 		//near Dragon
 		if(element == 'H' || element == 'A'){
 			next_y = dragon.getPosY();
 			next_x = dragon.getPosX();
 		}
 		//near Hero
-		else if (element == 'D')
+		else if (element == 'D' || element == 'd')
 		{
 			next_y = hero.getPosY();
 			next_x = hero.getPosX();
@@ -73,7 +73,7 @@ public class Game {
 	};
 
 	public void pcMove(Maze maze){
-		if ( !GameRunning || level == 1) //if level 1(pc move don't exist) or game ended... return
+		if ( !GameRunning || dragon.isDead() || level == 1) //if level 1(pc move don't exist) or game ended... return
 			return;
 		else if (level == 2)
 			sleepyDragon(50); //probabilidade de o Dragao estar a dormir. Podemos fazer: Rand.nextInt(2); 
@@ -160,31 +160,7 @@ public class Game {
 						throw new IllegalArgumentException();		
 		}
 		
-
-		/*if (c.toUpperCase().charAt(0) == 'S')
-		{
-			newPosY = el.getPosY() + 1; 
-		  	newPosX = el.getPosX();
-		}
-		else if (c.toUpperCase().charAt(0) == 'A')
-		{
-			newPosX = el.getPosX() - 1;
-		  	newPosY = el.getPosY();
-		}
-		else if (c.toUpperCase().charAt(0) == 'W')
-		{
-			newPosY = el.getPosY() - 1; 
-		  	newPosX = el.getPosX();
-		}
-		else if (c.toUpperCase().charAt(0) == 'W')
-		{
-			newPosX = el.getPosX() + 1;
-			newPosY = el.getPosY();
-		}
-		else
-			System.out.println("**CHAPEU**" + el.getLetter() + "--" + c.toUpperCase().charAt(0) + "**");
-		*/
-		
+	
 		// DEBUG
 		//*********************************************************
 		System.out.println(el.getLetter() + "->input:" + c.toUpperCase().charAt(0));
