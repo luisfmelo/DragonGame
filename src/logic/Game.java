@@ -26,7 +26,7 @@ public class Game {
 		int next_y, next_x;
 		
 		//near Dragon
-		if(element == 'H'){
+		if(element == 'H' || element == 'A'){
 			next_y = dragon.getPosY();
 			next_x = dragon.getPosX();
 		}
@@ -140,7 +140,7 @@ public class Game {
 	}
 
 	public boolean checkPos (Maze maze, String c, Element el) throws IllegalArgumentException {
-		int newPosX, newPosY;
+		int newPosX = -1, newPosY = -1;
 		
 		// Get new Coordenates
 		switch(c.toUpperCase().charAt(0)){
@@ -160,9 +160,30 @@ public class Game {
 						throw new IllegalArgumentException();		
 		}
 		
-		if (c.toUpperCase().charAt(0) == 'S')
-		 	System.out.println("**" + (c.toUpperCase().charAt(0) == 'S') + "**");
 
+		/*if (c.toUpperCase().charAt(0) == 'S')
+		{
+			newPosY = el.getPosY() + 1; 
+		  	newPosX = el.getPosX();
+		}
+		else if (c.toUpperCase().charAt(0) == 'A')
+		{
+			newPosX = el.getPosX() - 1;
+		  	newPosY = el.getPosY();
+		}
+		else if (c.toUpperCase().charAt(0) == 'W')
+		{
+			newPosY = el.getPosY() - 1; 
+		  	newPosX = el.getPosX();
+		}
+		else if (c.toUpperCase().charAt(0) == 'W')
+		{
+			newPosX = el.getPosX() + 1;
+			newPosY = el.getPosY();
+		}
+		else
+			System.out.println("**CHAPEU**" + el.getLetter() + "--" + c.toUpperCase().charAt(0) + "**");
+		*/
 		
 		// DEBUG
 		//*********************************************************

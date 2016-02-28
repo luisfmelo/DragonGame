@@ -33,7 +33,6 @@ public class Interaction {
 		Game myGame = new Game(maze, level);
 		
 	//Run Game
-		//myGame.run();
 		String key;
 		boolean c;
 		myGame.setGameRunning(true);
@@ -58,7 +57,7 @@ public class Interaction {
 			}
 			
 		//3. pc faz o seu move
-			//myGame.pcMove(maze);
+			myGame.pcMove(maze);
 			
 		//4. print maze
 		//	maze.print();
