@@ -5,7 +5,7 @@ import java.util.Scanner;
 import logic.Game;
 import logic.Maze;
 
-public class Interaction {
+public class Interaction {	
 
 	public static void main(String[] args) {
 		System.out.println("Dragon Game!");
@@ -14,7 +14,7 @@ public class Interaction {
 		
 	//Game Config
 		//Dragao: parado/mov aleatoria/mov aleatoria + dormir
-		System.out.println("Nivel de exig�ncia pretendido:");
+		System.out.println("Nivel de exigencia pretendido:");
 		System.out.println("1. Dragao a dormir");
 		System.out.println("2. Dragao com movimento aleatorio intercalado com dormir");
 		System.out.println("3. Dragao com movimento aleatorio sempre acordado");
@@ -23,7 +23,7 @@ public class Interaction {
 		
 		if( level > 3 || level < 1)
 		{
-			System.out.println("Erro na sele��o do nivel. A terminar Jogo");
+			System.out.println("Erro na selecao do nivel. A terminar Jogo");
 			System.exit(2);
 		}
 		
