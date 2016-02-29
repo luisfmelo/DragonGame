@@ -2,7 +2,7 @@ package logic;
 
 public class Maze {
 	private int len = 10;
-	private char[][] maze = null;
+	public char[][] maze = null;
 	public char[][] getMaze(){
 		return this.maze;
 	};
@@ -30,6 +30,7 @@ public class Maze {
 		};
 	}
 	
+	//ELIMINATE??
 	public void getHeroPos(){
 		/*		TODO (and for sword,dragon,...)		*/
 	}
