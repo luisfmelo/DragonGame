@@ -1,25 +1,5 @@
 package cli;
 
-import logic.Game;
-
-public class Interaction {
-
-	public static void main(String[] args) {
-		//Game Config
-		/*	TODO	*/
-	
-		//Create Game
-		Game myGame = new Game();
-		
-		//Run Game
-		myGame.run();
-
-	}
-
-}
-=======
-package cli;
-
 import java.util.Scanner;
 
 import logic.Game;
@@ -30,6 +10,7 @@ public class Interaction {
 	public static void main(String[] args) {
 		System.out.println("Dragon Game!");
 		Maze maze = new Maze();
+		int round = 1;
 		
 	//Game Config
 		//Dragao: parado/mov aleatoria/mov aleatoria + dormir
@@ -59,6 +40,7 @@ public class Interaction {
 
 		while( myGame.isGameRunning() )
 		{
+			System.out.println("\nRound: " + round + "\n");
 		//0. Print Maze
 			maze.print();
 			
@@ -78,9 +60,8 @@ public class Interaction {
 			
 		//3. pc faz o seu move
 			myGame.pcMove(maze);
-			
-		//4. print maze
-		//	maze.print();
+
+			round++;
 		}		
 		
 		sc.close();

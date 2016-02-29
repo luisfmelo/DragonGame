@@ -14,7 +14,7 @@ public class Game {
 		this.level = level;
 
 		dragon.setPos(maze, 4, 2);
-		sword.setPos(maze, 1, 4);
+		sword.setPos(maze, 4, 3);
 		exit.setPos(maze, 9, 5);
 		hero.setPos(maze, 1, 1);
 		//maze.print();
@@ -36,8 +36,8 @@ public class Game {
 			next_y = hero.getPosY();
 			next_x = hero.getPosX();
 		}
-		//algum deles morreu -> iria dar exceçao
-		else if (element == ' ')
+		//algum deles morreu -> iria dar exceï¿½ao
+		else if (element == ' ' || element == 'F')
 			return false;
 		else
 		{
@@ -244,31 +244,26 @@ public class Game {
 			}
 		}
 	//DRAGON
-		else if ( el.getLetter() == 'D')
+		else if ( el.getLetter() == 'D' || el.getLetter() == 'F' )
 		{
-			boolean dragon_sword=false;
-
-			//check if dragon and sword are in the same position
-			if ( maze.maze[newPosY][newPosX] == 'E' )
+			// Dragon runs away from sword
+			if( el.getLetter() == 'F' )
 			{
-				sword.setLetter(' ');
+				el.setLetter('D');
+				sword.setPos(maze, sword.getPosX(), sword.getPosY());
+
+				el.setPos(maze, newPosX, newPosY);	
+
+				sword.setPos(maze, sword.getPosX(), sword.getPosY());
+			}
+			//check if dragon and sword are in the same position
+			else if ( maze.maze[newPosY][newPosX] == 'E' )
+			{
 				el.setLetter('F');
-				dragon_sword = true;
 			}
 			//dragon and exit in same position - don't update
 			else if( maze.maze[newPosY][newPosX] == 'S' )
-			{
-				pcMove(maze);
-			}
-			
-			// Drgaon runs away from sword
-			if( dragon_sword )
-			{
-				el.setLetter('D');
-				sword.setLetter('E');	
-				sword.setPos(maze, sword.getPosX(), sword.getPosY());
-				dragon_sword = false;
-			}
+				pcMove(maze);			
 		}
 				
 		el.setPos(maze, newPosX, newPosY);	
