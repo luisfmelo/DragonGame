@@ -6,7 +6,6 @@ public class Dragon extends Element {
 	private boolean sleepy = false;
 	
 	public Dragon() {
-		// TODO Auto-generated constructor stub
 		this.setLetter('D');
 	}
 

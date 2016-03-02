@@ -9,7 +9,23 @@ public class Interaction {
 
 	public static void main(String[] args) {
 		System.out.println("Dragon Game!");
+		String type = "random";
+		Scanner sc = new Scanner(System.in);
+		int len = 10;
+		
 		Maze maze = new Maze();
+		maze.setLen(len);
+		
+		try{
+			maze.setMaze(type);
+		}catch (IllegalArgumentException e) {
+			maze.setMaze("default");
+		}
+		
+		maze.print();
+		
+		/*
+		
 		int round = 1;
 		
 	//Game Config
@@ -18,7 +34,7 @@ public class Interaction {
 		System.out.println("1. Dragao a dormir");
 		System.out.println("2. Dragao com movimento aleatorio intercalado com dormir");
 		System.out.println("3. Dragao com movimento aleatorio sempre acordado");
-		Scanner sc = new Scanner(System.in);
+		sc = new Scanner(System.in);
 		int level = sc.nextInt();
 		
 		if( level > 3 || level < 1)
@@ -63,7 +79,7 @@ public class Interaction {
 
 			round++;
 		}		
-		
+		*/
 		sc.close();
 
 	}
