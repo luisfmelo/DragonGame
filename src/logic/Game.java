@@ -9,8 +9,16 @@ public class Game {
 	private Exit exit = new Exit(); 		//pos (9,5)
 	private boolean GameRunning = false;
 	private int level;
-
+	
 	public Game(Maze maze, int level){
+		try{
+			maze.setRandomMaze(hero, dragon, sword, exit);
+		}catch (IllegalArgumentException e) {
+			maze.setDefaultMaze();
+		}
+
+		maze.print();
+		/*
 		this.level = level;
 
 		dragon.setPos(maze, 4, 2);
@@ -18,6 +26,9 @@ public class Game {
 		//exit.setPos(maze, 9, 5);
 		hero.setPos(maze, 1, 1);
 		//maze.print();
+		
+*/
+		
 	}
 
 	//hero and Dragon near each other 
@@ -86,7 +97,7 @@ public class Game {
 		
 		boolean c;
 		if (level == 2 && dragon.isSleepy())
-			return;; //if dragon is taking a nap... 
+			return; //if dragon is taking a nap... 
 		
 			/*******************DEBUG*******************************/
 					System.out.println("----------->" + move);
