@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Scanner;
 
+import logic.Exit;
 import logic.Game;
 import logic.Hero;
 import logic.Maze;
@@ -11,7 +12,14 @@ import logic.Maze;
 public class Interaction {	
 
 	public static void main(String[] args) {
-		
+		Maze maze = new Maze();
+		Exit exit = new Exit();
+		System.out.println("hhhhhhh");
+	//	maze.setDefaultMaze();
+	//	maze.setTestMaze();
+		maze.setRandomMaze(11, exit);
+		maze.print();
+		/*
 		System.out.println("Dragon Game!");
 		Scanner sc = new Scanner(System.in);
 		int level, len;
@@ -78,7 +86,7 @@ public class Interaction {
 			round++;
 		}		
 		
-		sc.close();
+		sc.close();*/
 	}
 
 }
