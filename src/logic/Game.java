@@ -10,9 +10,9 @@ public class Game {
 	private boolean GameRunning = false;
 	private int level = 1;
 	
-	public Game(Maze maze, int lvl){
+	public Game(Maze maze, int lvl, int len){
 		try{
-			maze.setRandomMaze(hero, dragon, sword, exit);
+			maze.setRandomMaze(len, exit);
 			//dragon.setRandomPos(maze);
 			sword.setRandomPos(maze);
 			while ( true)

@@ -1,13 +1,17 @@
 package cli;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Scanner;
 
 import logic.Game;
+import logic.Hero;
 import logic.Maze;
 
 public class Interaction {	
 
 	public static void main(String[] args) {
+		
 		System.out.println("Dragon Game!");
 		Scanner sc = new Scanner(System.in);
 		int level, len;
@@ -20,7 +24,7 @@ public class Interaction {
 		sc = new Scanner(System.in);
 		len = sc.nextInt();
 
-		Maze maze = new Maze(len);
+		Maze maze = new Maze();
 
 		// Dragao: parado/mov aleatoria/mov aleatoria + dormir
 		System.out.println("Nivel de exigencia pretendido:");
@@ -37,7 +41,7 @@ public class Interaction {
 		}
 		
 	//Create Game
-		Game myGame = new Game(maze, level);
+		Game myGame = new Game(maze, level, len);
 
 		
 		//maze.print();
@@ -75,7 +79,6 @@ public class Interaction {
 		}		
 		
 		sc.close();
-
 	}
 
 }

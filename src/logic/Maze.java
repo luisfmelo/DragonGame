@@ -3,6 +3,7 @@ package logic;
 import java.util.Random;
 import java.util.Stack;
 
+
 public class Maze {
 	private int len;
 	public char[][] maze;
@@ -10,17 +11,8 @@ public class Maze {
 	/**
 	 * Constructor
 	 */
-	public Maze(int len){
-		this.len = len;
-		
-		if ( this.len % 2 == 0)
-		{
-			this.len ++;
-			System.out.println("Size is not odd! Creating " + this.len + "x" + this.len + " maze...");
-			this.maze = new char[this.len][this.len];		
-		}
-		else
-			this.maze = new char[this.len][this.len];	
+	public Maze(){
+
 	}
 	
 	public char[][] getMaze(){
@@ -91,6 +83,7 @@ public class Maze {
 	};
 	
 	public void setTestMaze() {
+		this.len = 5;
 		this.maze = new char[][] {
 			{'X', 'X', 'X', 'X','X'},
 			{'X', ' ', ' ', 'H','X'},
@@ -100,18 +93,28 @@ public class Maze {
 		};
 	};
 	
-	public void setRandomMaze(Hero hero, Dragon dragon, Sword sword, Exit exit){
+	public void setRandomMaze(int size, Exit exit){
+		this.len = size;
 		try{
-			this.buildMaze(this.len, hero, dragon, sword, exit);
+			this.buildMaze(this.len, exit);
 		}catch (NumberFormatException e){
 			System.out.println("Invalid Argument! Creating default 10x10 maze...");
 			this.setDefaultMaze();
 		}
 	}
 
-	public char[][] buildMaze(int size, Hero hero, Dragon dragon, Sword sword, Exit exit) throws IllegalArgumentException{
+	public char[][] buildMaze(int size, Exit exit) throws IllegalArgumentException{
 		if (size <= 0 )
 			throw new NumberFormatException();	
+		
+		if ( this.len % 2 == 0)
+		{
+			this.len ++;
+			System.out.println("Size is not odd! Creating " + this.len + "x" + this.len + " maze...");
+			this.maze = new char[this.len][this.len];		
+		}
+		else
+			this.maze = new char[this.len][this.len];	
 		
 		boolean flag = false;
 		int sizeVisitedCellArray = (size - 1) / 2;
@@ -269,8 +272,12 @@ public class Maze {
 	}
 
 	//ELIMINATE??
-	public void getHeroPos(){
-		/*		TODO (and for sword,dragon,...)		*/
+	public String getElementPos(char el){
+		for (int i = 0; i < this.getLen(); i++)
+			for (int j = 0; j < this.getLen(); j++)
+				if ( this.maze[i][j] == el )
+					return (i + "," + j);
+		return null;
 	}
 	
 	public void print() {
