@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.Random;
+
 public class Element {
 	private int posX = 1;
 	private int posY = 1;
@@ -32,6 +34,22 @@ public class Element {
 		this.posX = x;
 		this.posY = y;
 		maze.maze[this.posY][this.posX] = this.letter;
+	}
+	
+	public void setRandomPos(Maze maze)
+	{
+		int x = 0, y = 0;
+		Random rand = new Random(); 
+		// Get 2 random numbers between 0 and ( size - 1 )
+		x = rand.nextInt(maze.getLen());
+		y = rand.nextInt(maze.getLen());
+		//check if pos is blank
+		if (maze.maze[x][y] == ' ')
+			this.setPos(maze, y, x);
+		else
+			this.setRandomPos(maze);
+		
+		//this.setPos(maze, x, y);
 	}
 
 }

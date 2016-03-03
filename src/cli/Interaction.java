@@ -16,15 +16,14 @@ public class Interaction {
 		
 	//Game Config
 		// Get Size
-		/*System.out.print("Tamanho do labirinto (impar): ");
+		System.out.print("Tamanho do labirinto (impar): ");
 		sc = new Scanner(System.in);
-		len = sc.nextInt();*/
-		len = 30;
+		len = sc.nextInt();
 
 		Maze maze = new Maze(len);
 
 		// Dragao: parado/mov aleatoria/mov aleatoria + dormir
-		/*System.out.println("Nivel de exigencia pretendido:");
+		System.out.println("Nivel de exigencia pretendido:");
 		System.out.println("1. Dragao a dormir");
 		System.out.println("2. Dragao com movimento aleatorio intercalado com dormir");
 		System.out.println("3. Dragao com movimento aleatorio sempre acordado");
@@ -35,9 +34,7 @@ public class Interaction {
 		{
 			System.out.println("Erro na selecao do nivel. A terminar Jogo");
 			System.exit(2);
-		}*/
-		level = 3;
-		
+		}
 		
 	//Create Game
 		Game myGame = new Game(maze, level);
@@ -45,7 +42,7 @@ public class Interaction {
 		
 		//maze.print();
 		
-		/*
+		
 	//Run Game
 		String key;
 		boolean c;
@@ -76,7 +73,7 @@ public class Interaction {
 
 			round++;
 		}		
-		*/
+		
 		sc.close();
 
 	}

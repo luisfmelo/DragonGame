@@ -8,31 +8,35 @@ public class Game {
 	private Sword sword = new Sword(); 		//pos (1,8)
 	private Exit exit = new Exit(); 		//pos (9,5)
 	private boolean GameRunning = false;
-	private int level;
+	private int level = 1;
 	
-	public Game(Maze maze, int level){
+	public Game(Maze maze, int lvl){
 		try{
 			maze.setRandomMaze(hero, dragon, sword, exit);
+			//dragon.setRandomPos(maze);
+			sword.setRandomPos(maze);
+			while ( true)
+			{
+				dragon.setRandomPos(maze);
+				hero.setRandomPos(maze);
+				if ( !near(hero.getPosY(), hero.getPosX(), dragon.getLetter()) )
+					break;
+			}
+
 		}catch (IllegalArgumentException e) {
 			maze.setDefaultMaze();
 		}
-
-		maze.print();
-		/*
-		this.level = level;
-
-		dragon.setPos(maze, 4, 2);
-		sword.setPos(maze, 4, 3);
-		//exit.setPos(maze, 9, 5);
-		hero.setPos(maze, 1, 1);
-		//maze.print();
 		
-*/
-		
+		this.level = lvl;		
+		if ( level == 1)
+		{
+			dragon.setLetter('d');
+			dragon.setPos(maze, dragon.getPosX(), dragon.getPosY());			
+		}
 	}
 
 	//hero and Dragon near each other 
-	private boolean near(int y, int x, char element)
+	public boolean near(int y, int x, char element)
 	{
 		int next_y, next_x;
 			

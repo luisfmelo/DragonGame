@@ -1,9 +1,6 @@
 package logic;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.Stack;
 
 public class Maze {
@@ -119,7 +116,6 @@ public class Maze {
 		boolean flag = false;
 		int sizeVisitedCellArray = (size - 1) / 2;
 		int guideCell_i, guideCell_j, pos = 0, dir = 0;
-		int tmp_i = 0, tmp_j = 0, count = 1;
 		char [][] visitedCells = new char[sizeVisitedCellArray][sizeVisitedCellArray];
 		Stack<String> pathHistory = new Stack<String>();
 		Random rand = new Random(); 
@@ -173,9 +169,8 @@ public class Maze {
 		//this.maze[guideCell_i][guideCell_j] = '+';
 
 	// 3. Create Visited Cells
-		int i, j;
-		for (i = 0; i < sizeVisitedCellArray; i++)
-			for (j = 0; j < sizeVisitedCellArray; j++)
+		for (int i = 0; i < sizeVisitedCellArray; i++)
+			for (int j = 0; j < sizeVisitedCellArray; j++)
 			{
 				if (  	i * 2 + 1 == guideCell_i && 
 						j * 2 + 1  == guideCell_j)
@@ -221,7 +216,6 @@ public class Maze {
 				this.maze[guideCell_i * 2][guideCell_j * 2 + 1] = ' ';
 				
 				guideCell_i = guideCell_i - 1;
-				guideCell_j = guideCell_j;
 				break;
 			case 2: //O
 				if( guideCell_i >= sizeVisitedCellArray || 
@@ -233,7 +227,6 @@ public class Maze {
 				//open space
 				this.maze[guideCell_i * 2 + 1][( guideCell_j + 1 ) * 2] = ' ';
 				
-				guideCell_i = guideCell_i;
 				guideCell_j = guideCell_j + 1;
 				break;
 			case 3: //S
@@ -247,7 +240,6 @@ public class Maze {
 				this.maze[( guideCell_i + 1 ) * 2][guideCell_j * 2 + 1] = ' ';
 				
 				guideCell_i = guideCell_i + 1;
-				guideCell_j = guideCell_j;
 				break;
 				
 			case 4: //E
@@ -259,8 +251,7 @@ public class Maze {
 					continue;
 				//open space
 				this.maze[guideCell_i * 2 + 1][guideCell_j * 2] = ' ';
-				
-				guideCell_i = guideCell_i;
+
 				guideCell_j = guideCell_j - 1;
 				break;
 			default: continue; 
@@ -272,13 +263,8 @@ public class Maze {
 			pathHistory.push(guideCell_i + "," + guideCell_j);
 			//put + in that pos
 			visitedCells[guideCell_i][guideCell_j] = '+';
-			
-
-			
 		}
-		
 
-		
 		return this.maze;
 	}
 
