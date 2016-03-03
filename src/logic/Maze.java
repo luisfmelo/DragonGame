@@ -3,6 +3,7 @@ package logic;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Stack;
 
 public class Maze {
@@ -169,7 +170,7 @@ public class Maze {
 			System.out.println("Ocorreu um erro...");
 			throw new NumberFormatException();							//VER ISTO
 		}
-		this.maze[guideCell_i][guideCell_j] = '+';
+		//this.maze[guideCell_i][guideCell_j] = '+';
 
 	// 3. Create Visited Cells
 		int i, j;
@@ -184,75 +185,95 @@ public class Maze {
 			}
 	
 	// 4. Add Path History (of Guide Cell) to Stack
-		i = (guideCell_i-1)/2;
-		j = (guideCell_j-1)/2;
-		pathHistory.push(i + "," + j);
+		guideCell_i = (guideCell_i-1)/2;
+		guideCell_j = (guideCell_j-1)/2;
+		pathHistory.push(guideCell_i + "," + guideCell_j);
+	
 	// 5. Algorithm
-		while(true)
+		while(!pathHistory.empty())
 		{
-			/*------------------------------------------------------------------*/
-			System.out.println("VAMOS LA");
-			for(char[] line: visitedCells)
-			{
-				System.out.println(line);
-			}
-			/*------------------------------------------------------------------*/
-			dir = rand.nextInt(4); // 1: N; 2:O; 3:S; 4:E
+			if ( ( guideCell_i + 1 == sizeVisitedCellArray || visitedCells[guideCell_i + 1][guideCell_j] == '+') &&
+				 ( guideCell_i == 0  || visitedCells[guideCell_i - 1][guideCell_j] == '+') &&
+				 ( guideCell_j + 1 == sizeVisitedCellArray || visitedCells[guideCell_i][guideCell_j + 1] == '+') &&
+				 ( guideCell_j == 0 || visitedCells[guideCell_i][guideCell_j - 1] == '+') ) //back trace stack
+				{
+					// pop
+					pathHistory.pop();
+					if (pathHistory.empty())
+						break;
+					//update previous coords
+					String s = pathHistory.peek();
+					guideCell_i = Integer.parseInt(s.split(",")[0]);
+					guideCell_j = Integer.parseInt(s.split(",")[1]);
+				}
+			
+			dir = rand.nextInt(4) + 1; // 1: N; 2:O; 3:S; 4:E
 			switch(dir)
 			{
 			case 1: //N
-				tmp_i = i - 1; 
-				tmp_j = j; 
+				if( guideCell_i - 1 >= sizeVisitedCellArray || 
+					guideCell_j >= sizeVisitedCellArray || 
+					guideCell_i - 1 < 0 || 
+					guideCell_j < 0 ||
+					visitedCells[guideCell_i - 1][guideCell_j] == '+') //out of bound
+					continue;
+				//open space
+				this.maze[guideCell_i * 2][guideCell_j * 2 + 1] = ' ';
+				
+				guideCell_i = guideCell_i - 1;
+				guideCell_j = guideCell_j;
 				break;
 			case 2: //O
-				tmp_i = i; 
-				tmp_j = j + 1; 
+				if( guideCell_i >= sizeVisitedCellArray || 
+				guideCell_j + 1 >= sizeVisitedCellArray || 
+				guideCell_i < 0 || 
+				guideCell_j + 1 < 0 ||
+				visitedCells[guideCell_i][guideCell_j + 1] == '+') //out of bound
+					continue;
+				//open space
+				this.maze[guideCell_i * 2 + 1][( guideCell_j + 1 ) * 2] = ' ';
+				
+				guideCell_i = guideCell_i;
+				guideCell_j = guideCell_j + 1;
 				break;
 			case 3: //S
-				tmp_i = i + 1; 
-				tmp_j = j; 
+				if( guideCell_i + 1 >= sizeVisitedCellArray || 
+				guideCell_j >= sizeVisitedCellArray || 
+				guideCell_i + 1 < 0 || 
+				guideCell_j < 0 ||
+				visitedCells[guideCell_i + 1][guideCell_j] == '+') //out of bound
+					continue;
+				//open space
+				this.maze[( guideCell_i + 1 ) * 2][guideCell_j * 2 + 1] = ' ';
+				
+				guideCell_i = guideCell_i + 1;
+				guideCell_j = guideCell_j;
 				break;
+				
 			case 4: //E
-				tmp_i = i; 
-				tmp_j = j - 1; 
+				if( guideCell_i >= sizeVisitedCellArray || 
+				guideCell_j - 1 >= sizeVisitedCellArray || 
+				guideCell_i < 0 || 
+				guideCell_j - 1 < 0 ||
+				visitedCells[guideCell_i][guideCell_j - 1] == '+') //out of bound
+					continue;
+				//open space
+				this.maze[guideCell_i * 2 + 1][guideCell_j * 2] = ' ';
+				
+				guideCell_i = guideCell_i;
+				guideCell_j = guideCell_j - 1;
 				break;
 			default: continue; 
-			}
+			}			
 			
-			if( tmp_i >= size || tmp_j >= size || tmp_i < 0 || tmp_j < 0) //out of bound
-				continue;
-	//		if (count == sizeVisitedCellArray * sizeVisitedCellArray || pathHistory.empty()) //check if all have been visited 
-	//			break;
-			
-			if ( ( i + 1 == sizeVisitedCellArray || visitedCells[i + 1][j] == '+') &&
-				 ( i == 0  || visitedCells[i - 1][j] == '+') &&
-				 ( j + 1 == sizeVisitedCellArray || visitedCells[i][j + 1] == '+') &&
-				 ( j == 0 || visitedCells[i][j - 1] == '+') ) //back trace stack
-			{
-				// pop
-				pathHistory.pop();
-				if (pathHistory.empty())
-					break;
-				//update previous coords
-				String s = pathHistory.peek();
-				i = Integer.parseInt(s.split(",")[0]);
-				j = Integer.parseInt(s.split(",")[1]);
-				continue;
-			}
 			
 		//time to hit a new one
 			//push to stack
-			pathHistory.push(tmp_i + "," + tmp_j);
-			//update guide Cells
-			i = tmp_i;
-			j = tmp_j;
+			pathHistory.push(guideCell_i + "," + guideCell_j);
 			//put + in that pos
-			System.out.println("temps: " + tmp_i + "|" + tmp_j);
-			visitedCells[tmp_i][tmp_j] = '+';
-			//remove X in maze <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-			//this.maze[][];
+			visitedCells[guideCell_i][guideCell_j] = '+';
+			
 
-					
 			
 		}
 		

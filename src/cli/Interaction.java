@@ -19,7 +19,7 @@ public class Interaction {
 		/*System.out.print("Tamanho do labirinto (impar): ");
 		sc = new Scanner(System.in);
 		len = sc.nextInt();*/
-		len = 7;
+		len = 30;
 
 		Maze maze = new Maze(len);
 
