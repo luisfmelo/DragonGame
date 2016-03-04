@@ -11,47 +11,52 @@ public class Game {
 	private int level = 1;
 	
 	public Game(Maze maze, int lvl, int len){
+
+		level = lvl;	
+
 		try{
-			maze.setRandomMaze(len, exit);
-			//dragon.setRandomPos(maze);
+			maze.buildMaze(len, exit);
 			sword.setRandomPos(maze);
 			while ( true)
 			{
 				dragon.setRandomPos(maze);
 				hero.setRandomPos(maze);
-				if ( !near(hero.getPosY(), hero.getPosX(), dragon.getLetter()) )
-					break;
+				if ( 	!hero.pos.adjacentTo(dragon.pos) && 
+						maze.getElementPos(sword.getLetter()) != null &&
+						maze.getElementPos(hero.getLetter()) != null &&
+						maze.getElementPos(dragon.getLetter()) != null )
+							break;
 			}
 
-		}catch (IllegalArgumentException e) {
+		}catch (NumberFormatException e){
+			System.out.println("Invalid Argument! Creating default 10x10 maze...");
 			maze.setDefaultMaze();
 		}
 		
-		this.level = lvl;		
 		if ( level == 1)
 		{
 			dragon.setLetter('d');
-			dragon.setPos(maze, dragon.getPosX(), dragon.getPosY());			
+			dragon.setPos(maze, dragon.pos);			
 		}
 	}
 
-	//hero and Dragon near each other 
-	public boolean near(int y, int x, char element)
+	//hero and Dragon near each other -------> acho que ja nao se usa
+	public boolean near(Point p, char element)
 	{
-		int next_y, next_x;
+		Point next_point = new Point(0,0);
 			
 		//near Dragon
 		if(element == 'H' || element == 'A'){
-			next_y = dragon.getPosY();
-			next_x = dragon.getPosX();
+			next_point.setX( dragon.pos.getX() );
+			next_point.setY( dragon.pos.getY() );
 		}
 		//near Hero
 		else if (element == 'D' || element == 'd')
 		{
-			next_y = hero.getPosY();
-			next_x = hero.getPosX();
+			next_point.setX( hero.pos.getX() );
+			next_point.setY( hero.pos.getY() );
 		}
-		//algum deles morreu -> iria dar exce�ao
+		//algum deles morreu -> iria dar excecao
 		else if (element == ' ' || element == 'F')
 			return false;
 		else
@@ -60,8 +65,8 @@ public class Game {
 			throw new IllegalArgumentException();
 		}
 		
-		if(	(x == next_x && (y == next_y + 1 || y == next_y - 1)) ||
-			(y == next_y && (x == next_x + 1 || x == next_x - 1)) )
+		if(		(p.getX() == next_point.getX() && (p.getY() == next_point.getY() + 1 || p.getY() == next_point.getY() - 1)) ||
+				(p.getY() == next_point.getY() && (p.getX() == next_point.getX() + 1 || p.getX() == next_point.getX() - 1)) )
 			return true;
 
 		return false;
@@ -99,42 +104,28 @@ public class Game {
 		Random Rand = new Random();
 		int move = Rand.nextInt(4);//5);    // tirei o 5 para ele andar sempre pelo menos uma vez
 		
-		boolean c;
 		if (level == 2 && dragon.isSleepy())
-			return; //if dragon is taking a nap... 
-		
-			/*******************DEBUG*******************************/
-					System.out.println("----------->" + move);
-			/*******************DEBUG*******************************/
-					
+			return; //if dragon is taking a nap... 			
 					
 		switch (move){
 			// Cima
 			case 0:
-				//c = checkDragonPos(maze, "W");
-				c = checkPos(maze, "W", dragon);
-				if ( !c )
+				if ( !checkPos(maze, "W", dragon) )
 					pcMove(maze);
 				break;
 			//Baixo
 			case 1:
-				//c = checkDragonPos(maze, "S");
-				c = checkPos(maze, "S", dragon);
-				if ( !c )
+				if ( !checkPos(maze, "S", dragon) )
 					pcMove(maze);
 				break;
 			//Direita
 			case 2:
-				//c = checkDragonPos(maze, "D");
-				c = checkPos(maze, "D", dragon);
-				if ( !c )
+				if ( !checkPos(maze, "D", dragon) )
 					pcMove(maze);
 				break;
 			//Esquerda
 			case 3:
-				//c = checkDragonPos(maze, "A");
-				c = checkPos(maze, "A", dragon);
-				if ( !c )
+				if ( !checkPos(maze, "A", dragon) )
 					pcMove(maze);
 				break;
 			default: pcMove(maze);
@@ -153,61 +144,44 @@ public class Game {
 		{
 			dragon.setSleepy(true);
 			dragon.setLetter('d');
-			dragon.setPos(maze, dragon.getPosX(), dragon.getPosY());	
+			dragon.setPos(maze, dragon.pos);	
 		}
 		else if (sleep > p && dragon.isSleepy())//wake up sunshine
 		{
 			dragon.setSleepy(false);
 			dragon.setLetter('D');
-			dragon.setPos(maze, dragon.getPosX(), dragon.getPosY());
+			dragon.setPos(maze, dragon.pos);
 		}	
 	}
 
 	public boolean checkPos (Maze maze, String c, Element el) throws IllegalArgumentException {
-		int newPosX = -1, newPosY = -1;
+		Point newPos = new Point(0, 0);
 		
 		// Get new Coordenates
 		switch(c.toUpperCase().charAt(0)){
-			case 'S': 	newPosY = el.getPosY() + 1; 
-					  	newPosX = el.getPosX();
+			case 'W': 	newPos.setCoords(el.pos.getX() - 1, el.pos.getY());
+						break;
+			case 'A': 	newPos.setCoords(el.pos.getX(), el.pos.getY() - 1);
 					  	break;
-			case 'A': 	newPosX = el.getPosX() - 1;
-					  	newPosY = el.getPosY();
+	  		case 'S':	newPos.setCoords(el.pos.getX() + 1, el.pos.getY());
+	  					break;
+			case 'D': 	newPos.setCoords(el.pos.getX(), el.pos.getY() + 1);
 					  	break;
-			case 'W': 	newPosY = el.getPosY() - 1; 
-					  	newPosX = el.getPosX();
-					  	break;
-			case 'D': 	newPosX = el.getPosX() + 1;
-					  	newPosY = el.getPosY();
-					  	break;
-			default: 	System.out.println("**" + el.getLetter() + "--" + c.toUpperCase().charAt(0) + "**");
-						throw new IllegalArgumentException();		
+			default: 	throw new IllegalArgumentException();		
 		}
 		
-	
-		// DEBUG
-		//*********************************************************
-		System.out.println(el.getLetter() + "->input:" + c.toUpperCase().charAt(0));
-		System.out.println("ANTIGAS POSICOES: (" + el.getPosX() + ";" + el.getPosY() + ")");
-		System.out.println("NOVAS POSICOES: (" + newPosX + ";" + newPosY + ")");
-		
-		if ( newPosX > -1 )
-			System.out.println("ESTAVA: \'" + maze.maze[newPosY][newPosX] + "\'");
-		//*********************************************************
-		
 	//BOTH
-		//check if it is a wall
-		if( maze.maze[newPosY][newPosX] == 'X' )
+		//check if it is a wall (y,x)
+		if( maze.charAt(newPos) == 'X' )
 		{
-			newPosX = el.getPosX();
-			newPosY = el.getPosY();
 			return false;
 		}
 		// encounter - hero kills dragon
-		else if ( near(newPosY, newPosX, el.getLetter()) && ( hero.isArmed() || maze.maze[newPosY][newPosX] == 'E' ))
+		//else if ( near(newPos, el.getLetter()) && ( hero.isArmed() || maze.charAt(newPos) == 'E' ))
+		else if ( dragon.pos.adjacentTo(newPos) && ( hero.isArmed() || maze.charAt(newPos) == 'E' ))
 		{
 			//if hero goes to sword and at the same time encounters Dragon: hero picks sword and kills Dragon
-			if (maze.maze[newPosY][newPosX] == 'E' )
+			if ( maze.charAt(newPos) == 'E' )
 			{
 				hero.setArmed(true);
 				sword.setVisible(false);
@@ -215,14 +189,15 @@ public class Game {
 			}
 			dragon.setDead(true);
 			dragon.setLetter(' ');
-			dragon.setPos(maze, dragon.getPosX(), dragon.getPosY());
+			dragon.setPos(maze, dragon.pos);
 		}
 		// encounter - dragon kills hero -> GAME OVER
-		else if ( near(newPosY, newPosX, el.getLetter()) && !hero.isArmed() && (dragon.getLetter() != 'd') )
+		//else if ( near(newPos, el.getLetter()) && !hero.isArmed() && (dragon.getLetter() != 'd') )
+		else if ( hero.pos.adjacentTo(newPos) && !hero.isArmed() && (dragon.getLetter() != 'd') )
 		{
 			hero.setDead(true);
 			hero.setLetter(' ');
-			hero.setPos(maze, hero.getPosX(), hero.getPosY());
+			hero.setPos(maze, hero.pos);
 			endGame("lose");
 			return true;
 		}
@@ -230,30 +205,28 @@ public class Game {
 		if (el.getLetter() == 'H' || el.getLetter() == 'A')
 		{
 			//check if he picked sword
-			if ( maze.maze[newPosY][newPosX] == 'E' )
+			if ( maze.charAt(newPos) == 'E' )
 			{
 				hero.setArmed(true);
 				sword.setVisible(false);
 				hero.setLetter('A');
 			}
 			//avoids colision of coords when dragon is sleeping
-			else if ( maze.maze[newPosY][newPosX] == 'd' )
+			else if ( maze.charAt(newPos) == 'd' )
 			{
-				newPosX = hero.getPosX();
-				newPosY = hero.getPosY();
 				return false;
 			}
 			//check if dragon alive and hero wants to get out
-			else if( !dragon.isDead() && maze.maze[newPosY][newPosX] == 'S' )
+			else if( !dragon.isDead() && maze.charAt(newPos) == 'S' )
 			{
-				newPosX = hero.getPosX();
-				newPosY = hero.getPosY();
+				newPos.setX( hero.pos.getX() );
+				newPos.setY( hero.pos.getY() );
 				System.out.println("Dragon is still alive!");
 			}
 			//check if dragon is dead and hero wants to get out -> WIN
-			else if( dragon.isDead() && maze.maze[newPosY][newPosX] == 'S' )
+			else if( dragon.isDead() &&  maze.charAt(newPos) == 'S' )
 			{
-				hero.setPos(maze, exit.getPosX(), exit.getPosY());
+				hero.setPos(maze, new Point(exit.pos.getX(), exit.pos.getY()) );
 				endGame("win");
 				return true;
 			}
@@ -265,23 +238,23 @@ public class Game {
 			if( el.getLetter() == 'F' )
 			{
 				el.setLetter('D');
-				sword.setPos(maze, sword.getPosX(), sword.getPosY());
+				sword.setPos(maze, new Point(sword.pos.getX(), sword.pos.getY()));
 
-				el.setPos(maze, newPosX, newPosY);	
+				el.setPos(maze, new Point(newPos.getX(), newPos.getY()) );	
 
-				sword.setPos(maze, sword.getPosX(), sword.getPosY());
+				sword.setPos(maze, new Point(sword.pos.getX(), sword.pos.getY()));
 			}
 			//check if dragon and sword are in the same position
-			else if ( maze.maze[newPosY][newPosX] == 'E' )
+			else if ( maze.charAt(newPos) == 'E' )
 			{
 				el.setLetter('F');
 			}
 			//dragon and exit in same position - don't update
-			else if( maze.maze[newPosY][newPosX] == 'S' )
+			else if( maze.charAt(newPos) == 'S' )
 				pcMove(maze);			
 		}
 				
-		el.setPos(maze, newPosX, newPosY);	
+		el.setPos(maze, new Point(newPos.getX(), newPos.getY()));	
 		return true;
 	}
 	

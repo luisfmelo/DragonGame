@@ -4,7 +4,6 @@ public class Sword extends Element {
 
 	private boolean visible = true;
 	public Sword() {
-		// TODO Auto-generated constructor stub
 		this.setLetter('E');
 	}
 	public boolean isVisible() {

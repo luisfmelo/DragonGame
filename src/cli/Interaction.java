@@ -1,17 +1,12 @@
 package cli;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Scanner;
-
 import logic.Game;
-import logic.Hero;
 import logic.Maze;
 
 public class Interaction {	
 
 	public static void main(String[] args) {
-		
 		System.out.println("Dragon Game!");
 		Scanner sc = new Scanner(System.in);
 		int level, len;
@@ -80,5 +75,4 @@ public class Interaction {
 		
 		sc.close();
 	}
-
 }
