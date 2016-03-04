@@ -14,10 +14,9 @@ public class Interaction {
 	public static void main(String[] args) {
 		Maze maze = new Maze();
 		Exit exit = new Exit();
-		System.out.println("hhhhhhh");
 	//	maze.setDefaultMaze();
 	//	maze.setTestMaze();
-		maze.setRandomMaze(11, exit);
+		maze.buildMaze(6, exit);
 		maze.print();
 		/*
 		System.out.println("Dragon Game!");

@@ -15,7 +15,7 @@ public class Game {
 		level = lvl;	
 
 		try{
-			maze.setRandomMaze(len, exit);
+			maze.buildMaze(len, exit);
 			sword.setRandomPos(maze);
 			while ( true)
 			{
@@ -25,7 +25,8 @@ public class Game {
 					break;
 			}
 
-		}catch (IllegalArgumentException e) {
+		}catch (NumberFormatException e){
+			System.out.println("Invalid Argument! Creating default 10x10 maze...");
 			maze.setDefaultMaze();
 		}
 		

@@ -1,6 +1,7 @@
 package logic;
 
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Stack;
 
 
@@ -53,31 +54,32 @@ public class Maze {
 		};
 	};
 	
-	public void setRandomMaze(int size, Exit exit){
-		this.len = size;
+	/*public void setRandomMaze(int size, Exit exit){
 		try{
-			this.buildMaze(this.len, exit);
+			this.buildMaze(size, exit);
 		}catch (NumberFormatException e){
 			System.out.println("Invalid Argument! Creating default 10x10 maze...");
 			this.setDefaultMaze();
 		}
 	}
-
+*/
 	public char[][] buildMaze(int size, Exit exit) throws IllegalArgumentException{
 		if (size <= 0 )
 			throw new NumberFormatException();	
 		
-		if ( this.len % 2 == 0)
+		if ( size % 2 == 0)
 		{
-			this.len ++;
-			System.out.println("Size is not odd! Creating " + this.len + "x" + this.len + " maze...");
-			this.maze = new char[this.len][this.len];		
+			size++;
+			System.out.println("Size is not odd! Creating " + size + "x" + size + " maze...");
+			this.maze = new char[size][size];		
 		}
 		else
-			this.maze = new char[this.len][this.len];	
+			this.maze = new char[size][size];	
+		
+		this.len = size;
 		
 		//boolean flag = false;
-		int sizeVisitedCellArray = (size - 1) / 2;
+		int sizeVisitedCellArray = (this.len - 1) / 2;
 		Point guideCell = new Point(0,0);
 		Point temp = new Point(0,0);
 		int pos = 0, dir = 0;
@@ -94,38 +96,34 @@ public class Maze {
 				else 
 					this.maze[i][j] = 'X';
 			}
-		
+
 	// 2. Create Exit - S
 		while ( true )
 		{
 			// Get Exit Orientation
 			dir = rand.nextInt(4) + 1; //1: N; 2:O; 3:S; 4:E
 			//Get pos (impar)
-			pos = rand.nextInt(size - 2) + 1;
+			pos = rand.nextInt(size - 1) + 1;
 			if (pos % 2 == 1 && dir > 0 && dir <= 4)
-				break;;
+				break;
 		}
 
 		switch(dir){
 		case 1: 	//Norte
+			exit.setPos(this, new Point(0, pos)); 
 			guideCell.setCoords(1, pos);
-			temp.setCoords(0, pos);
-			exit.setPos(this, temp); 
 			break;
 		case 2: 	//Oeste
+			exit.setPos(this, new Point(pos, size - 1)); 
 			guideCell.setCoords(pos, size - 2);
-			temp.setCoords(pos, size - 1);
-			exit.setPos(this, temp); 
 			break;
 		case 3:  	//Sul
+			exit.setPos(this, new Point(size - 1, pos)); 
 			guideCell.setCoords(size - 2, pos);
-			temp.setCoords(size -1, pos);
-			exit.setPos(this, temp); 
 			break;
 		case 4:  	//Este
+			exit.setPos(this, new Point(pos, 0)); 
 			guideCell.setCoords(pos, 1);
-			temp.setCoords(pos, 0);
-			exit.setPos(this, temp); 
 			break;
 		default:
 			System.out.println("Ocorreu um erro...");
@@ -142,7 +140,7 @@ public class Maze {
 				else 
 					visitedCells[i][j] = '.';
 			}
-	
+		
 	// 4. Add Path History (of Guide Cell) to Stack
 		guideCell.setCoords( (guideCell.getX()-1)/2 , (guideCell.getY()-1)/2 );
 		pathHistory.push(guideCell);
@@ -150,6 +148,27 @@ public class Maze {
 	// 5. Algorithm
 		while(!pathHistory.empty())
 		{
+			//Scanner sc = new Scanner(System.in);
+			//int a = sc.nextInt();
+			System.out.println("\n\n---------------------------------------");
+			for(char[] line: visitedCells)
+			{
+				System.out.println(line);
+			}
+			System.out.println( ( 	guideCell.getX() + 1 == sizeVisitedCellArray || 
+									visitedCells[guideCell.getX() + 1][guideCell.getY()] == '+')  
+													+ "|" + 
+								( 	guideCell.getX() == 0  || 
+									visitedCells[guideCell.getX() - 1][guideCell.getY()] == '+')  
+													+ "|" + 
+								(	(guideCell.getY() + 1 == sizeVisitedCellArray)
+									|| (visitedCells[guideCell.getX()][guideCell.getY() + 1] == '+')
+									)  
+													+ "|" + 
+								( 	guideCell.getY() == 0 || 
+									visitedCells[guideCell.getX()][guideCell.getY() - 1] == '+') );
+					 
+			System.out.println(guideCell.getX() + "|" + guideCell.getY());
 			if ( ( guideCell.getX() + 1 == sizeVisitedCellArray || visitedCells[guideCell.getX() + 1][guideCell.getY()] == '+') &&
 				 ( guideCell.getX() == 0  || visitedCells[guideCell.getX() - 1][guideCell.getY()] == '+') &&
 				 ( guideCell.getY() + 1 == sizeVisitedCellArray || visitedCells[guideCell.getX()][guideCell.getY() + 1] == '+') &&
@@ -160,11 +179,12 @@ public class Maze {
 					if (pathHistory.empty())
 						break;
 					//update previous coords
-					temp = pathHistory.peek();
-					guideCell = temp;
+					guideCell = pathHistory.peek();
+					System.out.println("new: " + pathHistory.peek().getX() + "|" + pathHistory.peek().getY());
 				}
-			
+			//this.print();
 			dir = rand.nextInt(4) + 1; // 1: N; 2:O; 3:S; 4:E
+			System.out.println("direc: " + dir);
 			switch(dir)
 			{
 			case 1: //N
@@ -184,7 +204,7 @@ public class Maze {
 					guideCell.getY() + 1 >= sizeVisitedCellArray || 
 					guideCell.getX() < 0 || 
 					guideCell.getY() + 1 < 0 ||
-					visitedCells[guideCell.getX()][guideCell.getY()] == '+') //out of bound
+					visitedCells[guideCell.getX()][guideCell.getY() + 1] == '+') //out of bound
 						continue;
 				//open space<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 				this.maze[guideCell.getX() * 2 + 1][( guideCell.getY() + 1 ) * 2] = ' ';
@@ -219,10 +239,10 @@ public class Maze {
 			default: continue; 
 			}			
 			
-			
 		//time to hit a new one
 			//push to stack
 			pathHistory.push(guideCell);
+			System.out.println("---->" + guideCell.getX() + "|" + guideCell.getY());
 			//put + in that pos
 			visitedCells[guideCell.getX()][guideCell.getY()] = '+';
 		}
@@ -244,6 +264,7 @@ public class Maze {
 	}
 	
 	public void print() {
+		System.out.println("\n\n---------------------------------------");
 		for(char[] line: this.maze)
 		{
 			System.out.println(line);

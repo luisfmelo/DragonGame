@@ -15,10 +15,10 @@ public class Element {
 	
 	public void setPos(Maze maze, Point p){
 		// (y,x) para atribuir
-		maze.maze[this.pos.getY()][this.pos.getX()] = ' ';
+		maze.maze[this.pos.getX()][this.pos.getY()] = ' ';
 		this.pos.setX( p.getX() );
 		this.pos.setY( p.getY() );
-		maze.maze[this.pos.getY()][this.pos.getX()] = this.letter;
+		maze.maze[this.pos.getX()][this.pos.getY()] = this.letter;
 	}
 	
 	public void setRandomPos(Maze maze)
