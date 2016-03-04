@@ -228,7 +228,7 @@ public class Maze {
 	}
 
 	public char charAt(Point p){
-		return this.maze[p.getY()][p.getX()];
+		return this.maze[p.getX()][p.getY()];
 	}
 	
 	//ELIMINATE??
