@@ -170,17 +170,17 @@ public class Game {
 		
 		// Get new Coordenates
 		switch(c.toUpperCase().charAt(0)){
-			case 'W': 	newPos.setX( el.pos.getX() );
-						newPos.setY( el.pos.getY() - 1 );
+			case 'W': 	newPos.setX( el.pos.getX() - 1 );
+						newPos.setY( el.pos.getY() );
 						break;
-			case 'A': 	newPos.setX( el.pos.getX() - 1 );
-						newPos.setY( el.pos.getY() );
+			case 'A': 	newPos.setX( el.pos.getX() );
+						newPos.setY( el.pos.getY() - 1 );
 					  	break;
-	  		case 'S':	newPos.setX( el.pos.getX() );
-	  					newPos.setY( el.pos.getY() + 1 );
+	  		case 'S':	newPos.setX( el.pos.getX() + 1 );
+	  					newPos.setY( el.pos.getY() );
 	  					break;
-			case 'D': 	newPos.setX( el.pos.getX() + 1 );
-						newPos.setY( el.pos.getY() );
+			case 'D': 	newPos.setX( el.pos.getX() );
+						newPos.setY( el.pos.getY() + 1 );
 					  	break;
 			default: 	throw new IllegalArgumentException();		
 		}
@@ -200,8 +200,6 @@ public class Game {
 		//check if it is a wall (y,x)
 		if( maze.charAt(newPos) == 'X' )
 		{
-			newPos.setX( el.pos.getX() );
-			newPos.setY( el.pos.getY() );
 			return false;
 		}
 		// encounter - hero kills dragon

@@ -148,27 +148,6 @@ public class Maze {
 	// 5. Algorithm
 		while(!pathHistory.empty())
 		{
-			//Scanner sc = new Scanner(System.in);
-			//int a = sc.nextInt();
-			System.out.println("\n\n---------------------------------------");
-			for(char[] line: visitedCells)
-			{
-				System.out.println(line);
-			}
-			System.out.println( ( 	guideCell.getX() + 1 == sizeVisitedCellArray || 
-									visitedCells[guideCell.getX() + 1][guideCell.getY()] == '+')  
-													+ "|" + 
-								( 	guideCell.getX() == 0  || 
-									visitedCells[guideCell.getX() - 1][guideCell.getY()] == '+')  
-													+ "|" + 
-								(	(guideCell.getY() + 1 == sizeVisitedCellArray)
-									|| (visitedCells[guideCell.getX()][guideCell.getY() + 1] == '+')
-									)  
-													+ "|" + 
-								( 	guideCell.getY() == 0 || 
-									visitedCells[guideCell.getX()][guideCell.getY() - 1] == '+') );
-					 
-			System.out.println(guideCell.getX() + "|" + guideCell.getY());
 			if ( ( guideCell.getX() + 1 == sizeVisitedCellArray || visitedCells[guideCell.getX() + 1][guideCell.getY()] == '+') &&
 				 ( guideCell.getX() == 0  || visitedCells[guideCell.getX() - 1][guideCell.getY()] == '+') &&
 				 ( guideCell.getY() + 1 == sizeVisitedCellArray || visitedCells[guideCell.getX()][guideCell.getY() + 1] == '+') &&
@@ -180,11 +159,9 @@ public class Maze {
 						break;
 					//update previous coords
 					guideCell = pathHistory.peek();
-					System.out.println("new: " + pathHistory.peek().getX() + "|" + pathHistory.peek().getY());
 				}
 			//this.print();
 			dir = rand.nextInt(4) + 1; // 1: N; 2:O; 3:S; 4:E
-			System.out.println("direc: " + dir);
 			switch(dir)
 			{
 			case 1: //N
@@ -241,12 +218,12 @@ public class Maze {
 			
 		//time to hit a new one
 			//push to stack
-			pathHistory.push(guideCell);
-			System.out.println("---->" + guideCell.getX() + "|" + guideCell.getY());
+			temp.setX(guideCell.getX());
+			temp.setY(guideCell.getY());
+			pathHistory.push(new Point(guideCell.getX(), guideCell.getY()));
 			//put + in that pos
 			visitedCells[guideCell.getX()][guideCell.getY()] = '+';
 		}
-
 		return this.maze;
 	}
 
@@ -264,7 +241,6 @@ public class Maze {
 	}
 	
 	public void print() {
-		System.out.println("\n\n---------------------------------------");
 		for(char[] line: this.maze)
 		{
 			System.out.println(line);

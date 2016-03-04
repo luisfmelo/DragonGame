@@ -12,13 +12,6 @@ import logic.Maze;
 public class Interaction {	
 
 	public static void main(String[] args) {
-		Maze maze = new Maze();
-		Exit exit = new Exit();
-	//	maze.setDefaultMaze();
-	//	maze.setTestMaze();
-		maze.buildMaze(6, exit);
-		maze.print();
-		/*
 		System.out.println("Dragon Game!");
 		Scanner sc = new Scanner(System.in);
 		int level, len;
@@ -85,7 +78,6 @@ public class Interaction {
 			round++;
 		}		
 		
-		sc.close();*/
+		sc.close();
 	}
-
 }
