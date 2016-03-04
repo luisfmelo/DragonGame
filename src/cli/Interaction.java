@@ -1,12 +1,7 @@
 package cli;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Scanner;
-
-import logic.Exit;
 import logic.Game;
-import logic.Hero;
 import logic.Maze;
 
 public class Interaction {	

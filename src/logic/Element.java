@@ -34,5 +34,4 @@ public class Element {
 		else
 			this.setRandomPos(maze);
 	}
-
 }

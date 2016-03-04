@@ -4,9 +4,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import java.util.Arrays;
 import java.util.Random;
-
-import logic.IMazeBuilder;
-//import maze.logic.MazeBuilder;
 import logic.Maze;
 
 public class TestMazeBuilder {
@@ -112,7 +109,7 @@ public class TestMazeBuilder {
 		int maxMazeSize = 101; // can change to any odd number >= 5
 		int minMazeSize = 5;
 		
-		Maze builder = new MazeBuilder();
+		Maze builder = new Maze();
 		char[][] badWalls = {
 				{'X', 'X', 'X'},
 				{'X', 'X', 'X'},
@@ -141,7 +138,7 @@ public class TestMazeBuilder {
 			assertNotNull("Missing exit in maze:\n" + m, findPos(m, 'S'));
 			assertNotNull("Missing hero in maze:\n" + m, findPos(m, 'H'));
 			assertNotNull("Missing dragon in maze:\n" + m, findPos(m, 'D'));
-			assertNotNull("Missing sward in maze:\n" + m, findPos(m, 'E'));
+			assertNotNull("Missing sword in maze:\n" + m, findPos(m, 'E'));
 			assertFalse("Adjacent hero and dragon in maze:\n" + str(m), findPos(m, 'H').adjacentTo(findPos(m, 'D')));
 		}	
 	}

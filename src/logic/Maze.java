@@ -1,11 +1,9 @@
 package logic;
 
 import java.util.Random;
-import java.util.Scanner;
 import java.util.Stack;
 
-
-public class Maze {
+public class Maze implements IMazeBuilder{
 	private int len;
 	public char[][] maze;
 	
@@ -53,18 +51,9 @@ public class Maze {
 			{'X', 'X', 'X', 'X','X'}
 		};
 	};
-	
-	/*public void setRandomMaze(int size, Exit exit){
-		try{
-			this.buildMaze(size, exit);
-		}catch (NumberFormatException e){
-			System.out.println("Invalid Argument! Creating default 10x10 maze...");
-			this.setDefaultMaze();
-		}
-	}
-*/
+
 	public char[][] buildMaze(int size, Exit exit) throws IllegalArgumentException{
-		if (size <= 0 )
+		if (size <= 4 )
 			throw new NumberFormatException();	
 		
 		if ( size % 2 == 0)
@@ -231,7 +220,6 @@ public class Maze {
 		return this.maze[p.getX()][p.getY()];
 	}
 	
-	//ELIMINATE??
 	public String getElementPos(char el){
 		for (int i = 0; i < this.getLen(); i++)
 			for (int j = 0; j < this.getLen(); j++)
@@ -246,6 +234,27 @@ public class Maze {
 			System.out.println(line);
 		}
 		
-	};
-	
+	}
+
+	public char[][] buildMaze(int size) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		Maze maze =  new Maze();
+		maze.buildMaze(size, new Exit());
+		Sword s = new Sword();
+		Dragon dragon = new Dragon();
+		Hero hero = new Hero();
+		while ( true)
+		{
+			s.setRandomPos(maze);
+			dragon.setRandomPos(maze);
+			hero.setRandomPos(maze);
+			if ( 	!hero.pos.adjacentTo(dragon.pos) && 
+					maze.getElementPos(s.getLetter()) != null &&
+					maze.getElementPos(hero.getLetter()) != null &&
+					maze.getElementPos(dragon.getLetter()) != null )
+						break;
+		}
+		return maze.getMaze();
+		
+	}
 }

@@ -30,4 +30,12 @@ public class Point {
 		this.y = y;
 	}
 	
+	public Point getCoords (Point p){
+		return ( new Point(p.getX(), p.getY()) );
+	}
+	
+	public boolean adjacentTo(Point p) {
+		return Math.abs(p.x - this.x) + Math.abs(p.y - this.y) == 1;
+	}
+	
 }
