@@ -38,4 +38,8 @@ public class Point {
 		return Math.abs(p.x - this.x) + Math.abs(p.y - this.y) == 1;
 	}
 	
+	public String toString(){
+		return (this.x+","+this.y);
+	}
+	
 }

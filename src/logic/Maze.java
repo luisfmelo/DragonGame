@@ -220,11 +220,11 @@ public class Maze implements IMazeBuilder{
 		return this.maze[p.getX()][p.getY()];
 	}
 	
-	public String getElementPos(char el){
+	public Point getElementPos(char el){
 		for (int i = 0; i < this.getLen(); i++)
 			for (int j = 0; j < this.getLen(); j++)
 				if ( this.maze[i][j] == el )
-					return (i + "," + j);
+					return (new Point(i,j));
 		return null;
 	}
 	
