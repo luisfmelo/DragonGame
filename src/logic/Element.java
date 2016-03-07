@@ -34,4 +34,61 @@ public class Element {
 		else
 			this.setRandomPos(maze);
 	}
+	
+	public Point move_left(Maze maze){
+		Point p =new Point(0,0);
+		p.setCoords(pos.getX(), pos.getY() - 1);
+
+		if( maze.charAt(p) == 'X' )
+		{
+			return null;
+		}
+
+		this.setPos(maze, p);
+		return p;
+		
+		
+	}
+	public Point move_right(Maze maze){
+		Point p =new Point(0,0);
+		p.setCoords(pos.getX(), pos.getY() + 1);
+
+		if( maze.charAt(p) == 'X' )
+		{
+			return null;
+		}
+
+		this.setPos(maze, p);
+		return p;
+		
+		
+	}
+	public Point move_up(Maze maze){
+		Point p =new Point(0,0);
+		p.setCoords(pos.getX() - 1, pos.getY());
+		
+		if( maze.charAt(p) == 'X' )
+		{
+			return null;
+		}
+	
+		this.setPos(maze, p);
+		return p;
+	
+	
+	}
+	//faltam coisas...
+	public Point move_down(Maze maze){
+		Point p =new Point(0,0);
+		p.setCoords(pos.getX() + 1, pos.getY());
+		
+		if( maze.charAt(p) == 'X' )
+		{
+			return null;
+		}
+	
+		this.setPos(maze, p);
+		return p;	
+	}
+
 }
