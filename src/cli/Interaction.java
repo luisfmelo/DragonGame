@@ -19,6 +19,11 @@ public class Interaction {
 		sc = new Scanner(System.in);
 		len = sc.nextInt();
 
+		// Get Number of Dragons
+		System.out.print("Numero de Dragoes: ");
+		sc = new Scanner(System.in);
+		int Ndrag = sc.nextInt();
+
 		// Dragao: parado/mov aleatoria/mov aleatoria + dormir
 		System.out.println("Nivel de exigencia pretendido:");
 		System.out.println("1. Dragao a dormir");
@@ -34,7 +39,7 @@ public class Interaction {
 		}
 		
 	//Create Game
-		Game myGame = new Game(level, len);
+		Game myGame = new Game(level, len, Ndrag);
 
 		
 		//maze.print();
