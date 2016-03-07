@@ -3,7 +3,7 @@ package logic;
 import java.util.Random;
 
 public class Element {
-	public Point pos = new Point(1,1);
+	public Point pos = new Point(0,0);
 	private char letter;
 	
 	public char getLetter() {
@@ -35,14 +35,20 @@ public class Element {
 			this.setRandomPos(maze);
 	}
 	
-	public Point move_left(Maze maze){
-		Point p =new Point(0,0);
-		p.setCoords(pos.getX(), pos.getY() - 1);
-
-		if( maze.charAt(p) == 'X' )
+	public Point newPosition(char c) throws IllegalArgumentException{
+		switch( Character.toUpperCase(c) )
 		{
-			return null;
-		}
+			case 'W': return new Point(this.pos.getX() - 1, this.pos.getY());
+			case 'D': return new Point(this.pos.getX(), this.pos.getY() + 1);
+			case 'S': return new Point(this.pos.getX() + 1, this.pos.getY());
+			case 'A': return new Point(this.pos.getX(), this.pos.getY() - 1);
+			default: throw new IllegalArgumentException();
+		}		
+	}
+	/*
+	public Point move_left(Maze maze){
+		Point p = new Point(0,0);
+		p.setCoords(this.pos.getX(), this.pos.getY() - 1);
 
 		this.setPos(maze, p);
 		return p;
@@ -79,7 +85,7 @@ public class Element {
 	}
 	//faltam coisas...
 	public Point move_down(Maze maze){
-		Point p =new Point(0,0);
+		Point p = new Point(0,0);
 		p.setCoords(pos.getX() + 1, pos.getY());
 		
 		if( maze.charAt(p) == 'X' )
@@ -90,5 +96,5 @@ public class Element {
 		this.setPos(maze, p);
 		return p;	
 	}
-
+*/
 }

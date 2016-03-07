@@ -47,8 +47,8 @@ public class Interaction {
 
 		while( myGame.isGameRunning() )
 		{
+		//0. Round Status Maze
 			System.out.println("\nRound: " + round + "\n");
-		//0. Print Maze
 			myGame.maze.print();
 			
 		//1. receive command
@@ -57,9 +57,7 @@ public class Interaction {
 			
 		//2. Check
 			try {
-				//myGame.checkHeroPos(maze, key);
-				c = myGame.checkPos(key, myGame.hero);
-				if ( !c )
+				if ( !myGame.checkPos(key.charAt(0), myGame.hero) )
 					continue;
 			} catch (IllegalArgumentException e) {
 				continue;
