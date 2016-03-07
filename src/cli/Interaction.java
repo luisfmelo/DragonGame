@@ -19,8 +19,6 @@ public class Interaction {
 		sc = new Scanner(System.in);
 		len = sc.nextInt();
 
-		Maze maze = new Maze();
-
 		// Dragao: parado/mov aleatoria/mov aleatoria + dormir
 		System.out.println("Nivel de exigencia pretendido:");
 		System.out.println("1. Dragao a dormir");
@@ -36,7 +34,7 @@ public class Interaction {
 		}
 		
 	//Create Game
-		Game myGame = new Game(maze, level, len);
+		Game myGame = new Game(level, len);
 
 		
 		//maze.print();
@@ -51,7 +49,7 @@ public class Interaction {
 		{
 			System.out.println("\nRound: " + round + "\n");
 		//0. Print Maze
-			maze.print();
+			myGame.maze.print();
 			
 		//1. receive command
 			sc = new Scanner(System.in);
@@ -60,7 +58,7 @@ public class Interaction {
 		//2. Check
 			try {
 				//myGame.checkHeroPos(maze, key);
-				c = myGame.checkPos(maze, key, myGame.hero);
+				c = myGame.checkPos(key, myGame.hero);
 				if ( !c )
 					continue;
 			} catch (IllegalArgumentException e) {
@@ -68,7 +66,7 @@ public class Interaction {
 			}
 			
 		//3. pc faz o seu move
-			myGame.pcMove(maze);
+			myGame.pcMove();
 
 			round++;
 		}		

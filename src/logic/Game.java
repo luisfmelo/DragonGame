@@ -9,8 +9,15 @@ public class Game {
 	private Exit exit = new Exit(); 		//pos (9,5)
 	private boolean GameRunning = false;
 	private int level = 1;
+	public Maze maze = new Maze();
 	
-	public Game(Maze maze, int lvl, int len){
+	//Game com Maze enviado pelo utilizador
+	public Game(Maze m,int lvl){
+		level = lvl;
+		maze=m;
+	}
+	//Game criado com maze aleatório com tamanho especificado
+	public Game(int lvl, int len){
 
 		level = lvl;	
 
@@ -39,7 +46,6 @@ public class Game {
 			dragon.setPos(maze, dragon.pos);			
 		}
 	}
-
 	//hero and Dragon near each other -------> acho que ja nao se usa
 	public boolean near(Point p, char element)
 	{
@@ -95,7 +101,7 @@ public class Game {
 		GameRunning = gameRunning;
 	};
 
-	public void pcMove(Maze maze){
+	public void pcMove(){
 		if ( !GameRunning || dragon.isDead() || level == 1) //if level 1(pc move don't exist) or game ended... return
 			return;
 		else if (level == 2)
@@ -110,25 +116,25 @@ public class Game {
 		switch (move){
 			// Cima
 			case 0:
-				if ( !checkPos(maze, "W", dragon) )
-					pcMove(maze);
+				if ( !checkPos("W", dragon) )
+					pcMove();
 				break;
 			//Baixo
 			case 1:
-				if ( !checkPos(maze, "S", dragon) )
-					pcMove(maze);
+				if ( !checkPos("S", dragon) )
+					pcMove();
 				break;
 			//Direita
 			case 2:
-				if ( !checkPos(maze, "D", dragon) )
-					pcMove(maze);
+				if ( !checkPos("D", dragon) )
+					pcMove();
 				break;
 			//Esquerda
 			case 3:
-				if ( !checkPos(maze, "A", dragon) )
-					pcMove(maze);
+				if ( !checkPos("A", dragon) )
+					pcMove();
 				break;
-			default: pcMove(maze);
+			default: pcMove();
 			//case 4: don't move	
 		}
 	};
@@ -154,7 +160,7 @@ public class Game {
 		}	
 	}
 
-	public boolean checkPos (Maze maze, String c, Element el) throws IllegalArgumentException {
+	public boolean checkPos (String c, Element el) throws IllegalArgumentException {
 		Point newPos = new Point(0, 0);
 		
 		// Get new Coordenates
@@ -251,7 +257,7 @@ public class Game {
 			}
 			//dragon and exit in same position - don't update
 			else if( maze.charAt(newPos) == 'S' )
-				pcMove(maze);			
+				pcMove();			
 		}
 				
 		el.setPos(maze, new Point(newPos.getX(), newPos.getY()));	
