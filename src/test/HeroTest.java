@@ -19,25 +19,26 @@ public class HeroTest {
 	@Test
 	public void testMoveHeroToFreeCell() {
 		Maze maze = new Maze();
-		maze.setTestMaze();
 		Hero h = new Hero();
+		Dragon d = new Dragon();
+		d.pos.setCoords(0, 0);
+		maze.setTestMaze();
 		
-		Game g = new Game(maze, 1, h, new Dragon(), new Sword());
-		
+		Game g = new Game(maze, 1, h, d, new Sword());
 
 		//test initial position
 		h.setPos(maze, new Point(1,1));
 		assertEquals(new Point(1, 1).toString(), h.pos.toString());
 		
-		//test move right - free cell
-		g.checkPos('D', h);
-		assertEquals(new Point(1, 2).toString(), h.pos.toString() );
-		
 		//test move down - free cell
-		h.setPos(maze, new Point(1,1));
 		g.checkPos('S', h);
 		assertEquals(new Point(2, 1).toString(), h.pos.toString() );
 
+		//test move right - free cell
+		h.setPos(maze, new Point(1,1));
+		g.checkPos('D', h);
+		assertEquals(new Point(1, 2).toString(), h.pos.toString() );
+		
 		//test move left - free cell
 		h.setPos(maze, new Point(3,3));
 		g.checkPos('A', h);
