@@ -30,8 +30,8 @@ public class Point {
 		this.y = y;
 	}
 	
-	public Point getCoords (Point p){
-		return ( new Point(p.getX(), p.getY()) );
+	public Point getCoords (){
+		return new Point( this.getX(), this.getY() );
 	}
 	
 	public boolean adjacentTo(Point p) {
@@ -39,7 +39,19 @@ public class Point {
 	}
 	
 	public String toString(){
-		return (this.x+","+this.y);
+		return (this.x + "," + this.y);
 	}
 	
+	 public boolean equals(Object obj) {
+	       if (!(obj instanceof Point))
+	            return false;
+	        if (obj == this)
+	            return true;
+
+	        Point p = (Point) obj;
+	        if (this.x == p.getX() && this.y == p.getY())
+	        	return true;
+	        
+	        return false;
+	 }
 }

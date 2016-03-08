@@ -14,11 +14,12 @@ public class Game {
 	private boolean Defeat = false;
 	
 	//Game com Maze enviado pelo utilizador
-	public Game(Maze m,int lvl, Hero h, Dragon d){
+	public Game(Maze m,int lvl, Hero h, Dragon d, Sword s){
 		level = lvl;
 		maze = m;
 		this.dragon = d;
 		this.hero = h;
+		this.sword = s;
 		this.GameRunning = true;
 	}
 	
@@ -120,7 +121,7 @@ public class Game {
 		}
 	};
 	
-	private void sleepyDragon(Maze maze, int p) {
+	public void sleepyDragon(Maze maze, int p) {
 		Random Rand = new Random();
 		int sleep = Rand.nextInt(100);
 		
