@@ -12,6 +12,10 @@ public class Maze implements IMazeBuilder{
 	 */
 	public Maze(){
 
+	}	
+	
+	public Maze(char[][] m){
+		this.maze = m;
 	}
 	
 	public char[][] getMaze(){

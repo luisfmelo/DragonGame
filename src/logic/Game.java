@@ -88,7 +88,7 @@ public class Game {
 			return;
 		else if (level == 2)
 			sleepyDragon(maze, 50); //probabilidade de o Dragao estar a dormir. Podemos fazer: Rand.nextInt(2); 
-		
+
 		Random Rand = new Random();
 		int move = Rand.nextInt(4);//5);    // tirei o 5 para ele andar sempre pelo menos uma vez
 		
@@ -102,12 +102,13 @@ public class Game {
 					pcMove();
 				break;
 			//Baixo
-			case 1:
+			case 1:		
+
 				if ( !checkPos('S', dragon) )
 					pcMove();
 				break;
 			//Direita
-			case 2:
+			case 2:	
 				if ( !checkPos('D', dragon) )
 					pcMove();
 				break;
@@ -144,14 +145,13 @@ public class Game {
 
 	public boolean checkPos (char c, Element el) throws IllegalArgumentException {
 		Point newPos = new Point(0, 0);
-		
+
 		try{
 			newPos = el.newPosition(c);
 		} catch (IllegalArgumentException e )
 		{
 			throw new IllegalArgumentException();
 		}
-
 		
 	//BOTH
 		//check if it is a wall
@@ -243,6 +243,7 @@ public class Game {
 			// encounter with hero - hero loses -> GAME OVER
 			else if ( hero.pos.adjacentTo(newPos) && !hero.isArmed() )
 			{
+				el.setPos(maze, new Point(newPos.getX(), newPos.getY()));	
 				hero.setDead(true);
 				hero.setLetter(' ');
 				hero.setPos(maze, hero.pos);
@@ -270,4 +271,5 @@ public class Game {
 	public void setVictory(boolean victory) {
 		Victory = victory;
 	}
+
 }

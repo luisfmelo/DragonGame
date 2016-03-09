@@ -7,8 +7,12 @@ import org.junit.internal.runners.statements.ExpectException;
 import java.util.Arrays;
 import java.util.Random;
 
+import logic.Dragon;
 import logic.Exit;
+import logic.Game;
+import logic.Hero;
 import logic.Maze;
+import logic.Sword;
 
 public class TestMazeBuilder {
 	// Auxiliary class
@@ -180,7 +184,7 @@ public class TestMazeBuilder {
 	
 	/**
 	 * Test Exit
-	 *
+	 */
 	@Test
 	public void testExit(){
 		Maze m = new Maze();
@@ -189,10 +193,46 @@ public class TestMazeBuilder {
 		
 		m.buildMaze(10, e);
 		
-		System.out.println(e.pos.getCoords().toString());
-		assertTrue( e.pos.getX() == 0 || e.pos.getX() == m.getLen() - 1);
-		assertTrue( e.pos.getY() == 0 || e.pos.getY() == m.getLen() - 1);
+		m.print();
+		assertTrue( e.pos.getX() == 0 || e.pos.getX() == m.getLen() - 1 ||
+					e.pos.getY() == 0 || e.pos.getY() == m.getLen() - 1);
 		//assertEquals(11, m.getLen());
-	}*/
+	}
+	
+	/**
+	 * Test New Random Maze 
+	 */
+	@Test
+	public void testRandomMaze(){
+		Game g = new Game(1, 11);
+		
+		assertEquals( 11, g.maze.getLen());
+	}
+	
+	/**
+	 * Test New Random Move 
+	 */
+	@Test
+	public void testRandomMove(){
+		Maze m = new Maze();
+		m.setDefaultMaze();
+		Exit e = new Exit();
+		Dragon d = new Dragon();
+		Hero h = new Hero();
+		h.pos.setCoords(4, 4);
+		d.pos.setCoords(1, 1);
+		
+		d.setPos(m, d.pos.getCoords());
+		
+		Game g = new Game(m, 3, h, d, new Sword() );
+
+		assertEquals( 1, d.pos.getX());
+		assertEquals( 1, d.pos.getY());
+
+		g.pcMove();
+
+		assertTrue( d.pos.getX() == 1 && d.pos.getY() == 2 ||
+					d.pos.getX() == 2 && d.pos.getY() == 1 );
+	}
 	
 }
