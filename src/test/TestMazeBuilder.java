@@ -2,8 +2,12 @@ package test;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
+import org.junit.internal.runners.statements.ExpectException;
+
 import java.util.Arrays;
 import java.util.Random;
+
+import logic.Exit;
 import logic.Maze;
 
 public class TestMazeBuilder {
@@ -151,4 +155,44 @@ public class TestMazeBuilder {
 		}
 		return s.toString();
 	}
+
+	/**
+	 * Test size maze <= 4 -> Exception NumberFormatExpression
+	 */
+	@Test(expected=NumberFormatException.class)
+	public void testBadSize(){
+		Maze m = new Maze();
+		m.setLen(3);
+		m.buildMaze(m.getLen(), new Exit());
+	}
+	
+	/**
+	 * Test size even
+	 */
+	@Test
+	public void testSizeEven(){
+		Maze m = new Maze();
+		m.setLen(10);
+		m.buildMaze(m.getLen(), new Exit());
+		assertNotEquals( 10, m.getLen());
+		assertEquals(11, m.getLen());
+	}
+	
+	/**
+	 * Test Exit
+	 *
+	@Test
+	public void testExit(){
+		Maze m = new Maze();
+		m.setDefaultMaze();
+		Exit e = new Exit();
+		
+		m.buildMaze(10, e);
+		
+		System.out.println(e.pos.getCoords().toString());
+		assertTrue( e.pos.getX() == 0 || e.pos.getX() == m.getLen() - 1);
+		assertTrue( e.pos.getY() == 0 || e.pos.getY() == m.getLen() - 1);
+		//assertEquals(11, m.getLen());
+	}*/
+	
 }

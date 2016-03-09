@@ -74,7 +74,8 @@ public class PositionsTest {
 		assertTrue( p.equals(new Point(2,1)) );
 		p.setCoords(1, 2);
 		assertTrue( p.equals(new Point(1,2)) );
-		assertFalse( p.equals(p) );
+		assertFalse( p.equals(new Point(3,1)) );
+		assertTrue( p.equals(p) );
 		assertFalse( p.equals(h) );
 	}
 

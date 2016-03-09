@@ -52,7 +52,7 @@ public class Maze implements IMazeBuilder{
 		};
 	};
 
-	public char[][] buildMaze(int size, Exit exit) throws IllegalArgumentException{
+	public char[][] buildMaze(int size, Exit exit) throws IllegalArgumentException, NumberFormatException{
 		if (size <= 4 )
 			throw new NumberFormatException();	
 		
