@@ -2,8 +2,6 @@ package test;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
-import org.junit.internal.runners.statements.ExpectException;
-
 import java.util.Arrays;
 import java.util.Random;
 
@@ -204,8 +202,7 @@ public class TestMazeBuilder {
 	 */
 	@Test
 	public void testRandomMaze(){
-		Game g = new Game(1, 11);
-		
+		Game g = new Game(1, 10, 0);
 		assertEquals( 11, g.maze.getLen());
 	}
 	
@@ -216,7 +213,6 @@ public class TestMazeBuilder {
 	public void testRandomMove(){
 		Maze m = new Maze();
 		m.setDefaultMaze();
-		Exit e = new Exit();
 		Dragon d = new Dragon();
 		Hero h = new Hero();
 		h.pos.setCoords(4, 4);
@@ -229,7 +225,7 @@ public class TestMazeBuilder {
 		assertEquals( 1, d.pos.getX());
 		assertEquals( 1, d.pos.getY());
 
-		g.pcMove();
+		g.pcMove(d);
 
 		assertTrue( d.pos.getX() == 1 && d.pos.getY() == 2 ||
 					d.pos.getX() == 2 && d.pos.getY() == 1 );

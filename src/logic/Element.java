@@ -29,10 +29,10 @@ public class Element {
 		p.setX( rand.nextInt(maze.getLen()) );
 		p.setY( rand.nextInt(maze.getLen()) );
 		//check if pos is blank -> atribuiçao de chars na matriz ao contrario (y,x)
-		if (maze.maze[p.getY()][p.getX()] == ' ')
-			this.setPos(maze, p);
-		else
+		if ( maze.charAt(p) != ' ' )
 			this.setRandomPos(maze);
+		else
+			this.setPos(maze, p);
 	}
 	
 	public Point newPosition(char c) throws IllegalArgumentException{

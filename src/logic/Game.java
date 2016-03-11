@@ -1,10 +1,11 @@
 package logic;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Game {
 	public Hero hero = new Hero(); 			//pos (1,1)
-	private Dragon dragon = new Dragon(); 	//pos (1,3)
+	public ArrayList <Dragon> dragons = new ArrayList<Dragon> ();  	//pos (1,3)
 	private Sword sword = new Sword(); 		//pos (1,8)
 	private Exit exit = new Exit(); 		//pos (9,5)
 	private boolean GameRunning = false;
@@ -12,40 +13,52 @@ public class Game {
 	public Maze maze = new Maze();
 	private boolean Victory = false;
 	private boolean Defeat = false;
+	private boolean allDragonsDead = false;
 	
-	//Game com Maze enviado pelo utilizador
+	//Game com Maze enviado pelo utilizador -> TESTE
 	public Game(Maze m,int lvl, Hero h, Dragon d, Sword s){
 		level = lvl;
 		maze = m;
-		this.dragon = d;
+		this.dragons.add(d);
 		this.hero = h;
 		this.sword = s;
 		this.GameRunning = true;
 	}
 	
 	//Game criado com maze aleatorio com tamanho especificado
-	public Game(int lvl, int len){
-
+	public Game(int lvl, int len, int n_Dragons){
 		level = lvl;	
-
+		for (int i = 0; i < n_Dragons; i++)
+			this.dragons.add(new Dragon());		
+		
 		try{
 			maze.buildMaze(len, exit);
-			sword.setRandomPos(maze);
-			while ( true)
-			{
+			for (Dragon dragon : dragons) {
 				dragon.setRandomPos(maze);
-				hero.setRandomPos(maze);
-				if ( 	!hero.pos.adjacentTo(dragon.pos) && 
-						maze.getElementPos(sword.getLetter()) != null &&
-						maze.getElementPos(hero.getLetter()) != null &&
-						maze.getElementPos(dragon.getLetter()) != null )
-							break;
 			}
+			
+			while ( true )
+			{
+				hero.setRandomPos(maze);
+				boolean b = true;
+				for (Dragon dragon : dragons) {
+					if ( dragon.pos.adjacentTo(hero.pos) )
+						b = false;
+				}
+				
+				if( b )
+					break;
+			}
+
+			sword.setRandomPos(maze);
 
 		}catch (NumberFormatException e){
 			System.out.println("Invalid Argument! Creating default 10x10 maze...");
 			maze.setDefaultMaze();
-			dragon.setPos( maze, new Point(3,1) );
+			dragons.clear();
+			dragons.add(new Dragon());
+
+			dragons.get(0).setPos( maze, new Point(3,1) );
 			sword.setPos( maze, new Point(8,1) );
 			exit.setPos( maze, new Point(5,9) );
 			hero.setPos( maze, new Point(1,1) );
@@ -53,8 +66,10 @@ public class Game {
 		
 		if ( level == 1)
 		{
-			dragon.setLetter('d');
-			dragon.setPos(maze, dragon.pos);			
+			for(int i=0;i<n_Dragons;i++){
+					dragons.get(i).setLetter('d');
+					dragons.get(i).setPos(maze, dragons.get(i).pos);	
+			}			
 		}
 	}
 
@@ -83,14 +98,15 @@ public class Game {
 		GameRunning = gameRunning;
 	};
 
-	public void pcMove(){
+	public void pcMove(Dragon dragon){
+		
 		if ( !GameRunning || dragon.isDead() || level == 1) //if level 1(pc move don't exist) or game ended... return
 			return;
 		else if (level == 2)
-			sleepyDragon(maze, 50); //probabilidade de o Dragao estar a dormir. Podemos fazer: Rand.nextInt(2); 
-
+			sleepyDragon(maze, 50,dragon); //probabilidade de o Dragao estar a dormir. Podemos fazer: Rand.nextInt(2); 
+		
 		Random Rand = new Random();
-		int move = Rand.nextInt(4);//5);    // tirei o 5 para ele andar sempre pelo menos uma vez
+		int move = Rand.nextInt(5);    
 		
 		if (level == 2 && dragon.isSleepy())
 			return; //if dragon is taking a nap... 			
@@ -99,35 +115,34 @@ public class Game {
 			// Cima
 			case 0:
 				if ( !checkPos('W', dragon) )
-					pcMove();
+					pcMove(dragon);
 				break;
 			//Baixo
-			case 1:		
-
+			case 1:
 				if ( !checkPos('S', dragon) )
-					pcMove();
+					pcMove(dragon);
 				break;
 			//Direita
-			case 2:	
+			case 2:
 				if ( !checkPos('D', dragon) )
-					pcMove();
+					pcMove(dragon);
 				break;
 			//Esquerda
 			case 3:
 				if ( !checkPos('A', dragon) )
-					pcMove();
+					pcMove(dragon);
 				break;
-			default: pcMove();
-			//case 4: don't move	
+			//case 4: don't move			
+			case 4: break;
 		}
 	};
 	
-	public void sleepyDragon(Maze maze, int p) {
+	public void sleepyDragon(Maze maze, int p, Dragon dragon) {
 		Random Rand = new Random();
 		int sleep = Rand.nextInt(100);
 		
 		if (sleep >= 100 || sleep < 0)
-			sleepyDragon(maze, p);
+			sleepyDragon(maze, p,dragon);
 		
 		if (sleep <= p) //go back to sleep
 		{
@@ -145,13 +160,14 @@ public class Game {
 
 	public boolean checkPos (char c, Element el) throws IllegalArgumentException {
 		Point newPos = new Point(0, 0);
-
+		
 		try{
 			newPos = el.newPosition(c);
 		} catch (IllegalArgumentException e )
 		{
 			throw new IllegalArgumentException();
 		}
+
 		
 	//BOTH
 		//check if it is a wall
@@ -159,100 +175,124 @@ public class Game {
 			return false;
 		
 	//HERO
-		if (el.getLetter() == 'H' || el.getLetter() == 'A')
+		if (el instanceof Hero)
 		{
+			Hero h = (Hero) el;
 			//check if he picked sword
 			if ( maze.charAt(newPos) == 'E' )
 			{
-				hero.setArmed(true);
+				h.setArmed(true);
 				sword.setVisible(false);
-				el.setLetter('A');
+				h.setLetter('A');
 			}
 			// encounter with dragon - hero wins
-			else if ( dragon.pos.adjacentTo(newPos) && ( hero.isArmed() || maze.charAt(newPos) == 'E' ) )
+			if ( h.isArmed() || maze.charAt(newPos) == 'E' )
 			{
-				//if hero goes to sword and at the same time encounters Dragon: hero picks sword and kills Dragon
 				if ( maze.charAt(newPos) == 'E' )
 				{
-					hero.setArmed(true);
+					h.setArmed(true);
 					sword.setVisible(false);
-					hero.setLetter('A');
+					h.setLetter('A');
 				}
-				dragon.setDead(true);
-				dragon.setLetter(' ');
-				dragon.setPos(maze, dragon.pos);
+				for (Dragon d : dragons) {
+					if ( d.pos.adjacentTo(newPos))
+					{
+						d.setDead(true);
+						d.setLetter(' ');
+						d.setPos(maze, d.pos);
+					}
+				}
 			}
 			// encounter with dragon - hero loses -> GAME OVER
-			else if ( dragon.pos.adjacentTo(newPos) && !hero.isArmed() && (dragon.getLetter() != 'd') )
+			if ( !h.isArmed() )
 			{
-				hero.setDead(true);
-				hero.setLetter(' ');
-				hero.setPos(maze, hero.pos);
-				endGame("lose");
-				return true;
+				for (Dragon d : dragons) {
+					if ( d.pos.adjacentTo(newPos) && (d.getLetter() != 'd') )
+					{
+						h.setDead(true);
+						h.setLetter(' ');
+						h.setPos(maze, h.pos);
+						endGame("lose");
+						maze.print();
+						return true;
+					}
+				}
 			}
 			//avoids colision of coords when dragon is sleeping
-			else if ( maze.charAt(newPos) == 'd' )
-			{
+			if ( maze.charAt(newPos) == 'd' )
+			{ 
+				h.setPos(maze, h.pos.getCoords());	
 				return false;
 			}
-			//check if dragon alive and hero wants to get out
-			else if( !dragon.isDead() && maze.charAt(newPos) == 'S' )
+			if( maze.charAt(newPos) == 'S' )
 			{
-				newPos.setX( hero.pos.getX() );
-				newPos.setY( hero.pos.getY() );
-				System.out.println("Dragon is still alive!");
+				allDragonsDead = true;
+				for (Dragon d : dragons) {
+					//check if dragon alive and hero wants to get out
+					if ( !d.isDead() )
+					{
+						newPos.setX( hero.pos.getX() );
+						newPos.setY( hero.pos.getY() );
+						System.out.println("Some Dragon is alive!");
+						allDragonsDead = false;
+					}
+				}					
+				//check if dragon is dead and hero wants to get out -> WIN
+				if( allDragonsDead )
+				{
+					hero.setPos(maze, new Point(exit.pos.getX(), exit.pos.getY()) );
+					endGame("win");
+					return true;
+				}
 			}
-			//check if dragon is dead and hero wants to get out -> WIN
-			else if( dragon.isDead() &&  maze.charAt(newPos) == 'S' )
-			{
-				hero.setPos(maze, new Point(exit.pos.getX(), exit.pos.getY()) );
-				endGame("win");
-				return true;
-			}
-			
+			h.setPos(maze, new Point(newPos.getX(), newPos.getY()));	
 		}
 	//DRAGON
-		else if ( el.getLetter() == 'D' || el.getLetter() == 'F' )
+		else if ( el instanceof Dragon )
 		{
+			Dragon d = (Dragon) el;
 			// Dragon runs away from sword
-			if( el.getLetter() == 'F' )
+			if( d.getLetter() == 'F' )
 			{
-				el.setLetter('D');
+				d.setLetter('D');
 				sword.setPos(maze, new Point(sword.pos.getX(), sword.pos.getY()));
 
-				el.setPos(maze, new Point(newPos.getX(), newPos.getY()) );	
+				d.setPos(maze, new Point(newPos.getX(), newPos.getY()) );	
 
 				sword.setPos(maze, new Point(sword.pos.getX(), sword.pos.getY()));
 			}
 			//check if dragon and sword are in the same position
-			else if ( maze.charAt(newPos) == 'E' )
+			if ( maze.charAt(newPos) == 'E' )
 			{
-				el.setLetter('F');
+				d.setLetter('F');
 			}
 			//dragon and exit in same position - don't update
-			else if( maze.charAt(newPos) == 'S' )
-				pcMove();	
-			// encounter with hero - hero wins
-			else if ( hero.pos.adjacentTo(newPos) && hero.isArmed() )
+			if( maze.charAt(newPos) == 'S' )
 			{
-				dragon.setDead(true);
-				dragon.setLetter(' ');
-				dragon.setPos(maze, dragon.pos);
+				newPos.setCoords(d.pos.getX(), d.pos.getY());
+			}
+			// encounter with hero - hero wins
+			if ( hero.pos.adjacentTo(newPos) && hero.isArmed() )
+			{
+				d.setDead(true);
+				d.setLetter(' ');
+				d.setPos(maze, d.pos);
 			}
 			// encounter with hero - hero loses -> GAME OVER
-			else if ( hero.pos.adjacentTo(newPos) && !hero.isArmed() )
+			if ( hero.pos.adjacentTo(newPos) && !hero.isArmed() )
 			{
-				el.setPos(maze, new Point(newPos.getX(), newPos.getY()));	
 				hero.setDead(true);
 				hero.setLetter(' ');
 				hero.setPos(maze, hero.pos);
 				endGame("lose");
 				return true;
 			}
+			if ( maze.charAt(newPos) == 'd' || maze.charAt(newPos) == 'D' )
+				newPos.setCoords(d.pos.getX(), d.pos.getY());
+				
+			d.setPos(maze, new Point(newPos.getX(), newPos.getY()));	
 		}
 				
-		el.setPos(maze, new Point(newPos.getX(), newPos.getY()));	
 		return true;
 	}
 
@@ -271,5 +311,4 @@ public class Game {
 	public void setVictory(boolean victory) {
 		Victory = victory;
 	}
-
 }

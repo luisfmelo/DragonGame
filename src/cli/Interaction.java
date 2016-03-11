@@ -9,10 +9,10 @@ public class Interaction {
 	public static void main(String[] args) {
 		System.out.println("Dragon Game!");
 		Scanner sc = new Scanner(System.in);
-		int level, len;
+		int level, len, n_dragons;
 
 		int round = 1;
-		
+		n_dragons=4;
 	//Game Config
 		// Get Size
 		System.out.print("Tamanho do labirinto (impar): ");
@@ -34,7 +34,7 @@ public class Interaction {
 		}
 		
 	//Create Game
-		Game myGame = new Game(level, len);
+		Game myGame = new Game(level, len, n_dragons);
 
 		
 		//maze.print();
@@ -64,7 +64,8 @@ public class Interaction {
 			}
 			
 		//3. pc faz o seu move
-			myGame.pcMove();
+			for(int i=0; i<myGame.dragons.size();i++)
+				myGame.pcMove(myGame.dragons.get(i));
 
 			round++;
 		}		
