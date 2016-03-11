@@ -38,6 +38,9 @@ public class TestMazeBuilder {
 	// a) the maze boundaries must have exactly one exit and everything else walls
 	// b) the exit cannot be a corner
 	private boolean checkBoundaries(char [][] m) {
+		for(char[] line: m)
+			System.out.println(line);
+		
 		int countExit = 0;
 		int n = m.length;
 		for (int i = 0; i < n; i++)
@@ -135,6 +138,7 @@ public class TestMazeBuilder {
 		for (int i = 0; i < numMazes; i++) {
 			int size = maxMazeSize == minMazeSize? minMazeSize : minMazeSize + 2 * rand.nextInt((maxMazeSize - minMazeSize)/2);
 			char[][]m = builder.buildMaze(size);
+		
 			assertTrue("Invalid maze boundaries in maze:\n" + m, checkBoundaries(m));			
 			assertTrue("Invalid walls in maze:\n" + m, ! hasSquare(m, badWalls));
 			assertTrue("Invalid spaces in maze:\n" + m, ! hasSquare(m, badSpaces));
@@ -207,28 +211,30 @@ public class TestMazeBuilder {
 	}
 	
 	/**
-	 * Test New Random Move 
+	 * Test New Random Move move right.. down or dont move
 	 */
 	@Test
 	public void testRandomMove(){
 		Maze m = new Maze();
 		m.setDefaultMaze();
 		Dragon d = new Dragon();
-		Hero h = new Hero();
-		h.pos.setCoords(4, 4);
-		d.pos.setCoords(1, 1);
 		
-		d.setPos(m, d.pos.getCoords());
+		Game g = new Game(m, 3, new Hero(), d, new Sword() );
 		
-		Game g = new Game(m, 3, h, d, new Sword() );
+		for ( int i = 0; i < 20; i++)
+		{
+			d.pos.setCoords(1, 1);		
+			d.setPos(m, d.pos.getCoords());
+			
+			assertEquals( 1, d.pos.getX());
+			assertEquals( 1, d.pos.getY());
 
-		assertEquals( 1, d.pos.getX());
-		assertEquals( 1, d.pos.getY());
+			g.pcMove(d);
+			assertTrue( d.pos.getX() == 1 && d.pos.getY() == 2 ||
+						d.pos.getX() == 2 && d.pos.getY() == 1 ||
+						d.pos.getX() == 1 && d.pos.getY() == 1 );
+		}
 
-		g.pcMove(d);
-
-		assertTrue( d.pos.getX() == 1 && d.pos.getY() == 2 ||
-					d.pos.getX() == 2 && d.pos.getY() == 1 );
 	}
 	
 }

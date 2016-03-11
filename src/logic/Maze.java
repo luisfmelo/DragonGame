@@ -234,9 +234,7 @@ public class Maze implements IMazeBuilder{
 	
 	public void print() {
 		for(char[] line: this.maze)
-		{
 			System.out.println(line);
-		}
 		
 	}
 

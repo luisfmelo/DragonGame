@@ -3,7 +3,7 @@ package logic;
 import java.util.Random;
 
 public class Element {
-	public Point pos = new Point(1,1);
+	public Point pos = new Point();
 	private char letter;
 	
 	public char getLetter() {
