@@ -73,8 +73,8 @@ public class Maze implements IMazeBuilder{
 		
 		//boolean flag = false;
 		int sizeVisitedCellArray = (this.len - 1) / 2;
-		Point guideCell = new Point(0,0);
-		Point temp = new Point(0,0);
+		Point guideCell = new Point();
+		Point temp = new Point();
 		int pos = 0, dir = 0;
 		char [][] visitedCells = new char[sizeVisitedCellArray][sizeVisitedCellArray];
 		Stack<Point> pathHistory = new Stack<Point>();
@@ -84,7 +84,9 @@ public class Maze implements IMazeBuilder{
 		for (int i = 0; i < size; i++)
 			for (int j = 0; j < size; j++)
 			{
-				if ( i % 2 == 1 && j % 2 == 1)
+				if ( i == 0 && j == 0)
+					this.maze[i][j] = 'X';
+				else if ( i % 2 == 1 && j % 2 == 1)
 					this.maze[i][j] = ' ';
 				else 
 					this.maze[i][j] = 'X';
@@ -217,6 +219,7 @@ public class Maze implements IMazeBuilder{
 			//put + in that pos
 			visitedCells[guideCell.getX()][guideCell.getY()] = '+';
 		}
+		this.maze[0][0] ='X';
 		return this.maze;
 	}
 
@@ -245,6 +248,7 @@ public class Maze implements IMazeBuilder{
 		Sword s = new Sword();
 		Dragon dragon = new Dragon();
 		Hero hero = new Hero();
+		
 		while ( true)
 		{
 			s.setRandomPos(maze);
@@ -256,6 +260,8 @@ public class Maze implements IMazeBuilder{
 					maze.getElementPos(dragon.getLetter()) != null )
 						break;
 		}
+
+		maze.maze[0][0] ='X';
 		return maze.getMaze();
 		
 	}

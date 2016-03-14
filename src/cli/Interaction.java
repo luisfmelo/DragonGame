@@ -3,6 +3,7 @@ package cli;
 import java.util.Scanner;
 import logic.Game;
 import logic.Maze;
+import logic.Point;
 
 public class Interaction {	
 
@@ -50,7 +51,7 @@ public class Interaction {
 		//0. Round Status Maze
 			System.out.println("\nRound: " + round + "\n");
 			myGame.maze.print();
-			
+
 		//1. receive command
 			sc = new Scanner(System.in);
 			key = sc.next();

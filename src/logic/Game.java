@@ -159,7 +159,7 @@ public class Game {
 	}
 
 	public boolean checkPos (char c, Element el) throws IllegalArgumentException {
-		Point newPos = new Point(0, 0);
+		Point newPos = new Point();
 		
 		try{
 			newPos = el.newPosition(c);
