@@ -52,43 +52,38 @@ public class Interface {
 		frame.getContentPane().setLayout(null);
 		
 		JLabel lblMazeSize = new JLabel("Maze Size");
-		lblMazeSize.setBounds(25, 89, 50, 14);
+		lblMazeSize.setBounds(23, 23, 50, 14);
 		frame.getContentPane().add(lblMazeSize);
 		
 		JTextField maze_size = new JTextField();
+		maze_size.setText("1");
 		maze_size.setBounds(23, 114, 86, 20);
 		lblMazeSize.setLabelFor(maze_size);
 		frame.getContentPane().add(maze_size);
 		maze_size.setColumns(10);
 		
-		JButton btnNewGame = new JButton("New Game");
-		btnNewGame.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		btnNewGame.setBounds(137, 113, 83, 23);
-		frame.getContentPane().add(btnNewGame);
-		
 		JLabel lblNoDragons = new JLabel("Type of Dragons");
-		lblNoDragons.setBounds(137, 23, 84, 14);
+		lblNoDragons.setBounds(136, 88, 84, 14);
 		frame.getContentPane().add(lblNoDragons);
 		
 		n_dragons = new JTextField();
+		n_dragons.setText("11");
 		n_dragons.setColumns(10);
 		n_dragons.setBounds(23, 48, 86, 20);
 		frame.getContentPane().add(n_dragons);
 		
 		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(137, 48, 68, 20);
+		comboBox.setBounds(137, 114, 83, 20);
 		frame.getContentPane().add(comboBox);
 		
 		JLabel label = new JLabel("No Dragons");
-		label.setBounds(25, 23, 84, 14);
+		label.setBounds(23, 89, 84, 14);
 		frame.getContentPane().add(label);
 		
 		JButton btn_Exit = new JButton("Exit");
 		btn_Exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
 			}
 		});
 		btn_Exit.setBounds(494, 375, 83, 23);
@@ -97,24 +92,27 @@ public class Interface {
 		JTextArea maze_area = new JTextArea();
 		maze_area.setFont(new Font("Courier New", Font.PLAIN, 13));
 		maze_area.setEditable(false);
-		maze_area.setBounds(282, 46, 287, 275);
+		maze_area.setBounds(245, 46, 324, 305);
 		frame.getContentPane().add(maze_area);
 	
-		JButton btnW = new JButton("U");
+		final JButton btnW = new JButton("W");
+		btnW.setEnabled(false);
 		
 		buttonGroup.add(btnW);
 		btnW.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnW.setBounds(66, 193, 43, 29);
+		btnW.setBounds(66, 193, 46, 29);
 		frame.getContentPane().add(btnW);
 		
-		JButton btnS = new JButton("D");
+		final JButton btnS = new JButton("S");
+		btnS.setEnabled(false);
 		btnS.setBounds(66, 252, 43, 29);
 		frame.getContentPane().add(btnS);
 		
-		JButton btnD = new JButton("R");
+		final JButton btnD = new JButton("D");
+		btnD.setEnabled(false);
 		btnD.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
@@ -122,8 +120,34 @@ public class Interface {
 		btnD.setBounds(119, 226, 43, 29);
 		frame.getContentPane().add(btnD);
 		
-		JButton btnA = new JButton("L");
+		final JButton btnA = new JButton("A");
+		btnA.setEnabled(false);
 		btnA.setBounds(13, 226, 43, 29);
 		frame.getContentPane().add(btnA);
+		
+
+		final JLabel state = new JLabel("You can generate a new Maze");
+		state.setBounds(255, 362, 229, 14);
+		frame.getContentPane().add(state);
+		
+		JButton btnNewGame = new JButton("New Game");
+		btnNewGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try{
+					//n_dragons.getText();
+				}catch(NumberFormatException e){
+					//do default maze;
+				}
+				btnW.setEnabled(true);
+				btnA.setEnabled(true);
+				btnS.setEnabled(true);
+				btnD.setEnabled(true);
+				state.setText("Pode Jogar");
+			}
+		});
+		
+		btnNewGame.setBounds(137, 47, 83, 23);
+		frame.getContentPane().add(btnNewGame);
+		
 	}
 }
