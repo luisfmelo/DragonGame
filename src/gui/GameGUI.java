@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -60,7 +61,7 @@ public class GameGUI extends JFrame{
 		setTitle("Dragon Game");
 		setBounds(100, 100, 620, 448);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		getContentPane().setLayout(null);			
+		getContentPane().setLayout(null);//new BorderLayout());			
 	}
 		
 	/**
@@ -123,20 +124,36 @@ public class GameGUI extends JFrame{
 		btnA.setBounds(13, 226, 43, 29);
 		getContentPane().add(btnA);
 		
-	// Button: New Game
-		btnNewGame = new JButton("New Game");
-		btnNewGame.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if ( Integer.parseInt(n_dragons.getText()) < 0 )
-					n_dragons.setText("0");
-				else if( Integer.parseInt(n_dragons.getText()) > MAX_DRAGONS )
-					n_dragons.setText( Integer.toString(MAX_DRAGONS) );
-				readyToStart();
-			}
-		});
-		
-		btnNewGame.setBounds(136, 65, 99, 23);
-		getContentPane().add(btnNewGame);
+		//LABEL InvalidDragons
+				final JLabel lblInvalidDragons = new JLabel("New label");
+				lblInvalidDragons.setVisible(false);
+				lblInvalidDragons.setEnabled(false);
+				lblInvalidDragons.setBounds(27, 168, 46, 14);
+				getContentPane().add(lblInvalidDragons);
+				
+			// Button: New Game
+				btnNewGame = new JButton("New Game");
+				btnNewGame.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						lblInvalidDragons.setVisible(false);
+						if (Integer.parseInt(n_dragons.getText())<0){
+							n_dragons.setText("0");
+							lblInvalidDragons.setText("Número de Dragões Inválidos. Jogo com 0 Dragões criado");
+							lblInvalidDragons.setVisible(true);
+						}
+						else if(Integer.parseInt(n_dragons.getText())>MAX_DRAGONS){
+							n_dragons.setText(Integer.toString(MAX_DRAGONS));
+							lblInvalidDragons.setText("Número de Dragões maior do que o permitível. Jogo com "+ Integer.toString(MAX_DRAGONS) +" criado");
+							lblInvalidDragons.setVisible(true);
+						}
+							
+						readyToStart();
+					}
+				});
+				
+				btnNewGame.setBounds(136, 65, 99, 23);
+				getContentPane().add(btnNewGame);
+
 	}
 	
 	/**
