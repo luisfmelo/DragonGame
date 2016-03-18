@@ -5,7 +5,7 @@ import java.util.Stack;
 
 public class Maze implements IMazeBuilder{
 	private int len;
-	public char[][] maze;
+	public char[][] maze; 
 	
 	/**
 	 * Constructor
@@ -235,9 +235,10 @@ public class Maze implements IMazeBuilder{
 		return null;
 	}
 	
-	public void print() {
+	public char[][] print() {
 		for(char[] line: this.maze)
 			System.out.println(line);
+		return this.maze;
 		
 	}
 

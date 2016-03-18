@@ -15,6 +15,19 @@ public class Game {
 	private boolean Defeat = false;
 	private boolean allDragonsDead = false;
 	
+	public String getMazeString(){
+		String res = "";
+
+		for(char[] line: this.maze.maze)
+		{
+			for (char c : line) {
+				res += c;
+			}
+			res += "\n";
+		}
+		return res;
+	}
+	
 	//Game com Maze enviado pelo utilizador -> TESTE
 	public Game(Maze m,int lvl, Hero h, Dragon d, Sword s){
 		level = lvl;
@@ -26,7 +39,10 @@ public class Game {
 	}
 	
 	//Game criado com maze aleatorio com tamanho especificado
-	public Game(int lvl, int len, int n_Dragons){
+	public Game(int lvl, String maze_size, String n_Drag){
+		int len = Integer.parseInt(maze_size);
+		int n_Dragons = Integer.parseInt(n_Drag);
+		
 		level = lvl;	
 		for (int i = 0; i < n_Dragons; i++)
 			this.dragons.add(new Dragon());		

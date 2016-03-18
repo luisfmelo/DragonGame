@@ -35,7 +35,7 @@ public class Interaction {
 		}
 		
 	//Create Game
-		Game myGame = new Game(level, len, n_dragons);
+		Game myGame = new Game(level, Integer.toString(len), Integer.toString(n_dragons));
 
 		
 		//maze.print();
