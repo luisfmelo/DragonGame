@@ -17,6 +17,7 @@ import logic.Game;
 
 public class GameGUI extends JFrame{
 	
+	protected static final int MAX_DRAGONS = 3;
 	private JButton btnExit;
 	private JButton btnNewGame;
 	private JButton btnW;
@@ -126,11 +127,10 @@ public class GameGUI extends JFrame{
 		btnNewGame = new JButton("New Game");
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				try{
-					//n_dragons.getText();
-				}catch(NumberFormatException e){
-					//do default maze;
-				}
+				if ( Integer.parseInt(n_dragons.getText()) < 0 )
+					n_dragons.setText("0");
+				else if( Integer.parseInt(n_dragons.getText()) > MAX_DRAGONS )
+					n_dragons.setText( Integer.toString(MAX_DRAGONS) );
 				readyToStart();
 			}
 		});
