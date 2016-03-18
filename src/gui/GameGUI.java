@@ -17,9 +17,6 @@ import logic.Game;
 
 public class GameGUI extends JFrame{
 	
-
-	private JFrame frame;
-	
 	private JButton btnExit;
 	private JButton btnNewGame;
 	private JButton btnW;
@@ -39,6 +36,8 @@ public class GameGUI extends JFrame{
 	private JTextArea maze_area;
 	
 	private JComboBox<String> level;
+	
+	private Game myGame;
 	
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	protected int round = 0;
@@ -62,8 +61,7 @@ public class GameGUI extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);			
 	}
-	
-	
+		
 	/**
 	 * Create Buttons: start, exit, direction.
 	 */
@@ -81,18 +79,24 @@ public class GameGUI extends JFrame{
 	// Button: UP - W
 		btnW = new JButton("W");
 		btnW.setEnabled(false);
-		
-		buttonGroup.add(btnW);
 		btnW.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				newMove("W");
 			}
 		});
+		
+		buttonGroup.add(btnW);
 		btnW.setBounds(66, 193, 46, 29);
 		getContentPane().add(btnW);
 
 	// Button: DOWN - S
 		btnS = new JButton("S");
-		btnS.setEnabled(false);
+		btnS.setEnabled(false);		
+		btnS.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				newMove("S");
+			}
+		});		
 		btnS.setBounds(66, 252, 43, 29);
 		getContentPane().add(btnS);
 
@@ -101,6 +105,7 @@ public class GameGUI extends JFrame{
 		btnD.setEnabled(false);
 		btnD.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				newMove("D"); 
 			}
 		});
 		btnD.setBounds(119, 226, 43, 29);
@@ -109,6 +114,11 @@ public class GameGUI extends JFrame{
 	// Button: LEFT - A
 		final JButton btnA = new JButton("A");
 		btnA.setEnabled(false);
+		btnS.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				newMove("A");
+			}
+		});	
 		btnA.setBounds(13, 226, 43, 29);
 		getContentPane().add(btnA);
 		
@@ -189,7 +199,7 @@ public class GameGUI extends JFrame{
 		btnD.setEnabled(true);
 		state.setText("You can Play");
 		
-		Game myGame = new Game(level.getSelectedIndex() + 1, maze_size.getText(), n_dragons.getText());
+		myGame = new Game(level.getSelectedIndex() + 1, maze_size.getText(), n_dragons.getText());
 		myGame.setGameRunning(true);
 		
 		
@@ -216,4 +226,45 @@ public class GameGUI extends JFrame{
 			round ++;
 		}	*/
 	}
+
+
+	private void newMove(String key) {
+	// 2. Check
+		try {
+			if ( myGame.checkPos(key.charAt(0), myGame.hero) )
+			{
+				for(int i=0; i<myGame.dragons.size();i++)
+					myGame.pcMove(myGame.dragons.get(i));
+
+				round ++;
+			}
+		} catch (IllegalArgumentException e) {
+		}
+		
+		maze_area.setText( myGame.getMazeString() );
+
+		/*while( myGame.isGameRunning() )
+		{
+		//0. Round Status Maze
+			
+		//1. receive command     ->      events
+			
+		//2. Check
+		/*	try {
+				if ( !myGame.checkPos(key.charAt(0), myGame.hero) )
+					continue;
+			} catch (IllegalArgumentException e) {
+				continue;
+			}*/
+			
+		//3. pc faz o seu move
+			/*for(int i=0; i<myGame.dragons.size();i++)
+				myGame.pcMove(myGame.dragons.get(i));
+
+			round ++;
+		}	*/
+	}
+
+	
 }
+
