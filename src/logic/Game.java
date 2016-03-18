@@ -89,7 +89,7 @@ public class Game {
 		}
 	}
 
-	private void endGame(String state){
+	public void endGame(String state){
 		if (state.equals("lose"))
 		{
 			System.out.println("\n\nGAME OVER\n\n");

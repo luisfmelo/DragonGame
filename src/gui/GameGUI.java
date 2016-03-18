@@ -39,7 +39,7 @@ public class GameGUI extends JFrame{
 	
 	private Game myGame;
 	
-	private final ButtonGroup buttonGroup = new ButtonGroup();
+	//private final ButtonGroup buttonGroup = new ButtonGroup();
 	protected int round = 0;
 	
 	
@@ -66,7 +66,7 @@ public class GameGUI extends JFrame{
 	 * Create Buttons: start, exit, direction.
 	 */
 	private void createButtons() {
-	// Button: Exit
+	 // Button: Exit
 		btnExit = new JButton("Exit");
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -85,7 +85,7 @@ public class GameGUI extends JFrame{
 			}
 		});
 		
-		buttonGroup.add(btnW);
+		//buttonGroup.add(btnW);
 		btnW.setBounds(66, 193, 46, 29);
 		getContentPane().add(btnW);
 
@@ -101,7 +101,7 @@ public class GameGUI extends JFrame{
 		getContentPane().add(btnS);
 
 	// Button: RIGHT - D	
-		final JButton btnD = new JButton("D");
+		btnD = new JButton("D");
 		btnD.setEnabled(false);
 		btnD.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -112,9 +112,9 @@ public class GameGUI extends JFrame{
 		getContentPane().add(btnD);
 
 	// Button: LEFT - A
-		final JButton btnA = new JButton("A");
+		btnA = new JButton("A");
 		btnA.setEnabled(false);
-		btnS.addActionListener(new ActionListener() {
+		btnA.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				newMove("A");
 			}
@@ -138,7 +138,6 @@ public class GameGUI extends JFrame{
 		btnNewGame.setBounds(136, 65, 99, 23);
 		getContentPane().add(btnNewGame);
 	}
-
 	
 	/**
 	 * Create Configuration: number of Dragons, size of maze,...
@@ -176,7 +175,7 @@ public class GameGUI extends JFrame{
 		getContentPane().add(label);
 		
 		maze_area = new JTextArea();
-		maze_area.setFont(new Font("Courier New", Font.PLAIN, 13));
+		maze_area.setFont(new Font("Monospaced", Font.PLAIN, 13));
 		maze_area.setEditable(false);
 		maze_area.setBounds(245, 54, 324, 297);
 		getContentPane().add(maze_area);
@@ -204,29 +203,7 @@ public class GameGUI extends JFrame{
 		
 		
 		maze_area.setText( myGame.getMazeString() );
-
-		/*while( myGame.isGameRunning() )
-		{
-		//0. Round Status Maze
-			
-		//1. receive command     ->      events
-			
-		//2. Check
-		/*	try {
-				if ( !myGame.checkPos(key.charAt(0), myGame.hero) )
-					continue;
-			} catch (IllegalArgumentException e) {
-				continue;
-			}*/
-			
-		//3. pc faz o seu move
-			/*for(int i=0; i<myGame.dragons.size();i++)
-				myGame.pcMove(myGame.dragons.get(i));
-
-			round ++;
-		}	*/
 	}
-
 
 	private void newMove(String key) {
 	// 2. Check
@@ -242,27 +219,30 @@ public class GameGUI extends JFrame{
 		}
 		
 		maze_area.setText( myGame.getMazeString() );
-
-		/*while( myGame.isGameRunning() )
+		
+		if ( !myGame.isGameRunning() )
 		{
-		//0. Round Status Maze
+			// Victory
+			if ( myGame.isVictory() )
+			{
+				state.setText("You Win!");
+				btnW.setEnabled(false);
+				btnA.setEnabled(false);
+				btnS.setEnabled(false);
+				btnD.setEnabled(false);
+			}
 			
-		//1. receive command     ->      events
+			// Defeat
+			if ( myGame.isDefeat() )
+			{
+				state.setText("You Lose!");
+				btnW.setEnabled(false);
+				btnA.setEnabled(false);
+				btnS.setEnabled(false);
+				btnD.setEnabled(false);
+			}
 			
-		//2. Check
-		/*	try {
-				if ( !myGame.checkPos(key.charAt(0), myGame.hero) )
-					continue;
-			} catch (IllegalArgumentException e) {
-				continue;
-			}*/
-			
-		//3. pc faz o seu move
-			/*for(int i=0; i<myGame.dragons.size();i++)
-				myGame.pcMove(myGame.dragons.get(i));
-
-			round ++;
-		}	*/
+		}
 	}
 
 	
