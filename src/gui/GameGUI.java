@@ -1,19 +1,26 @@
 package gui;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import logic.Game;
+import javax.swing.JPanel;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.AncestorEvent;
 
 public class GameGUI extends JFrame{
 	
@@ -38,21 +45,27 @@ public class GameGUI extends JFrame{
 	
 	private JComboBox<String> level;
 	
-	private JPanel panel;
-	
 	private Game myGame;
 	
 	//private final ButtonGroup buttonGroup = new ButtonGroup();
 	protected int round = 0;
 	
+	private JPanel myGui;
+	private Graphic hero;
+	
+
 	
 	/**
 	 * Create the application.
 	 */
 	public GameGUI() {
+		setResizable(false);
 		initializeFrame();
 		createConfiguration();
 		createButtons();
+		
+		Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation(dim.width/2-getSize().width/2, dim.height/2-getSize().height/2);
 	}
 
 	/**
@@ -60,9 +73,7 @@ public class GameGUI extends JFrame{
 	 */
 	private void initializeFrame() {
 		setTitle("Dragon Game");
-		setSize(650,450);
-		//panel = new JPanel();
-		//setBounds(100, 100, 620, 448);
+		setBounds(100, 100, 620, 448);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);//new BorderLayout());			
 	}
@@ -78,7 +89,7 @@ public class GameGUI extends JFrame{
 				System.exit(0);
 			}
 		});
-		btnExit.setBounds(550, 375, 83, 23);
+		btnExit.setBounds(494, 375, 83, 23);
 		getContentPane().add(btnExit);	
 		
 	// Button: UP - W
@@ -91,7 +102,7 @@ public class GameGUI extends JFrame{
 		});
 		
 		//buttonGroup.add(btnW);
-		btnW.setBounds(85, 210, 50, 30);
+		btnW.setBounds(66, 193, 46, 29);
 		getContentPane().add(btnW);
 
 	// Button: DOWN - S
@@ -102,7 +113,7 @@ public class GameGUI extends JFrame{
 				newMove("S");
 			}
 		});		
-		btnS.setBounds(85, 290, 50, 30);
+		btnS.setBounds(66, 252, 43, 29);
 		getContentPane().add(btnS);
 
 	// Button: RIGHT - D	
@@ -113,7 +124,7 @@ public class GameGUI extends JFrame{
 				newMove("D"); 
 			}
 		});
-		btnD.setBounds(150, 250, 50, 30);
+		btnD.setBounds(119, 226, 43, 29);
 		getContentPane().add(btnD);
 
 	// Button: LEFT - A
@@ -124,7 +135,7 @@ public class GameGUI extends JFrame{
 				newMove("A");
 			}
 		});	
-		btnA.setBounds(25, 250, 50, 30);
+		btnA.setBounds(13, 226, 43, 29);
 		getContentPane().add(btnA);
 		
 		//LABEL InvalidDragons
@@ -155,8 +166,7 @@ public class GameGUI extends JFrame{
 				});
 				
 				btnNewGame.setBounds(136, 65, 99, 23);
-				getContentPane().add(btnNewGame);
-
+				getContentPane().add(btnNewGame);	
 	}
 	
 	/**
@@ -164,7 +174,7 @@ public class GameGUI extends JFrame{
 	 */
 	private void createConfiguration() {
 		lblMazeSize = new JLabel("Maze Size");
-		lblMazeSize.setBounds(23, 41, 75, 14);
+		lblMazeSize.setBounds(23, 41, 50, 14);
 		getContentPane().add(lblMazeSize);
 		
 		n_dragons = new JTextField();
@@ -181,24 +191,24 @@ public class GameGUI extends JFrame{
 		maze_size = new JTextField();
 		maze_size.setText("11");
 		maze_size.setColumns(10);
-		maze_size.setBounds(23, 66, 100, 20);
+		maze_size.setBounds(23, 66, 86, 20);
 		getContentPane().add(maze_size);
 		
 		String[] typeOfDragons = { "1. Static", "2. Moving/Sleepy", "3. Always Moving"};
 		level = new JComboBox(typeOfDragons);
-		level.setBounds(137, 129, 120, 20);
+		level.setBounds(137, 129, 98, 20);
 		level.setSelectedIndex(0);
 		getContentPane().add(level);
 		
 		label = new JLabel("No Dragons");
-		label.setBounds(23, 104, 90, 20);
+		label.setBounds(23, 104, 84, 14);
 		getContentPane().add(label);
 		
-		maze_area = new JTextArea();
+		/*maze_area = new JTextArea();
 		maze_area.setFont(new Font("Monospaced", Font.PLAIN, 13));
 		maze_area.setEditable(false);
-		maze_area.setBounds(275, 54, 350, 320);
-		getContentPane().add(maze_area);
+		maze_area.setBounds(245, 54, 324, 297);
+		getContentPane().add(maze_area);*/
 
 		state = new JLabel("You can generate a new Maze");
 		state.setBounds(255, 362, 229, 14);
@@ -209,6 +219,24 @@ public class GameGUI extends JFrame{
 		lblDragonGame.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblDragonGame.setBounds(0, 11, 604, 32);
 		getContentPane().add(lblDragonGame);
+		
+		//myGui = new Graphic();
+		//myGui.paintComponent(null);
+		
+		//maze_gui.setBounds(255, 362, 229, 14);
+		
+		//myGui = new Graphic();
+		//getContentPane().add(myGui);
+	    // pack(); 
+		//myGui.setBackground(new Color(255, 0, 0));
+	   /*  myGui.requestFocus(); // to receive keyboard events    */  
+		
+		
+		//JPanel panel = new JPanel();
+		myGui = new Graphic();
+		myGui.setBackground(Color.GREEN);
+		myGui.setBounds(250, 50, 350, 300);
+		getContentPane().add(myGui);
 	}
 
 	private void readyToStart() {
@@ -219,10 +247,10 @@ public class GameGUI extends JFrame{
 		state.setText("You can Play");
 		
 		myGame = new Game(level.getSelectedIndex() + 1, maze_size.getText(), n_dragons.getText());
+		
 		myGame.setGameRunning(true);
 		
-		
-		maze_area.setText( myGame.getMazeString() );
+		//maze_area.setText( myGame.getMazeString() );
 	}
 
 	private void newMove(String key) {
@@ -238,6 +266,7 @@ public class GameGUI extends JFrame{
 		} catch (IllegalArgumentException e) {
 		}
 		
+		//maze_gui.set_Pos(myGame.hero.pos);
 		maze_area.setText( myGame.getMazeString() );
 		
 		if ( !myGame.isGameRunning() )
@@ -264,7 +293,5 @@ public class GameGUI extends JFrame{
 			
 		}
 	}
-
-	
 }
 
