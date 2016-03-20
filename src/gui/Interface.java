@@ -11,7 +11,7 @@ public class Interface {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					GameGUI window = new GameGUI();
+					FrameGUI window = new FrameGUI();
 					window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
