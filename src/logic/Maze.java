@@ -3,6 +3,7 @@ package logic;
 import java.util.Random;
 import java.util.Stack;
 
+
 public class Maze implements IMazeBuilder{
 	private int len;
 	public char[][] maze; 
