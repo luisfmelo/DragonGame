@@ -187,6 +187,11 @@ public class Game {
 			if ( !dragon.isDead() )
 				setAllDragonsDead(false);
 		}
+		if (isAllDragonsDead())
+		{
+			exit.setLetter('s');
+			exit.setPos(maze, exit.pos);					
+		}
 		
 		Point newPos = new Point();
 		

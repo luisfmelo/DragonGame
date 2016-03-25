@@ -149,13 +149,6 @@ public class GameBoard extends JPanel implements KeyListener{
 			{
 				for( int i = 0; i < myGame.dragons.size(); i++)
 					myGame.pcMove(myGame.dragons.get(i));
-								
-				
-				if ( myGame.isAllDragonsDead() )
-				{
-					myGame.exit.setLetter('s');
-					myGame.exit.setPos(myGame.maze, myGame.exit.pos);					
-				}
 				
 				repaint();
 				
