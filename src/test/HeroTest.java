@@ -3,7 +3,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import logic.Dragon;
-import logic.Element;
 import logic.Exit;
 import logic.Game;
 import logic.Hero;

@@ -2,8 +2,6 @@ package cli;
 
 import java.util.Scanner;
 import logic.Game;
-import logic.Maze;
-import logic.Point;
 
 public class Interaction {	
 

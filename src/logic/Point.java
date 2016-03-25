@@ -40,11 +40,13 @@ public class Point {
 		return Math.abs(p.x - this.x) + Math.abs(p.y - this.y) == 1;
 	}
 	
+	@Override
 	public String toString(){
 		return (this.x + "," + this.y);
 	}
 	
-	 public boolean equals(Object obj) {
+	 @Override
+	public boolean equals(Object obj) {
 	       if (!(obj instanceof Point))
 	            return false;
 	        if (obj == this)

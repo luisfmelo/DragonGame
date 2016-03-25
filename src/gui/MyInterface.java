@@ -2,17 +2,18 @@ package gui;
 
 import java.awt.EventQueue;
 
-public class Interface {
+public class MyInterface {
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
-					FrameGUI window = new FrameGUI();
-					window.setVisible(true);
+					MyFrame startWindow = new MyFrame();
+					startWindow.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

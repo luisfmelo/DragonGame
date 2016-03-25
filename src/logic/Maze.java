@@ -243,6 +243,7 @@ public class Maze implements IMazeBuilder{
 		
 	}
 
+	@Override
 	public char[][] buildMaze(int size) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		Maze maze =  new Maze();
