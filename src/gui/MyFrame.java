@@ -51,6 +51,15 @@ public class MyFrame extends JFrame{
 		bottomPanel.setLayout(null);
 		
 		JButton btnOptions = new JButton("Options");
+		btnOptions.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFrame optionPanel = new JFrame();
+				optionPanel.setSize(200, 300);
+				optionPanel.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				optionPanel.setTitle("Options");
+				optionPanel.setResizable(false);
+			}
+		});
 		btnOptions.setBounds(0, 0, 325, 25);
 		bottomPanel.add(btnOptions);
 		

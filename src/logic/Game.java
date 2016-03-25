@@ -7,7 +7,7 @@ public class Game {
 	public Hero hero = new Hero(); 			//pos (1,1)
 	public ArrayList <Dragon> dragons = new ArrayList<Dragon> ();  	//pos (1,3)
 	private Sword sword = new Sword(); 		//pos (1,8)
-	private Exit exit = new Exit(); 		//pos (9,5)
+	public Exit exit = new Exit(); 		//pos (9,5)
 	private boolean GameRunning = false;
 	private int level = 1;
 	public Maze maze = new Maze();
@@ -135,7 +135,7 @@ public class Game {
 				break;
 			//Baixo
 			case 1:
-				if ( !checkPos('S', dragon) )
+				if ( !checkPos('S', dragon) || !checkPos('s', dragon))
 					pcMove(dragon);
 				break;
 			//Direita
@@ -150,6 +150,13 @@ public class Game {
 				break;
 			//case 4: don't move			
 			case 4: break;
+		}
+		
+		allDragonsDead = true;
+		
+		for (Dragon d : dragons) {
+			if ( !d.isDead() )
+				allDragonsDead = false;
 		}
 	};
 	
@@ -240,9 +247,9 @@ public class Game {
 				h.setPos(maze, h.pos.getCoords());	
 				return false;
 			}
-			if( maze.charAt(newPos) == 'S' )
+			if( maze.charAt(newPos) == 'S' || maze.charAt(newPos) == 's' )
 			{
-				allDragonsDead = true;
+				setAllDragonsDead(true);
 				for (Dragon d : dragons) {
 					//check if dragon alive and hero wants to get out
 					if ( !d.isDead() )
@@ -250,11 +257,11 @@ public class Game {
 						newPos.setX( hero.pos.getX() );
 						newPos.setY( hero.pos.getY() );
 						System.out.println("Some Dragon is alive!");
-						allDragonsDead = false;
+						setAllDragonsDead(false);
 					}
 				}					
 				//check if dragon is dead and hero wants to get out -> WIN
-				if( allDragonsDead )
+				if( isAllDragonsDead() )
 				{
 					hero.setPos(maze, new Point(exit.pos.getX(), exit.pos.getY()) );
 					endGame("win");
@@ -283,7 +290,7 @@ public class Game {
 				d.setLetter('F');
 			}
 			//dragon and exit in same position - don't update
-			if( maze.charAt(newPos) == 'S' )
+			if( maze.charAt(newPos) == 'S' || maze.charAt(newPos) == 's')
 			{
 				newPos.setCoords(d.pos.getX(), d.pos.getY());
 			}
@@ -308,7 +315,7 @@ public class Game {
 				
 			d.setPos(maze, new Point(newPos.getX(), newPos.getY()));	
 		}
-				
+			
 		return true;
 	}
 
@@ -326,5 +333,14 @@ public class Game {
 
 	public void setVictory(boolean victory) {
 		Victory = victory;
+	}
+
+	
+	public boolean isAllDragonsDead() {
+		return allDragonsDead;
+	}
+
+	public void setAllDragonsDead(boolean allDragonsDead) {
+		this.allDragonsDead = allDragonsDead;
 	}
 }

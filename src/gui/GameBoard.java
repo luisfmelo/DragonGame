@@ -2,19 +2,28 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.List;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import logic.Dragon;
 import logic.Game;
 import logic.Maze;
 
-public class GameBoard extends JPanel{
+public class GameBoard extends JPanel implements KeyListener{
 
 	private BufferedImage backgroundImage;
 	private BufferedImage wall;
@@ -29,9 +38,17 @@ public class GameBoard extends JPanel{
 	private Maze maze;
 	protected Game myGame;
 
-	public GameBoard(int level, int size, int num_dragons) {
+	public GameBoard(int level, int size, int num_dragons) throws IOException{
 
-		myGame = new Game(level, Integer.toString(size), Integer.toString(num_dragons));
+		ArrayList<Integer> numbers = new ArrayList<>();
+		for (String line : Files.readAllLines(Paths.get("config"))) {
+		    for (String part : line.split("\\s+")) {
+		        Integer i = Integer.valueOf(part);
+		        numbers.add(i);
+		    }
+		}
+		
+		myGame = new Game(numbers.get(0), numbers.get(1).toString(), numbers.get(2).toString());
 		
 		try{
 			backgroundImage = ImageIO.read( new File("imgs/background.png"));	
@@ -52,8 +69,10 @@ public class GameBoard extends JPanel{
 	public void start()
 	{
 		myGame.setGameRunning(true);
+			
         repaint();
-		addKeyListener(new MyKeyListener(myGame));
+        this.addKeyListener(this);
+		//addKeyListener(new MyKeyListener(myGame));
 		requestFocus();
 		
 	}
@@ -94,6 +113,68 @@ public class GameBoard extends JPanel{
 				}
 		}
 
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		switch (e.getKeyCode()) {
+		//this shit is not good..... why??????
+			case KeyEvent.VK_A: goGetIt("A"); break;
+			case KeyEvent.VK_D: goGetIt("D"); break;
+			case KeyEvent.VK_S: goGetIt("S"); break;
+			case KeyEvent.VK_W: goGetIt("W"); break;
+			case KeyEvent.VK_UP: goGetIt("W"); break;
+			case KeyEvent.VK_DOWN: goGetIt("S"); break;
+			case KeyEvent.VK_LEFT: goGetIt("A"); break;
+			case KeyEvent.VK_RIGHT: goGetIt("D"); break;
+		}
+
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {}
+	
+	public void goGetIt(String key){
+		switch (key) {
+			case "W": key="A"; break;
+			case "A": key="W"; break;
+			case "S": key="D"; break;
+			case "D": key="S"; break;
+		}
+		try {
+			if ( myGame.checkPos(key.charAt(0), myGame.hero) )
+			{
+				for( int i = 0; i < myGame.dragons.size(); i++)
+					myGame.pcMove(myGame.dragons.get(i));
+								
+				System.out.println(myGame.isAllDragonsDead() + "already?");
+				
+				boolean allDeath = true;
+				
+				System.out.println("start");
+				for (Dragon d : myGame.dragons) {
+					System.out.println("Dragon: " + d.isDead());
+					if ( !d.isDead() )
+						allDeath = false;
+				}
+				System.out.println("end");
+				
+				if ( allDeath )
+				{
+					myGame.exit.setLetter('s');
+					myGame.exit.setPos(myGame.maze, myGame.exit.pos);					
+				}
+				repaint();
+				if ( myGame.isDefeat() )
+					System.out.println("Defeat");
+				else if ( myGame.isVictory() )
+					System.out.println("Victory");
+			}
+		} catch (IllegalArgumentException e2) {
+		}
 	}
 
 }
