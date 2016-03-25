@@ -150,31 +150,32 @@ public class GameBoard extends JPanel implements KeyListener{
 				for( int i = 0; i < myGame.dragons.size(); i++)
 					myGame.pcMove(myGame.dragons.get(i));
 								
-				System.out.println(myGame.isAllDragonsDead() + "already?");
 				
-				boolean allDeath = true;
-				
-				System.out.println("start");
-				for (Dragon d : myGame.dragons) {
-					System.out.println("Dragon: " + d.isDead());
-					if ( !d.isDead() )
-						allDeath = false;
-				}
-				System.out.println("end");
-				
-				if ( allDeath )
+				if ( myGame.isAllDragonsDead() )
 				{
 					myGame.exit.setLetter('s');
 					myGame.exit.setPos(myGame.maze, myGame.exit.pos);					
 				}
+				
 				repaint();
+				
 				if ( myGame.isDefeat() )
-					System.out.println("Defeat");
+					handleDefeat();
 				else if ( myGame.isVictory() )
-					System.out.println("Victory");
+					handleWin();
 			}
 		} catch (IllegalArgumentException e2) {
 		}
+	}
+
+	private void handleWin() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void handleDefeat() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

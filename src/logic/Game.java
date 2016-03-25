@@ -182,6 +182,12 @@ public class Game {
 	}
 
 	public boolean checkPos (char c, Element el) throws IllegalArgumentException {
+		setAllDragonsDead(true);
+		for (Dragon dragon : dragons) {
+			if ( !dragon.isDead() )
+				setAllDragonsDead(false);
+		}
+		
 		Point newPos = new Point();
 		
 		try{
@@ -249,7 +255,6 @@ public class Game {
 			}
 			if( maze.charAt(newPos) == 'S' || maze.charAt(newPos) == 's' )
 			{
-				setAllDragonsDead(true);
 				for (Dragon d : dragons) {
 					//check if dragon alive and hero wants to get out
 					if ( !d.isDead() )
@@ -257,7 +262,6 @@ public class Game {
 						newPos.setX( hero.pos.getX() );
 						newPos.setY( hero.pos.getY() );
 						System.out.println("Some Dragon is alive!");
-						setAllDragonsDead(false);
 					}
 				}					
 				//check if dragon is dead and hero wants to get out -> WIN
