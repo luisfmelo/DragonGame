@@ -3,6 +3,8 @@ package logic;
 import java.util.ArrayList;
 import java.util.Random;
 
+import gui.GameBoard;
+
 public class Game {
 	public Hero hero = new Hero(); 			//pos (1,1)
 	public ArrayList <Dragon> dragons = new ArrayList<Dragon> ();  	//pos (1,3)
@@ -14,19 +16,9 @@ public class Game {
 	private boolean Victory = false;
 	private boolean Defeat = false;
 	private boolean allDragonsDead = false;
+	private int DRAGONS_ALIVE;
 	
-	public String getMazeString(){
-		String res = "";
-
-		for(char[] line: this.maze.maze)
-		{
-			for (char c : line) {
-				res += c;
-			}
-			res += "\n";
-		}
-		return res;
-	}
+	public Game(){}
 	
 	//Game com Maze enviado pelo utilizador -> TESTE
 	public Game(Maze m,int lvl, Hero h, Dragon d, Sword s){
@@ -42,6 +34,8 @@ public class Game {
 	public Game(int lvl, String maze_size, String n_Drag){
 		int len = Integer.parseInt(maze_size);
 		int n_Dragons = Integer.parseInt(n_Drag);
+		
+		DRAGONS_ALIVE = n_Dragons;
 		
 		level = lvl;	
 		for (int i = 0; i < n_Dragons; i++)
@@ -87,6 +81,12 @@ public class Game {
 					dragons.get(i).setPos(maze, dragons.get(i).pos);	
 			}			
 		}
+		if ( DRAGONS_ALIVE == 0 )
+		{
+			exit.setLetter('s');
+			exit.setPos(maze, exit.pos);
+			setAllDragonsDead(true);
+		}
 	}
 
 	public void endGame(String state){
@@ -103,7 +103,7 @@ public class Game {
 			//handle Victory
 		}
 		
-		setGameRunning(false);
+		//setGameRunning(false);
 	};
 	
 	public boolean isGameRunning() {
@@ -126,7 +126,7 @@ public class Game {
 		
 		if (level == 2 && dragon.isSleepy())
 			return; //if dragon is taking a nap... 			
-					
+		
 		switch (move){
 			// Cima
 			case 0:
@@ -135,7 +135,7 @@ public class Game {
 				break;
 			//Baixo
 			case 1:
-				if ( !checkPos('S', dragon) || !checkPos('s', dragon))
+				if ( !checkPos('S', dragon) )
 					pcMove(dragon);
 				break;
 			//Direita
@@ -150,13 +150,6 @@ public class Game {
 				break;
 			//case 4: don't move			
 			case 4: break;
-		}
-		
-		allDragonsDead = true;
-		
-		for (Dragon d : dragons) {
-			if ( !d.isDead() )
-				allDragonsDead = false;
 		}
 	};
 	
@@ -182,17 +175,6 @@ public class Game {
 	}
 
 	public boolean checkPos (char c, Element el) throws IllegalArgumentException {
-		setAllDragonsDead(true);
-		for (Dragon dragon : dragons) {
-			if ( !dragon.isDead() )
-				setAllDragonsDead(false);
-		}
-		if (isAllDragonsDead())
-		{
-			exit.setLetter('s');
-			exit.setPos(maze, exit.pos);					
-		}
-		
 		Point newPos = new Point();
 		
 		try{
@@ -234,7 +216,22 @@ public class Game {
 						d.setDead(true);
 						d.setLetter(' ');
 						d.setPos(maze, d.pos);
+						DRAGONS_ALIVE --;
+						if ( DRAGONS_ALIVE == 0 )
+						{
+							exit.setLetter('s');
+							exit.setPos(maze, exit.pos);
+							setAllDragonsDead(true);
+						}
 					}
+				}
+				
+				//check if all Dragons are dead
+				allDragonsDead = true;
+				
+				for (Dragon d : dragons) {
+					if ( !d.isDead() )
+						allDragonsDead = false;
 				}
 			}
 			// encounter with dragon - hero loses -> GAME OVER
@@ -321,11 +318,24 @@ public class Game {
 			}
 			if ( maze.charAt(newPos) == 'd' || maze.charAt(newPos) == 'D' )
 				newPos.setCoords(d.pos.getX(), d.pos.getY());
-				
+
 			d.setPos(maze, new Point(newPos.getX(), newPos.getY()));	
 		}
 			
 		return true;
+	}
+	
+	public String getMazeString(){
+		String res = "";
+		
+		for(char[] line: this.maze.maze)
+		{
+			for (char c : line) {
+				res += c;
+			}
+			res += "\n";
+		}
+		return res;
 	}
 
 	public boolean isDefeat() {
@@ -343,7 +353,6 @@ public class Game {
 	public void setVictory(boolean victory) {
 		Victory = victory;
 	}
-
 	
 	public boolean isAllDragonsDead() {
 		return allDragonsDead;
@@ -351,5 +360,10 @@ public class Game {
 
 	public void setAllDragonsDead(boolean allDragonsDead) {
 		this.allDragonsDead = allDragonsDead;
+	}
+
+	
+	public boolean defeatOrLose() {
+		return this.Defeat || this.Victory;
 	}
 }

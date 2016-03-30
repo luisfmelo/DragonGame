@@ -217,19 +217,22 @@ public class TestMazeBuilder {
 	public void testRandomMove(){
 		Maze m = new Maze();
 		m.setDefaultMaze();
-		Dragon d = new Dragon();
-		
-		Game g = new Game(m, 3, new Hero(), d, new Sword() );
+		Dragon d;	
 		
 		for ( int i = 0; i < 20; i++)
 		{
+			d = new Dragon();
 			d.pos.setCoords(1, 1);		
 			d.setPos(m, d.pos.getCoords());
+			
+			Game g = new Game(m, 3, new Hero(), d, new Sword() );
 			
 			assertEquals( 1, d.pos.getX());
 			assertEquals( 1, d.pos.getY());
 
+			System.out.println("**************>" + d.pos.toString());
 			g.pcMove(d);
+			System.out.println("-------------->" + d.pos.toString());
 			assertTrue( d.pos.getX() == 1 && d.pos.getY() == 2 ||
 						d.pos.getX() == 2 && d.pos.getY() == 1 ||
 						d.pos.getX() == 1 && d.pos.getY() == 1 );

@@ -12,17 +12,13 @@ public class Maze implements IMazeBuilder{
 	 * Constructor
 	 */
 	public Maze(){
-
+		this.setDefaultMaze();
 	}	
 	
 	public Maze(char[][] m){
 		this.maze = m;
 	}
-	
-	public char[][] getMaze(){
-		return this.maze;
-	};
-	
+
 	public int getLen() {
 		return len;
 	}
@@ -44,6 +40,19 @@ public class Maze implements IMazeBuilder{
 			{'X',' ','X','X',' ',' ',' ',' ',' ','X'},
 			{'X','X','X','X','X','X','X','X','X','X'}
 		};
+	};
+
+	public void setMaze(char[][] m, int size) {
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				this.maze[i][j] = m[i][j];
+			}
+		}
+	};
+
+
+	public char[][] getMaze() {
+		return this.maze;
 	};
 	
 	public void setTestMaze() {

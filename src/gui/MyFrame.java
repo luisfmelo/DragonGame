@@ -7,7 +7,10 @@ import logic.Game;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -21,10 +24,6 @@ import java.awt.event.ActionEvent;
 
 public class MyFrame extends JFrame{
 	
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	private int num_dragons = 1;
@@ -32,7 +31,14 @@ public class MyFrame extends JFrame{
 	private int level = 1;
 	private GameBoard gamePanel;
 	
-	protected Game myGame;
+	private JPanel bottomPanel;
+	private JButton btnOptions;
+	private OptionsPanel optionPanel;
+	private JButton btnExit;
+	private JPanel topPanel;
+	
+	protected Game myGame = new Game();
+	private JButton btnCreate;
 	
 	public MyFrame() throws IOException {
 		setSize(650, 450);
@@ -45,25 +51,25 @@ public class MyFrame extends JFrame{
 		getContentPane().setSize(650,450);
 		getContentPane().setLayout(null);
 		
-		JPanel bottomPanel = new JPanel();
+		bottomPanel = new JPanel();
 		bottomPanel.setBounds(0, 400, 650, 25);
 		getContentPane().add(bottomPanel);
 		bottomPanel.setLayout(null);
 		
-		JButton btnOptions = new JButton("Options");
+		btnOptions = new JButton("Options");
 		btnOptions.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFrame optionPanel = new JFrame();
-				optionPanel.setSize(200, 300);
-				optionPanel.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				optionPanel.setTitle("Options");
-				optionPanel.setResizable(false);
+				
+				optionPanel = new OptionsPanel();
+				//optionPanel.setDefaultCloseOperation(optionPanel.setVisible(false);
+				
+				optionPanel.setVisible(true);
 			}
 		});
 		btnOptions.setBounds(0, 0, 325, 25);
 		bottomPanel.add(btnOptions);
 		
-		JButton btnExit = new JButton("Exit");
+		btnExit = new JButton("Exit");
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int exit = JOptionPane.showConfirmDialog(rootPane, "Are you sure you want to exit the Game?");
@@ -74,19 +80,29 @@ public class MyFrame extends JFrame{
 		btnExit.setBounds(325, 0, 325, 25);
 		bottomPanel.add(btnExit);
 		
-		JPanel topPanel = new JPanel();
+		topPanel = new JPanel();
 		topPanel.setBounds(0, 0, 650, 25);
 		getContentPane().add(topPanel);
 		topPanel.setLayout(null);
 		
+		
 		JButton btnNewGame = new JButton("New Game");
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				gamePanel.start();
+				try {
+					gamePanel.start();
+				} catch (NumberFormatException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
-		btnNewGame.setBounds(0, 0, 650, 25);
+		btnNewGame.setBounds(0, 0, 450, 25);
 		topPanel.add(btnNewGame);
+		
+		btnCreate = new JButton("Create New Maze");
+		btnCreate.setBounds(450, 0, 200, 25);
+		topPanel.add(btnCreate);
 		
 		gamePanel = new GameBoard(level, size, num_dragons);
 		gamePanel.setBounds(0, 25, 650, 375);

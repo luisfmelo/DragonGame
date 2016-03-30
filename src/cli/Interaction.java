@@ -11,7 +11,7 @@ public class Interaction {
 		int level, len, n_dragons;
 
 		int round = 1;
-		n_dragons=4;
+		n_dragons=0;
 	//Game Config
 		// Get Size
 		System.out.print("Tamanho do labirinto (impar): ");
@@ -46,15 +46,15 @@ public class Interaction {
 
 		while( myGame.isGameRunning() )
 		{
-		//0. Round Status Maze
+		// 0. Round Status Maze
 			System.out.println("\nRound: " + round + "\n");
 			myGame.maze.print();
 
-		//1. receive command
+		// 1. receive command
 			sc = new Scanner(System.in);
 			key = sc.next();
 			
-		//2. Check
+		// 2. Check
 			try {
 				if ( !myGame.checkPos(key.charAt(0), myGame.hero) )
 					continue;
@@ -62,10 +62,13 @@ public class Interaction {
 				continue;
 			}
 			
-		//3. pc faz o seu move
+		// 3. pc faz o seu move
 			for(int i=0; i<myGame.dragons.size();i++)
 				myGame.pcMove(myGame.dragons.get(i));
-
+			
+		// 4. update game status
+			if ( myGame.defeatOrLose() )
+				myGame.setGameRunning(false);
 			round++;
 		}		
 		

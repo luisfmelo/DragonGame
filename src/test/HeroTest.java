@@ -271,10 +271,15 @@ public class HeroTest {
 		maze = new Maze();
 		maze.setTestMaze();
 		h = new Hero();
+		d = new Dragon();
 		g = new Game(maze, 2, h, d, new Sword());
-		h.setPos(maze, new Point(3,1));
+		h.setArmed(true);
+		h.setPos(maze, new Point(2,1));
+		d.setPos(maze, new Point(3,1));
 		e.setPos(maze, new Point(4,1));
 		g.checkPos('S', h);
+		g.checkPos('S', h);
+		
 		maze.print();
 		assertEquals(false, g.isGameRunning() );
 		assertEquals(true, g.isVictory() );
@@ -284,8 +289,11 @@ public class HeroTest {
 		maze.setTestMaze();
 		h = new Hero();
 		g = new Game(maze, 2, h, d, new Sword());
-		h.setPos(maze, new Point(2,1));
+		h.setArmed(true);
+		h.setPos(maze, new Point(2,2));
 		e.setPos(maze, new Point(2,0));
+		d.setPos(maze, new Point(2,1));
+		g.checkPos('A', h);
 		g.checkPos('A', h);
 		assertEquals(false, g.isGameRunning() );
 		assertEquals(true, g.isVictory() );
@@ -294,9 +302,12 @@ public class HeroTest {
 		maze = new Maze();
 		maze.setTestMaze();
 		h = new Hero();
+		h.setArmed(true);
 		g = new Game(maze, 2, h, d, new Sword());
-		h.setPos(maze, new Point(1,2));
+		h.setPos(maze, new Point(2,2));
+		d.setPos(maze, new Point(1,2));
 		e.setPos(maze, new Point(0,2));
+		g.checkPos('W', h);
 		g.checkPos('W', h);
 		assertEquals(false, g.isGameRunning() );
 		assertEquals(true, g.isVictory() );

@@ -1,23 +1,34 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.List;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 import logic.Dragon;
 import logic.Game;
@@ -35,20 +46,13 @@ public class GameBoard extends JPanel implements KeyListener{
 	private BufferedImage sword;
 	private BufferedImage open_door;
 	private BufferedImage closed_door;
+	private BufferedImage dragon_sword;
 	private Maze maze;
 	protected Game myGame;
 
-	public GameBoard(int level, int size, int num_dragons) throws IOException{
+	public GameBoard(int level, int size, int num_dragons){
 
-		ArrayList<Integer> numbers = new ArrayList<>();
-		for (String line : Files.readAllLines(Paths.get("config"))) {
-		    for (String part : line.split("\\s+")) {
-		        Integer i = Integer.valueOf(part);
-		        numbers.add(i);
-		    }
-		}
-		
-		myGame = new Game(numbers.get(0), numbers.get(1).toString(), numbers.get(2).toString());
+		myGame = new Game(1, "7", "1");
 		
 		try{
 			backgroundImage = ImageIO.read( new File("imgs/background.png"));	
@@ -61,20 +65,25 @@ public class GameBoard extends JPanel implements KeyListener{
 			sword = ImageIO.read( new File("imgs/sword.png"));
 			open_door = ImageIO.read( new File("imgs/open_door.png"));
 			closed_door = ImageIO.read( new File("imgs/closed_door.png"));
+			dragon_sword = ImageIO.read( new File("imgs/dragonSword.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}	
 	}
 	
-	public void start()
+	public void start() throws NumberFormatException, IOException
 	{
+		ArrayList<Integer> numbers = readFromFile();
+		myGame = null;
+		myGame = new Game(numbers.get(0), numbers.get(1).toString(), numbers.get(2).toString());
 		myGame.setGameRunning(true);
 			
         repaint();
+        
+        this.removeKeyListener(this);
         this.addKeyListener(this);
-		//addKeyListener(new MyKeyListener(myGame));
+        
 		requestFocus();
-		
 	}
 	
 	@Override 
@@ -92,36 +101,39 @@ public class GameBoard extends JPanel implements KeyListener{
 			for ( int i = 0; i < myGame.maze.getLen(); i++ )
 				for ( int j = 0; j < myGame.maze.getLen(); j++ )
 				{
-					if ( myGame.maze.maze[i][j] == 'X')
+					if ( myGame.maze.maze[j][i] == 'X')
 						g.drawImage(wall, i * width / size, j * height / size, width / size, height / size, Color.WHITE, null);
-					else if ( myGame.maze.maze[i][j] == ' ')
+					else if ( myGame.maze.maze[j][i] == ' ')
 						g.drawImage(path, i * width / size, j * height / size, width / size, height / size, Color.WHITE, null);
-					else if ( myGame.maze.maze[i][j] == 'H' )
+					else if ( myGame.maze.maze[j][i] == 'H' )
 						g.drawImage(hero_unarmed, i * width / size, j * height / size, width / size, height / size, Color.WHITE, null);
-					else if ( myGame.maze.maze[i][j] == 'A' )
+					else if ( myGame.maze.maze[j][i] == 'A' )
 						g.drawImage(hero_armed, i * width / size, j * height / size, width / size, height / size, Color.WHITE, null);
-					else if ( myGame.maze.maze[i][j] == 'D' )
+					else if ( myGame.maze.maze[j][i] == 'D' )
 						g.drawImage(dragon, i * width / size, j * height / size, width / size, height / size, Color.WHITE, null);
-					else if ( myGame.maze.maze[i][j] == 'd' )
+					else if ( myGame.maze.maze[j][i] == 'd' )
 						g.drawImage(sleepy_dragon, i * width / size, j * height / size, width / size, height / size, Color.WHITE, null);
-					else if ( myGame.maze.maze[i][j] == 's' )
+					else if ( myGame.maze.maze[j][i] == 's' )
 						g.drawImage(open_door, i * width / size, j * height / size, width / size, height / size, Color.WHITE, null);
-					else if ( myGame.maze.maze[i][j] == 'S' )
+					else if ( myGame.maze.maze[j][i] == 'S' )
 						g.drawImage(closed_door, i * width / size, j * height / size, width / size, height / size, Color.WHITE, null);
-					else if ( myGame.maze.maze[i][j] == 'E' )
+					else if ( myGame.maze.maze[j][i] == 'E' )
 						g.drawImage(sword, i * width / size, j * height / size, width / size, height / size, Color.WHITE, null);
+					else if ( myGame.maze.maze[j][i] == 'F' )
+						g.drawImage(dragon_sword, i * width / size, j * height / size, width / size, height / size, Color.WHITE, null);
 				}
 		}
-
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {}
 
 	@Override
-	public void keyPressed(KeyEvent e) {
+	public void keyPressed(KeyEvent e) {}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()) {
-		//this shit is not good..... why??????
 			case KeyEvent.VK_A: goGetIt("A"); break;
 			case KeyEvent.VK_D: goGetIt("D"); break;
 			case KeyEvent.VK_S: goGetIt("S"); break;
@@ -131,19 +143,9 @@ public class GameBoard extends JPanel implements KeyListener{
 			case KeyEvent.VK_LEFT: goGetIt("A"); break;
 			case KeyEvent.VK_RIGHT: goGetIt("D"); break;
 		}
-
 	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {}
 	
 	public void goGetIt(String key){
-		switch (key) {
-			case "W": key="A"; break;
-			case "A": key="W"; break;
-			case "S": key="D"; break;
-			case "D": key="S"; break;
-		}
 		try {
 			if ( myGame.checkPos(key.charAt(0), myGame.hero) )
 			{
@@ -156,19 +158,74 @@ public class GameBoard extends JPanel implements KeyListener{
 					handleDefeat();
 				else if ( myGame.isVictory() )
 					handleWin();
+					
 			}
 		} catch (IllegalArgumentException e2) {
 		}
 	}
 
-	private void handleWin() {
-		// TODO Auto-generated method stub
+	protected static ArrayList<Integer> readFromFile(){
 		
-	}
-
-	private void handleDefeat() {
-		// TODO Auto-generated method stub
+		ArrayList<Integer> numbers = new ArrayList<>();
+	
+		try {
+			for (String line : Files.readAllLines(Paths.get(".config"))) {
+			    for (String part : line.split("\\s+")) {
+			        Integer i = Integer.valueOf(part);
+			        numbers.add(i);
+			    }
+			}
+			 
+		    // level
+			if ( numbers.get(0) > MyInterface.MAX_LEVEL )
+				numbers.set(0, MyInterface.MAX_LEVEL);
+			else if ( numbers.get(0) < MyInterface.MIN_LEVEL )
+				numbers.set(0, MyInterface.MIN_LEVEL);
+			
+			// size
+			if ( numbers.get(1) > MyInterface.MAX_SIZE )
+				numbers.set(1, MyInterface.MAX_SIZE);
+			else if ( numbers.get(1) < MyInterface.MIN_SIZE )
+				numbers.set(1, MyInterface.MIN_LEVEL);
+				
+			//number of Dragons
+			if ( numbers.get(2) > MyInterface.MAX_DRAGONS )
+				numbers.set(2, MyInterface.MAX_DRAGONS);
+			else if ( numbers.get(2) < MyInterface.MIN_DRAGONS )
+				numbers.set(2, MyInterface.MIN_DRAGONS);
+			
+		} catch (NumberFormatException | IOException e) {
+			numbers.set(0, 1);
+			numbers.set(1, 11);
+			numbers.set(2, 1);
+		}
 		
+		return numbers;
 	}
+	
+	public void handleWin(){
+        this.removeKeyListener(this);
+        int res = JOptionPane.showConfirmDialog(null,
+        		"You Win! Congratulations!", "WIN", 
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE);
+        
+        if ( res == JOptionPane.OK_OPTION || res == JOptionPane.CLOSED_OPTION )
+        	myGame.setGameRunning(false);
 
+        MyInterface.main(new String[0]);        
+	}
+	
+	public void handleDefeat() {
+        this.removeKeyListener(this);
+        int res = JOptionPane.showConfirmDialog(null,
+        		"You lose! Try Again!", "Defeat", 
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE);
+        
+        if ( res == JOptionPane.OK_OPTION || res == JOptionPane.CLOSED_OPTION )
+        	myGame.setGameRunning(false);
+
+        MyInterface.main(new String[0]);
+	}
 }
