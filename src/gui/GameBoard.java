@@ -75,7 +75,7 @@ public class GameBoard extends JPanel implements KeyListener{
 	{
 		ArrayList<Integer> numbers = readFromFile();
 		myGame = null;
-		myGame = new Game(numbers.get(0), numbers.get(1).toString(), numbers.get(2).toString());
+		myGame = new Game(numbers.get(2), numbers.get(0).toString(), numbers.get(1).toString());
 		myGame.setGameRunning(true);
 			
         repaint();
@@ -170,33 +170,37 @@ public class GameBoard extends JPanel implements KeyListener{
 	
 		try {
 			for (String line : Files.readAllLines(Paths.get(".config"))) {
-			    for (String part : line.split("\\s+")) {
+			    for (String part : line.split(",")) {
 			        Integer i = Integer.valueOf(part);
 			        numbers.add(i);
 			    }
 			}
-			 
-		    // level
-			if ( numbers.get(0) > MyInterface.MAX_LEVEL )
-				numbers.set(0, MyInterface.MAX_LEVEL);
-			else if ( numbers.get(0) < MyInterface.MIN_LEVEL )
-				numbers.set(0, MyInterface.MIN_LEVEL);
 			
 			// size
-			if ( numbers.get(1) > MyInterface.MAX_SIZE )
-				numbers.set(1, MyInterface.MAX_SIZE);
-			else if ( numbers.get(1) < MyInterface.MIN_SIZE )
-				numbers.set(1, MyInterface.MIN_LEVEL);
-				
+			if ( numbers.get(0) > MyInterface.MAX_SIZE )
+				numbers.set(0, MyInterface.MAX_SIZE);
+			else if ( numbers.get(0) < MyInterface.MIN_SIZE )
+				numbers.set(0, MyInterface.MIN_LEVEL);				
+							
 			//number of Dragons
-			if ( numbers.get(2) > MyInterface.MAX_DRAGONS )
-				numbers.set(2, MyInterface.MAX_DRAGONS);
-			else if ( numbers.get(2) < MyInterface.MIN_DRAGONS )
-				numbers.set(2, MyInterface.MIN_DRAGONS);
+			if ( numbers.get(1) > MyInterface.MAX_DRAGONS )
+				numbers.set(1, MyInterface.MAX_DRAGONS);
+			else if ( numbers.get(1) < MyInterface.MIN_DRAGONS )
+				numbers.set(1, MyInterface.MIN_DRAGONS);
 			
+		    // level
+			if ( numbers.get(2) > MyInterface.MAX_LEVEL )
+				numbers.set(2, MyInterface.MAX_LEVEL);
+			else if ( numbers.get(2) < MyInterface.MIN_LEVEL )
+				numbers.set(2, MyInterface.MIN_LEVEL);
+			
+
+			System.out.println("->" + numbers.get(0));
+			System.out.println("->" + numbers.get(1));
+			System.out.println("->" + numbers.get(2));
 		} catch (NumberFormatException | IOException e) {
-			numbers.set(0, 1);
-			numbers.set(1, 11);
+			numbers.set(0, 11);
+			numbers.set(1, 1);
 			numbers.set(2, 1);
 		}
 		

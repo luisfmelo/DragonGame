@@ -38,12 +38,12 @@ public class OptionsPanel extends JFrame{
 		getContentPane().add(inSize);
 		inSize.setColumns(10);
 
-		if ( arr.get(1) < MyInterface.MIN_SIZE)
+		if ( arr.get(0) < MyInterface.MIN_SIZE)
 			inSize.setText( Integer.toString(MyInterface.MIN_SIZE) );
-		else if ( arr.get(1) > MyInterface.MAX_SIZE)
+		else if ( arr.get(0) > MyInterface.MAX_SIZE)
 			inSize.setText( Integer.toString(MyInterface.MAX_SIZE) );
 		else
-			inSize.setText( Integer.toString(arr.get(1)) );
+			inSize.setText( Integer.toString(arr.get(0)) );
 		
 		inND = new JTextField();
 		//inND.setText("1");
@@ -51,12 +51,12 @@ public class OptionsPanel extends JFrame{
 		inND.setBounds(50, 115, 100, 20);
 		getContentPane().add(inND);
 		
-		if ( arr.get(0) < MyInterface.MIN_DRAGONS)
+		if ( arr.get(1) < MyInterface.MIN_DRAGONS)
 			inND.setText( Integer.toString(MyInterface.MIN_DRAGONS) );
-		else if ( arr.get(0) > MyInterface.MAX_DRAGONS)
+		else if ( arr.get(1) > MyInterface.MAX_DRAGONS)
 			inND.setText( Integer.toString(MyInterface.MAX_DRAGONS) );
 		else
-			inND.setText( Integer.toString(arr.get(0)) );
+			inND.setText( Integer.toString(arr.get(1)) );
 		
 				
 		ButtonGroup group = new ButtonGroup();
@@ -100,7 +100,7 @@ public class OptionsPanel extends JFrame{
 		JLabel lblOptions = new JLabel("Options");
 		lblOptions.setHorizontalAlignment(SwingConstants.CENTER);
 		lblOptions.setFont(new Font("Consolas", Font.BOLD, 16));
-		lblOptions.setBounds(10, 11, 214, 26);
+		lblOptions.setBounds(10, 11, 184, 26);
 		getContentPane().add(lblOptions);
 		
 		JLabel labelNDragons = new JLabel("Number of Dragons");
@@ -125,36 +125,37 @@ public class OptionsPanel extends JFrame{
 					try {
 						writer = new PrintWriter(".config", "UTF-8");
 						String str = "";
-					// CHECK NUMBER OF DRAGONS
-						if ( Integer.parseInt( inND.getText() ) < MyInterface.MIN_DRAGONS )
-							str += MyInterface.MIN_DRAGONS + "\n";
-						else if ( Integer.parseInt( inND.getText() ) > MyInterface.MAX_DRAGONS )
-							str += MyInterface.MAX_DRAGONS + "\n";
-						else 
-							str += inND.getText() + "\n";
-						
+															
 					// CHECK SIZE
 						if ( Integer.parseInt( inSize.getText() ) < MyInterface.MIN_SIZE )
-							str += MyInterface.MIN_SIZE + "\n";
+							str += MyInterface.MIN_SIZE + ",";
 						else if ( Integer.parseInt( inSize.getText() ) > MyInterface.MAX_SIZE )
-							str += MyInterface.MAX_SIZE + "\n";
+							str += MyInterface.MAX_SIZE + ",";
 						else 
 						{
 							int n = Integer.parseInt( inSize.getText() );
 							if ( n % 2 == 0 )
 								n++;
-							str += n + "\n";
+							str += n + ",";
 						}
 						
+					// CHECK NUMBER OF DRAGONS
+						if ( Integer.parseInt( inND.getText() ) < MyInterface.MIN_DRAGONS )
+							str += MyInterface.MIN_DRAGONS + ",";
+						else if ( Integer.parseInt( inND.getText() ) > MyInterface.MAX_DRAGONS )
+							str += MyInterface.MAX_DRAGONS + ",";
+						else 
+							str += inND.getText() + ",";
+
 					// CHECK LEVEL
 						if ( lvl1.isSelected() )
-							str += "1";
+							str += "1,";
 						else if ( lvl2.isSelected() )
-							str += "2";
+							str += "2,";
 						else if ( lvl3.isSelected() )
-							str += "3";
+							str += "3,";
 						else 
-							str += "1";
+							str += "1,";
 						writer.println(str);
 						writer.close();
 						setVisible(false);

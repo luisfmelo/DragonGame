@@ -89,12 +89,15 @@ public class MyFrame extends JFrame{
 		JButton btnNewGame = new JButton("New Game");
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					gamePanel.start();
-				} catch (NumberFormatException | IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				//int ng = JOptionPane.showConfirmDialog(null, "Are you sure you want to start a new Game?");
+				//if( ng == JOptionPane.YES_OPTION )
+				//{
+					try {
+						gamePanel.start();
+					} catch (NumberFormatException | IOException e1) {
+						e1.printStackTrace();
+					}
+				//}
 			}
 		});
 		btnNewGame.setBounds(0, 0, 450, 25);
