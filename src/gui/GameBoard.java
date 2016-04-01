@@ -205,14 +205,24 @@ public class GameBoard extends JPanel implements KeyListener{
 	public void handleWin(){
         this.removeKeyListener(this);
         int res = JOptionPane.showConfirmDialog(null,
-        		"You Win! Congratulations!", "WIN", 
-                JOptionPane.DEFAULT_OPTION,
+        		"You Win! Congratulations! Do you want to start a new Game?", "WIN", 
+                JOptionPane.INFORMATION_MESSAGE,
                 JOptionPane.PLAIN_MESSAGE);
         
-        if ( res == JOptionPane.OK_OPTION || res == JOptionPane.CLOSED_OPTION )
-        	myGame.setGameRunning(false);
-
-        MyInterface.main(new String[0]);        
+        if ( res == JOptionPane.YES_OPTION )
+        {
+        	try {
+    			this.start();
+    		} catch (NumberFormatException | IOException e1) {
+    			e1.printStackTrace();
+    		}
+        }
+        	
+        myGame.setGameRunning(false);
+        
+        
+		
+        //MyInterface.main(new String[0]);        
 	}
 	
 	public void handleDefeat() {
