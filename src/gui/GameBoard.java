@@ -193,11 +193,6 @@ public class GameBoard extends JPanel implements KeyListener{
 				numbers.set(2, MyInterface.MAX_LEVEL);
 			else if ( numbers.get(2) < MyInterface.MIN_LEVEL )
 				numbers.set(2, MyInterface.MIN_LEVEL);
-			
-
-			System.out.println("->" + numbers.get(0));
-			System.out.println("->" + numbers.get(1));
-			System.out.println("->" + numbers.get(2));
 		} catch (NumberFormatException | IOException e) {
 			numbers.set(0, 11);
 			numbers.set(1, 1);
