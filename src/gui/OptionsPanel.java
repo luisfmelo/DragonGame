@@ -169,6 +169,5 @@ public class OptionsPanel extends JFrame{
 		btnSaveOptions.setFont(new Font("Consolas", Font.PLAIN, 11));
 		btnSaveOptions.setBounds(50, 250, 100, 25);
 		getContentPane().add(btnSaveOptions);
-		
 	}
 }

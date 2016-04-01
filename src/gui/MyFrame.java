@@ -41,10 +41,10 @@ public class MyFrame extends JFrame{
 	private JButton btnCreate;
 	
 	public MyFrame() throws IOException {
-		setSize(650, 450);
+		setResizable(false);
+		setSize(650, 725);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Dragon Game");
-		setResizable(false);
 		
 		getContentPane().setFocusTraversalPolicyProvider(true);
 		getContentPane().setBounds(new Rectangle(0, 0, 650, 450));
@@ -52,11 +52,17 @@ public class MyFrame extends JFrame{
 		getContentPane().setLayout(null);
 		
 		bottomPanel = new JPanel();
-		bottomPanel.setBounds(0, 400, 650, 25);
+		bottomPanel.setBounds(0, 675, 650, 25);
 		getContentPane().add(bottomPanel);
 		bottomPanel.setLayout(null);
 		
+		btnExit = new JButton("Exit");
+		btnExit.setBounds(323, 0, 317, 25);
+		bottomPanel.add(btnExit);
+		
 		btnOptions = new JButton("Options");
+		btnOptions.setBounds(0, 0, 325, 25);
+		bottomPanel.add(btnOptions);
 		btnOptions.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -66,10 +72,6 @@ public class MyFrame extends JFrame{
 				optionPanel.setVisible(true);
 			}
 		});
-		btnOptions.setBounds(0, 0, 325, 25);
-		bottomPanel.add(btnOptions);
-		
-		btnExit = new JButton("Exit");
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int exit = JOptionPane.showConfirmDialog(rootPane, "Are you sure you want to exit the Game?");
@@ -77,8 +79,6 @@ public class MyFrame extends JFrame{
 					System.exit(0);
 			}
 		});
-		btnExit.setBounds(325, 0, 325, 25);
-		bottomPanel.add(btnExit);
 		
 		topPanel = new JPanel();
 		topPanel.setBounds(0, 0, 650, 25);
@@ -108,7 +108,7 @@ public class MyFrame extends JFrame{
 		topPanel.add(btnCreate);
 		
 		gamePanel = new GameBoard(level, size, num_dragons);
-		gamePanel.setBounds(0, 25, 650, 375);
+		gamePanel.setBounds(0, 25, 650, 650);
 		getContentPane().add(gamePanel);
 		gamePanel.setLayout(null);
 		

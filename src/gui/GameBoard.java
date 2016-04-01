@@ -218,11 +218,7 @@ public class GameBoard extends JPanel implements KeyListener{
     		}
         }
         	
-        myGame.setGameRunning(false);
-        
-        
-		
-        //MyInterface.main(new String[0]);        
+        myGame.setGameRunning(false);     
 	}
 	
 	public void handleDefeat() {
