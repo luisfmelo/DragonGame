@@ -4,21 +4,13 @@ import javax.swing.JPanel;
 
 import logic.Game;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
-import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -39,6 +31,8 @@ public class MyFrame extends JFrame{
 	
 	protected Game myGame = new Game();
 	private JButton btnCreate;
+
+	protected BuildPanel build;
 	
 	public MyFrame() throws IOException {
 		setResizable(false);
@@ -57,7 +51,7 @@ public class MyFrame extends JFrame{
 		bottomPanel.setLayout(null);
 		
 		btnExit = new JButton("Exit");
-		btnExit.setBounds(323, 0, 317, 25);
+		btnExit.setBounds(325, 0, 325, 25);
 		bottomPanel.add(btnExit);
 		
 		btnOptions = new JButton("Options");
@@ -103,7 +97,15 @@ public class MyFrame extends JFrame{
 		btnNewGame.setBounds(0, 0, 450, 25);
 		topPanel.add(btnNewGame);
 		
-		btnCreate = new JButton("Create New Maze");
+		btnCreate = new JButton("Build New Maze");
+		btnCreate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				build = new BuildPanel();
+				//optionPanel.setDefaultCloseOperation(optionPanel.setVisible(false);
+				
+				build.setVisible(true);
+			}
+		});
 		btnCreate.setBounds(450, 0, 200, 25);
 		topPanel.add(btnCreate);
 		

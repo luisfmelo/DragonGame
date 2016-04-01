@@ -25,7 +25,7 @@ public class HelpPanel extends JFrame{
 	
 	
 	public HelpPanel() {
-		ArrayList<Integer> arr = GameBoard.readFromFile();
+		/*ArrayList<Integer> arr = GameBoard.readFromFile();
 		
 		setFont(new Font("Consolas", Font.PLAIN, 11));
 		this.setSize(220, 350);
@@ -124,6 +124,6 @@ public class HelpPanel extends JFrame{
 		txtrGetTheSword.setText("Get the sword, kill all dragons\\nand escape the dungeon!");
 		txtrGetTheSword.setBounds(10, 50, 119, 55);
 		getContentPane().add(txtrGetTheSword);
-		
+		*/
 	}
 }

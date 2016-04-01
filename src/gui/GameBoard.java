@@ -1,10 +1,7 @@
 package gui;
 
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Frame;
 import java.awt.Graphics;
-import java.awt.List;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
@@ -88,39 +85,38 @@ public class GameBoard extends JPanel implements KeyListener{
 	
 	@Override 
 	protected void paintComponent(Graphics g){
-		int width = this.getWidth();
-		int height = this.getHeight();
 		int size = this.myGame.maze.getLen();
+		int width = this.getWidth() - (this.getWidth() % size);
+		int height = this.getHeight() - (this.getHeight() % size);
 		
 		if ( !myGame.isGameRunning() )
 			g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), Color.WHITE, null);
 		else
 		{
 			g.drawImage(wall, 0, 0, this.getWidth(), this.getHeight(), Color.WHITE, null);
-
 			for ( int i = 0; i < myGame.maze.getLen(); i++ )
 				for ( int j = 0; j < myGame.maze.getLen(); j++ )
 				{
 					if ( myGame.maze.maze[j][i] == 'X')
-						g.drawImage(wall, i * width / size, j * height / size, width / size, height / size, Color.WHITE, null);
+						g.drawImage(wall, i * width / size, j * height / size, width / size , height / size , null);
 					else if ( myGame.maze.maze[j][i] == ' ')
-						g.drawImage(path, i * width / size, j * height / size, width / size, height / size, Color.WHITE, null);
+						g.drawImage(path, i * width / size, j * height / size, width / size, height / size, null);
 					else if ( myGame.maze.maze[j][i] == 'H' )
-						g.drawImage(hero_unarmed, i * width / size, j * height / size, width / size, height / size, Color.WHITE, null);
+						g.drawImage(hero_unarmed, i * width / size, j * height / size, width / size, height / size, null);
 					else if ( myGame.maze.maze[j][i] == 'A' )
-						g.drawImage(hero_armed, i * width / size, j * height / size, width / size, height / size, Color.WHITE, null);
+						g.drawImage(hero_armed, i * width / size, j * height / size, width / size, height / size, null);
 					else if ( myGame.maze.maze[j][i] == 'D' )
-						g.drawImage(dragon, i * width / size, j * height / size, width / size, height / size, Color.WHITE, null);
+						g.drawImage(dragon, i * width / size, j * height / size, width / size, height / size, null);
 					else if ( myGame.maze.maze[j][i] == 'd' )
-						g.drawImage(sleepy_dragon, i * width / size, j * height / size, width / size, height / size, Color.WHITE, null);
+						g.drawImage(sleepy_dragon, i * width / size, j * height / size, width / size, height / size, null);
 					else if ( myGame.maze.maze[j][i] == 's' )
-						g.drawImage(open_door, i * width / size, j * height / size, width / size, height / size, Color.WHITE, null);
+						g.drawImage(open_door, i * width / size, j * height / size, width / size, height / size, null);
 					else if ( myGame.maze.maze[j][i] == 'S' )
-						g.drawImage(closed_door, i * width / size, j * height / size, width / size, height / size, Color.WHITE, null);
+						g.drawImage(closed_door, i * width / size, j * height / size, width / size, height / size, null);
 					else if ( myGame.maze.maze[j][i] == 'E' )
-						g.drawImage(sword, i * width / size, j * height / size, width / size, height / size, Color.WHITE, null);
+						g.drawImage(sword, i * width / size, j * height / size, width / size, height / size, null);
 					else if ( myGame.maze.maze[j][i] == 'F' )
-						g.drawImage(dragon_sword, i * width / size, j * height / size, width / size, height / size, Color.WHITE, null);
+						g.drawImage(dragon_sword, i * width / size, j * height / size, width / size, height / size, null);
 				}
 		}
 	}
@@ -211,26 +207,42 @@ public class GameBoard extends JPanel implements KeyListener{
         
         if ( res == JOptionPane.YES_OPTION )
         {
+            myGame.setGameRunning(false);    
         	try {
     			this.start();
     		} catch (NumberFormatException | IOException e1) {
     			e1.printStackTrace();
     		}
-        }
-        	
-        myGame.setGameRunning(false);     
+        }        
+        else if ( res == JOptionPane.NO_OPTION )
+        {
+        	try {
+    			this.start();
+    		} catch (NumberFormatException | IOException e1) {
+    			e1.printStackTrace();
+    		}
+
+            myGame.setGameRunning(false);    
+        } 
+        else
+            myGame.setGameRunning(false);    
 	}
 	
 	public void handleDefeat() {
         this.removeKeyListener(this);
         int res = JOptionPane.showConfirmDialog(null,
         		"You lose! Try Again!", "Defeat", 
-                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
                 JOptionPane.PLAIN_MESSAGE);
         
-        if ( res == JOptionPane.OK_OPTION || res == JOptionPane.CLOSED_OPTION )
-        	myGame.setGameRunning(false);
-
-        MyInterface.main(new String[0]);
+        if ( res == JOptionPane.YES_OPTION )
+        {
+        	try {
+    			this.start();
+    		} catch (NumberFormatException | IOException e1) {
+    			e1.printStackTrace();
+    		}
+        }
+        myGame.setGameRunning(false);     
 	}
 }
