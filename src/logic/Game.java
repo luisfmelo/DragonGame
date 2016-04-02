@@ -175,6 +175,13 @@ public class Game {
 	}
 
 	public boolean checkPos (char c, Element el) throws IllegalArgumentException {
+		if ( DRAGONS_ALIVE == 0 )
+		{
+			exit.setLetter('s');
+			exit.setPos(maze, exit.pos);
+			setAllDragonsDead(true);
+		}
+		
 		Point newPos = new Point();
 		
 		try{
@@ -211,7 +218,7 @@ public class Game {
 					h.setLetter('A');
 				}
 				for (Dragon d : dragons) {
-					if ( d.pos.adjacentTo(newPos))
+					if ( d.pos.adjacentTo(newPos) && !d.isDead())
 					{
 						d.setDead(true);
 						d.setLetter(' ');
@@ -362,7 +369,6 @@ public class Game {
 		this.allDragonsDead = allDragonsDead;
 	}
 
-	
 	public boolean defeatOrLose() {
 		return this.Defeat || this.Victory;
 	}

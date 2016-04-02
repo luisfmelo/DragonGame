@@ -228,7 +228,7 @@ public class GameBoard extends JPanel implements KeyListener{
             myGame.setGameRunning(false);    
 	}
 	
-	public void handleDefeat() {
+	public void handleDefeat() {  
         this.removeKeyListener(this);
         int res = JOptionPane.showConfirmDialog(null,
         		"You lose! Try Again!", "Defeat", 
@@ -237,12 +237,24 @@ public class GameBoard extends JPanel implements KeyListener{
         
         if ( res == JOptionPane.YES_OPTION )
         {
+            myGame.setGameRunning(false);    
         	try {
     			this.start();
     		} catch (NumberFormatException | IOException e1) {
     			e1.printStackTrace();
     		}
-        }
-        myGame.setGameRunning(false);     
+        }        
+        else if ( res == JOptionPane.NO_OPTION )
+        {
+        	try {
+    			this.start();
+    		} catch (NumberFormatException | IOException e1) {
+    			e1.printStackTrace();
+    		}
+
+            myGame.setGameRunning(false);    
+        } 
+        else
+            myGame.setGameRunning(false);    
 	}
 }

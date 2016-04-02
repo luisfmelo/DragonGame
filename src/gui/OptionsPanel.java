@@ -33,7 +33,6 @@ public class OptionsPanel extends JFrame{
 		getContentPane().setLayout(null);
 		
 		inSize = new JTextField();
-		//inSize.setText("11");
 		inSize.setBounds(50, 65, 100, 20);
 		getContentPane().add(inSize);
 		inSize.setColumns(10);
