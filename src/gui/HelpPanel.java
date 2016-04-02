@@ -80,7 +80,7 @@ package gui;
  		lblKeys.setIcon(keys);
  		
  		JLabel label = new JLabel("Commands");
- 		label.setFont(new Font("Tahoma", Font.BOLD, 15));
+ 		label.setFont(new Font("Consolas", Font.BOLD, 15));
  		label.setBounds(293, 199, 82, 14);
  		getContentPane().add(label);
  		
@@ -103,12 +103,12 @@ package gui;
  		getContentPane().add(txtrThereAre);
  		
  		JLabel lblLevels = new JLabel("Levels");
- 		lblLevels.setFont(new Font("Tahoma", Font.BOLD, 15));
+ 		lblLevels.setFont(new Font("Consolas", Font.BOLD, 15));
  		lblLevels.setBounds(10, 199, 82, 14);
  		getContentPane().add(lblLevels);
  		
  		JLabel lblOptions = new JLabel("Options");
- 		lblOptions.setFont(new Font("Tahoma", Font.BOLD, 15));
+ 		lblOptions.setFont(new Font("Consolas", Font.BOLD, 15));
  		lblOptions.setBounds(10, 99, 82, 14);
  		getContentPane().add(lblOptions);
  		
