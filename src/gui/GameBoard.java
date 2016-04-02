@@ -264,4 +264,11 @@ public class GameBoard extends JPanel implements KeyListener{
 	public void repaint(boolean b) {
 		playing = b;
 	}
+	
+	public void doSomeMagic(){
+        this.removeKeyListener(this);
+        this.addKeyListener(this);
+        
+		requestFocus();
+	}
 }

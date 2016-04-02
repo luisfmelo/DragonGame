@@ -18,7 +18,9 @@ package gui;
  
  import javax.swing.SwingConstants;
  import java.awt.event.ActionListener;
- import java.awt.image.BufferedImage;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
  import java.io.File;
  import java.io.FileNotFoundException;
  import java.io.IOException;
@@ -37,7 +39,7 @@ package gui;
  public class HelpPanel extends JFrame{
  	
  	
- 	public HelpPanel() {
+ 	public HelpPanel(GameBoard gamePanel) {
  		getContentPane().setName("");
  		ArrayList<Integer> arr = GameBoard.readFromFile();
  		
@@ -129,6 +131,13 @@ package gui;
  		rights.setBackground(SystemColor.menu);
  		rights.setBounds(150, 436, 200, 25);
  		getContentPane().add(rights);
+ 		
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				gamePanel.doSomeMagic();
+			}
+		});
  	}
  }
  

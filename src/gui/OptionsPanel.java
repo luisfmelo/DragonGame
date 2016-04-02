@@ -18,6 +18,8 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class OptionsPanel extends JFrame{
 	private JTextField inSize;
@@ -25,7 +27,7 @@ public class OptionsPanel extends JFrame{
 	
 	
 	
-	public OptionsPanel() {
+	public OptionsPanel(GameBoard gamePanel) {
 		ArrayList<Integer> arr = GameBoard.readFromFile();
 		
 		setFont(new Font("Consolas", Font.PLAIN, 11));
@@ -163,6 +165,15 @@ public class OptionsPanel extends JFrame{
 						e.printStackTrace();
 					}
 				}
+				dispose();
+				gamePanel.doSomeMagic();
+			}
+		});
+		
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				gamePanel.doSomeMagic();
 			}
 		});
 		btnSaveOptions.setFont(new Font("Consolas", Font.PLAIN, 11));

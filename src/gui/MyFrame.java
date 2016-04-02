@@ -68,7 +68,7 @@ public class MyFrame extends JFrame{
 		bottomPanel.add(btnOptions);
 		btnOptions.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				optionPanel = new OptionsPanel();
+				optionPanel = new OptionsPanel(gamePanel);
 				optionPanel.setVisible(true);
 			}
 		});
@@ -78,7 +78,7 @@ public class MyFrame extends JFrame{
 		bottomPanel.add(btnHelp);
 		btnHelp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				helpPanel = new HelpPanel();
+				helpPanel = new HelpPanel(gamePanel);
 				helpPanel.setLocationRelativeTo(null);
 				helpPanel.setVisible(true);
 			}
