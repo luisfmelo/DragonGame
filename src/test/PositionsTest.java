@@ -3,7 +3,6 @@ package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
 
 import logic.Element;
@@ -20,19 +19,19 @@ public class PositionsTest {
 		Element el = new Element();
 
 		//up
-		el.pos.setCoords(1, 1);
+		el.getPos().setCoords(1, 1);
 		assertEquals(new Point(0, 1).toString(), el.newPosition('W').toString());
 		
 		//right
-		el.pos.setCoords(1, 1);
+		el.getPos().setCoords(1, 1);
 		assertEquals(new Point(1, 2).toString(), el.newPosition('D').toString());
 		
 		//down
-		el.pos.setCoords(1, 1);
+		el.getPos().setCoords(1, 1);
 		assertEquals(new Point(2, 1).toString(), el.newPosition('S').toString());
 		
 		//left
-		el.pos.setCoords(1, 1);
+		el.getPos().setCoords(1, 1);
 		assertEquals(new Point(1, 0).toString(), el.newPosition('A').toString());
 		
 	}
@@ -44,7 +43,7 @@ public class PositionsTest {
 	public void testNewIllegalPos() {
 		Element el = new Element();
 
-		el.pos.setCoords(1, 1);
+		el.getPos().setCoords(1, 1);
 		el.newPosition('F');
 	}
 
@@ -74,7 +73,11 @@ public class PositionsTest {
 		assertTrue( p.equals(new Point(2,1)) );
 		p.setCoords(1, 2);
 		assertTrue( p.equals(new Point(1,2)) );
+
 		assertFalse( p.equals(new Point(3,1)) );
+		assertFalse( p.equals(new Point(1,3)) );
+		assertFalse( p.equals(new Point(3,2)) );
+		
 		assertTrue( p.equals(p) );
 		assertFalse( p.equals(h) );
 	}

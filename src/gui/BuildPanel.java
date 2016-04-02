@@ -32,7 +32,6 @@ public class BuildPanel extends JPanel {
 	private char[][] matrix;
 	
 	private int size = 7;
-	private int n_drag;
 
 	public BuildPanel() {		
 	}

@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Element {
 	
-	public Point pos = new Point();
+	private Point pos = new Point();
 	private char letter;
 	
 	public char getLetter() {
@@ -43,11 +43,16 @@ public class Element {
 	public Point newPosition(char c) throws IllegalArgumentException{
 		switch( Character.toUpperCase(c) )
 		{
-			case 'W': return new Point(this.pos.getX() - 1, this.pos.getY());
-			case 'D': return new Point(this.pos.getX(), this.pos.getY() + 1);
-			case 'S': return new Point(this.pos.getX() + 1, this.pos.getY());
-			case 'A': return new Point(this.pos.getX(), this.pos.getY() - 1);
+			case 'W': return new Point(this.getPos().getX() - 1, this.getPos().getY());
+			case 'D': return new Point(this.getPos().getX(), this.getPos().getY() + 1);
+			case 'S': return new Point(this.getPos().getX() + 1, this.getPos().getY());
+			case 'A': return new Point(this.getPos().getX(), this.getPos().getY() - 1);
 			default: throw new IllegalArgumentException();
 		}		
+	}
+
+	
+	public Point getPos() {
+		return pos;
 	}
 }

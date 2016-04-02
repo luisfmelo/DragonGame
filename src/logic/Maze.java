@@ -6,7 +6,7 @@ import java.util.Stack;
 
 public class Maze implements IMazeBuilder{
 	private int len;
-	public char[][] maze; 
+	protected char[][] maze; 
 	
 	/**
 	 * Constructor
@@ -266,7 +266,7 @@ public class Maze implements IMazeBuilder{
 			s.setRandomPos(maze);
 			dragon.setRandomPos(maze);
 			hero.setRandomPos(maze);
-			if ( 	!hero.pos.adjacentTo(dragon.pos) && 
+			if ( 	!hero.getPos().adjacentTo(dragon.getPos()) && 
 					maze.getElementPos(s.getLetter()) != null &&
 					maze.getElementPos(hero.getLetter()) != null &&
 					maze.getElementPos(dragon.getLetter()) != null )
@@ -277,4 +277,5 @@ public class Maze implements IMazeBuilder{
 		return maze.getMaze();
 		
 	}
+	
 }

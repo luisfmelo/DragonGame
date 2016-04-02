@@ -23,7 +23,7 @@ public class DragonTest {
 		Game g = new Game(maze, 2, new Hero(), d, new Sword());
 		
 		//he will sleep
-		g.sleepyDragon(maze, 100,g.dragons.get(0));
+		g.sleepyDragon(maze, 100,g.getDragons().get(0));
 		assertTrue(d.isSleepy());
 		
 	}

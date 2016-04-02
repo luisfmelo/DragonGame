@@ -31,10 +31,9 @@ public class MyFrame extends JFrame{
 	private JButton btnExit;
 	private JPanel topPanel;
 	
-	protected Game myGame = new Game();
 	private JButton btnCreate;
 
-	protected BuildPanel build;
+	private BuildPanel build;
 	
 	public MyFrame() throws IOException {
 		setResizable(false);
@@ -122,9 +121,9 @@ public class MyFrame extends JFrame{
 		JButton home = new JButton("");
 		home.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				myGame.setGameRunning(false);
+				gamePanel.myGame.setGameRunning(false);
 				gamePanel.repaint();
-				gamePanel.repaint(false);
+				//gamePanel.repaint(false);
 				build.setVisible(false);
 				gamePanel.setVisible(true);
 			}

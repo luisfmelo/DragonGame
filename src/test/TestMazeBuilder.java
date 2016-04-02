@@ -196,8 +196,8 @@ public class TestMazeBuilder {
 		m.buildMaze(10, e);
 		
 		m.print();
-		assertTrue( e.pos.getX() == 0 || e.pos.getX() == m.getLen() - 1 ||
-					e.pos.getY() == 0 || e.pos.getY() == m.getLen() - 1);
+		assertTrue( e.getPos().getX() == 0 || e.getPos().getX() == m.getLen() - 1 ||
+					e.getPos().getY() == 0 || e.getPos().getY() == m.getLen() - 1);
 		//assertEquals(11, m.getLen());
 	}
 	
@@ -207,7 +207,7 @@ public class TestMazeBuilder {
 	@Test
 	public void testRandomMaze(){
 		Game g = new Game(1, "10", "0");
-		assertEquals( 11, g.maze.getLen());
+		assertEquals( 11, g.getMaze().getLen());
 	}
 	
 	/**
@@ -222,20 +222,20 @@ public class TestMazeBuilder {
 		for ( int i = 0; i < 20; i++)
 		{
 			d = new Dragon();
-			d.pos.setCoords(1, 1);		
-			d.setPos(m, d.pos.getCoords());
+			d.getPos().setCoords(1, 1);		
+			d.setPos(m, d.getPos().getCoords());
 			
 			Game g = new Game(m, 3, new Hero(), d, new Sword() );
 			
-			assertEquals( 1, d.pos.getX());
-			assertEquals( 1, d.pos.getY());
+			assertEquals( 1, d.getPos().getX());
+			assertEquals( 1, d.getPos().getY());
 
-			System.out.println("**************>" + d.pos.toString());
+			System.out.println("**************>" + d.getPos().toString());
 			g.pcMove(d);
-			System.out.println("-------------->" + d.pos.toString());
-			assertTrue( d.pos.getX() == 1 && d.pos.getY() == 2 ||
-						d.pos.getX() == 2 && d.pos.getY() == 1 ||
-						d.pos.getX() == 1 && d.pos.getY() == 1 );
+			System.out.println("-------------->" + d.getPos().toString());
+			assertTrue( d.getPos().getX() == 1 && d.getPos().getY() == 2 ||
+						d.getPos().getX() == 2 && d.getPos().getY() == 1 ||
+						d.getPos().getX() == 1 && d.getPos().getY() == 1 );
 		}
 
 	}

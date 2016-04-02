@@ -22,11 +22,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class OptionsPanel extends JFrame{
+
+	private static final long serialVersionUID = -1956181248993244529L;
 	private JTextField inSize;
 	private JTextField inND;
-	
-	
-	
+
 	public OptionsPanel(GameBoard gamePanel) {
 		ArrayList<Integer> arr = GameBoard.readFromFile();
 		

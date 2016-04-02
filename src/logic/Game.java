@@ -6,19 +6,17 @@ import java.util.Random;
 import gui.GameBoard;
 
 public class Game {
-	public Hero hero = new Hero(); 			//pos (1,1)
-	public ArrayList <Dragon> dragons = new ArrayList<Dragon> ();  	//pos (1,3)
+	protected Hero hero = new Hero(); 			//pos (1,1)
+	protected ArrayList <Dragon> dragons = new ArrayList<Dragon> ();  	//pos (1,3)
 	private Sword sword = new Sword(); 		//pos (1,8)
-	public Exit exit = new Exit(); 		//pos (9,5)
+	protected Exit exit = new Exit(); 		//pos (9,5)
 	private boolean GameRunning = false;
 	private int level = 1;
-	public Maze maze = new Maze();
+	protected Maze maze = new Maze();
 	private boolean Victory = false;
 	private boolean Defeat = false;
 	private boolean allDragonsDead = false;
 	private int DRAGONS_ALIVE;
-	
-	public Game(){}
 	
 	//Game com Maze enviado pelo utilizador -> TESTE
 	public Game(Maze m,int lvl, Hero h, Dragon d, Sword s){
@@ -52,7 +50,7 @@ public class Game {
 				hero.setRandomPos(maze);
 				boolean b = true;
 				for (Dragon dragon : dragons) {
-					if ( dragon.pos.adjacentTo(hero.pos) )
+					if ( dragon.getPos().adjacentTo(hero.getPos()) )
 						b = false;
 				}
 				
@@ -78,13 +76,13 @@ public class Game {
 		{
 			for(int i=0;i<n_Dragons;i++){
 					dragons.get(i).setLetter('d');
-					dragons.get(i).setPos(maze, dragons.get(i).pos);	
+					dragons.get(i).setPos(maze, dragons.get(i).getPos());	
 			}			
 		}
 		if ( DRAGONS_ALIVE == 0 )
 		{
 			exit.setLetter('s');
-			exit.setPos(maze, exit.pos);
+			exit.setPos(maze, exit.getPos());
 			setAllDragonsDead(true);
 		}
 	}
@@ -164,13 +162,13 @@ public class Game {
 		{
 			dragon.setSleepy(true);
 			dragon.setLetter('d');
-			dragon.setPos(maze, dragon.pos);	
+			dragon.setPos(maze, dragon.getPos());	
 		}
 		else if (sleep > p && dragon.isSleepy())//wake up sunshine
 		{
 			dragon.setSleepy(false);
 			dragon.setLetter('D');
-			dragon.setPos(maze, dragon.pos);
+			dragon.setPos(maze, dragon.getPos());
 		}	
 	}
 
@@ -178,7 +176,7 @@ public class Game {
 		if ( DRAGONS_ALIVE == 0 )
 		{
 			exit.setLetter('s');
-			exit.setPos(maze, exit.pos);
+			exit.setPos(maze, exit.getPos());
 			setAllDragonsDead(true);
 		}
 		
@@ -218,16 +216,16 @@ public class Game {
 					h.setLetter('A');
 				}
 				for (Dragon d : dragons) {
-					if ( d.pos.adjacentTo(newPos) && !d.isDead())
+					if ( d.getPos().adjacentTo(newPos) && !d.isDead())
 					{
 						d.setDead(true);
 						d.setLetter(' ');
-						d.setPos(maze, d.pos);
+						d.setPos(maze, d.getPos());
 						DRAGONS_ALIVE --;
 						if ( DRAGONS_ALIVE == 0 )
 						{
 							exit.setLetter('s');
-							exit.setPos(maze, exit.pos);
+							exit.setPos(maze, exit.getPos());
 							setAllDragonsDead(true);
 						}
 					}
@@ -245,11 +243,11 @@ public class Game {
 			if ( !h.isArmed() )
 			{
 				for (Dragon d : dragons) {
-					if ( d.pos.adjacentTo(newPos) && (d.getLetter() != 'd') )
+					if ( d.getPos().adjacentTo(newPos) && (d.getLetter() != 'd') )
 					{
 						h.setDead(true);
 						h.setLetter(' ');
-						h.setPos(maze, h.pos);
+						h.setPos(maze, h.getPos());
 						endGame("lose");
 						maze.print();
 						return true;
@@ -259,7 +257,7 @@ public class Game {
 			//avoids colision of coords when dragon is sleeping
 			if ( maze.charAt(newPos) == 'd' )
 			{ 
-				h.setPos(maze, h.pos.getCoords());	
+				h.setPos(maze, h.getPos().getCoords());	
 				return false;
 			}
 			if( maze.charAt(newPos) == 'S' || maze.charAt(newPos) == 's' )
@@ -268,15 +266,16 @@ public class Game {
 					//check if dragon alive and hero wants to get out
 					if ( !d.isDead() )
 					{
-						newPos.setX( hero.pos.getX() );
-						newPos.setY( hero.pos.getY() );
+						newPos.setX( hero.getPos().getX() );
+						newPos.setY( hero.getPos().getY() );
 						System.out.println("Some Dragon is alive!");
+						setAllDragonsDead(false);
 					}
 				}					
 				//check if dragon is dead and hero wants to get out -> WIN
 				if( isAllDragonsDead() )
 				{
-					hero.setPos(maze, new Point(exit.pos.getX(), exit.pos.getY()) );
+					hero.setPos(maze, new Point(exit.getPos().getX(), exit.getPos().getY()) );
 					endGame("win");
 					return true;
 				}
@@ -291,11 +290,11 @@ public class Game {
 			if( d.getLetter() == 'F' )
 			{
 				d.setLetter('D');
-				sword.setPos(maze, new Point(sword.pos.getX(), sword.pos.getY()));
+				sword.setPos(maze, new Point(sword.getPos().getX(), sword.getPos().getY()));
 
 				d.setPos(maze, new Point(newPos.getX(), newPos.getY()) );	
 
-				sword.setPos(maze, new Point(sword.pos.getX(), sword.pos.getY()));
+				sword.setPos(maze, new Point(sword.getPos().getX(), sword.getPos().getY()));
 			}
 			//check if dragon and sword are in the same position
 			if ( maze.charAt(newPos) == 'E' )
@@ -305,26 +304,26 @@ public class Game {
 			//dragon and exit in same position - don't update
 			if( maze.charAt(newPos) == 'S' || maze.charAt(newPos) == 's')
 			{
-				newPos.setCoords(d.pos.getX(), d.pos.getY());
+				newPos.setCoords(d.getPos().getX(), d.getPos().getY());
 			}
 			// encounter with hero - hero wins
-			if ( hero.pos.adjacentTo(newPos) && hero.isArmed() )
+			if ( hero.getPos().adjacentTo(newPos) && hero.isArmed() )
 			{
 				d.setDead(true);
 				d.setLetter(' ');
-				d.setPos(maze, d.pos);
+				d.setPos(maze, d.getPos());
 			}
 			// encounter with hero - hero loses -> GAME OVER
-			if ( hero.pos.adjacentTo(newPos) && !hero.isArmed() )
+			if ( hero.getPos().adjacentTo(newPos) && !hero.isArmed() )
 			{
 				hero.setDead(true);
 				hero.setLetter(' ');
-				hero.setPos(maze, hero.pos);
+				hero.setPos(maze, hero.getPos());
 				endGame("lose");
 				return true;
 			}
 			if ( maze.charAt(newPos) == 'd' || maze.charAt(newPos) == 'D' )
-				newPos.setCoords(d.pos.getX(), d.pos.getY());
+				newPos.setCoords(d.getPos().getX(), d.getPos().getY());
 
 			d.setPos(maze, new Point(newPos.getX(), newPos.getY()));	
 		}
@@ -371,5 +370,17 @@ public class Game {
 
 	public boolean defeatOrLose() {
 		return this.Defeat || this.Victory;
+	}
+
+	public Maze getMaze() {
+		return this.maze;
+	}
+
+	public ArrayList <Dragon> getDragons() {
+		return this.dragons;
+	}
+
+	public Element getHero() {
+		return this.hero;
 	}
 }

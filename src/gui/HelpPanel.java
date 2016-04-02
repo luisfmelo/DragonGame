@@ -38,22 +38,18 @@ import java.awt.image.BufferedImage;
  
  public class HelpPanel extends JFrame{
  	
- 	
  	public HelpPanel(GameBoard gamePanel) {
  		getContentPane().setName("");
- 		ArrayList<Integer> arr = GameBoard.readFromFile();
  		
  		setFont(new Font("Consolas", Font.PLAIN, 11));
  		this.setSize(500, 500);
  		getContentPane().setLayout(null);
  
- 		
  		JLabel lblHelp = new JLabel("Help");
  		lblHelp.setHorizontalAlignment(SwingConstants.CENTER);
  		lblHelp.setFont(new Font("Consolas", Font.BOLD, 27));
  		lblHelp.setBounds(140, 11, 184, 26);
  		getContentPane().add(lblHelp);
- 		
  		
  		JTextArea txtrGetTheSword = new JTextArea();
  		txtrGetTheSword.setWrapStyleWord(true);
@@ -67,7 +63,6 @@ import java.awt.image.BufferedImage;
  		JLabel lblKeys = new JLabel();
  		lblKeys.setBounds(293, 265, 126, 160);
  		getContentPane().add(lblKeys);
- 		
  		
  		BufferedImage img = null;
  		try {

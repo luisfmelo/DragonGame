@@ -12,7 +12,6 @@ public class Hero extends Element{
 	public boolean isArmed() {
 		return armed;
 	}
-
 	public void setArmed(boolean armed) {
 		this.armed = armed;
 	}
@@ -20,7 +19,6 @@ public class Hero extends Element{
 	public boolean isDead() {
 		return dead;
 	}
-
 	public void setDead(boolean dead) {
 		this.dead = dead;
 	};

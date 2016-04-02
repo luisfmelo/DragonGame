@@ -30,6 +30,7 @@ import javax.swing.JTextField;
 import logic.Dragon;
 import logic.Game;
 import logic.Maze;
+import logic.Point;
 
 public class GameBoard extends JPanel implements KeyListener{
 
@@ -44,7 +45,6 @@ public class GameBoard extends JPanel implements KeyListener{
 	private BufferedImage open_door;
 	private BufferedImage closed_door;
 	private BufferedImage dragon_sword;
-	private Maze maze;
 	protected Game myGame;
 	
 	private boolean playing = true;
@@ -88,7 +88,7 @@ public class GameBoard extends JPanel implements KeyListener{
 	
 	@Override 
 	protected void paintComponent(Graphics g){
-		int size = this.myGame.maze.getLen();
+		int size = this.myGame.getMaze().getLen();
 		int width = this.getWidth() - (this.getWidth() % size);
 		int height = this.getHeight() - (this.getHeight() % size);
 		
@@ -97,28 +97,28 @@ public class GameBoard extends JPanel implements KeyListener{
 		else
 		{
 			g.drawImage(wall, 0, 0, this.getWidth(), this.getHeight(), Color.WHITE, null);
-			for ( int i = 0; i < myGame.maze.getLen(); i++ )
-				for ( int j = 0; j < myGame.maze.getLen(); j++ )
+			for ( int i = 0; i < myGame.getMaze().getLen(); i++ )
+				for ( int j = 0; j < myGame.getMaze().getLen(); j++ )
 				{
-					if ( myGame.maze.maze[j][i] == 'X')
+					if ( myGame.getMaze().charAt( new Point(j,i) ) == 'X')
 						g.drawImage(wall, i * width / size, j * height / size, width / size , height / size , null);
-					else if ( myGame.maze.maze[j][i] == ' ')
+					else if ( myGame.getMaze().charAt( new Point(j,i) ) == ' ')
 						g.drawImage(path, i * width / size, j * height / size, width / size, height / size, null);
-					else if ( myGame.maze.maze[j][i] == 'H' )
+					else if ( myGame.getMaze().charAt( new Point(j,i) ) == 'H' )
 						g.drawImage(hero_unarmed, i * width / size, j * height / size, width / size, height / size, null);
-					else if ( myGame.maze.maze[j][i] == 'A' )
+					else if ( myGame.getMaze().charAt( new Point(j,i) ) == 'A' )
 						g.drawImage(hero_armed, i * width / size, j * height / size, width / size, height / size, null);
-					else if ( myGame.maze.maze[j][i] == 'D' )
+					else if ( myGame.getMaze().charAt( new Point(j,i) ) == 'D' )
 						g.drawImage(dragon, i * width / size, j * height / size, width / size, height / size, null);
-					else if ( myGame.maze.maze[j][i] == 'd' )
+					else if ( myGame.getMaze().charAt( new Point(j,i) ) == 'd' )
 						g.drawImage(sleepy_dragon, i * width / size, j * height / size, width / size, height / size, null);
-					else if ( myGame.maze.maze[j][i] == 's' )
+					else if ( myGame.getMaze().charAt( new Point(j,i) ) == 's' )
 						g.drawImage(open_door, i * width / size, j * height / size, width / size, height / size, null);
-					else if ( myGame.maze.maze[j][i] == 'S' )
+					else if ( myGame.getMaze().charAt( new Point(j,i) ) == 'S' )
 						g.drawImage(closed_door, i * width / size, j * height / size, width / size, height / size, null);
-					else if ( myGame.maze.maze[j][i] == 'E' )
+					else if ( myGame.getMaze().charAt( new Point(j,i) ) == 'E' )
 						g.drawImage(sword, i * width / size, j * height / size, width / size, height / size, null);
-					else if ( myGame.maze.maze[j][i] == 'F' )
+					else if ( myGame.getMaze().charAt( new Point(j,i) ) == 'F' )
 						g.drawImage(dragon_sword, i * width / size, j * height / size, width / size, height / size, null);
 				}
 		}
@@ -146,10 +146,10 @@ public class GameBoard extends JPanel implements KeyListener{
 	
 	public void goGetIt(String key){
 		try {
-			if ( myGame.checkPos(key.charAt(0), myGame.hero) )
+			if ( myGame.checkPos(key.charAt(0), myGame.getHero() ) )
 			{
-				for( int i = 0; i < myGame.dragons.size(); i++)
-					myGame.pcMove(myGame.dragons.get(i));
+				for( int i = 0; i < myGame.getDragons().size(); i++)
+					myGame.pcMove(myGame.getDragons().get(i));
 				
 				repaint();
 				
