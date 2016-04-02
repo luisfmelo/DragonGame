@@ -26,6 +26,7 @@ public class MyFrame extends JFrame{
 	
 	private JPanel bottomPanel;
 	private JButton btnOptions;
+	private HelpPanel helpPanel;
 	private OptionsPanel optionPanel;
 	private JButton btnExit;
 	private JPanel topPanel;
@@ -52,26 +53,34 @@ public class MyFrame extends JFrame{
 		bottomPanel.setLayout(null);
 		
 		btnExit = new JButton("Exit");
-		btnExit.setBounds(325, 0, 325, 25);
+		btnExit.setBounds(429, 0, 221, 25);
 		bottomPanel.add(btnExit);
-		
-		btnOptions = new JButton("Options");
-		btnOptions.setBounds(0, 0, 325, 25);
-		bottomPanel.add(btnOptions);
-		btnOptions.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				optionPanel = new OptionsPanel();
-				//optionPanel.setDefaultCloseOperation(optionPanel.setVisible(false);
-				
-				optionPanel.setVisible(true);
-			}
-		});
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int exit = JOptionPane.showConfirmDialog(rootPane, "Are you sure you want to exit the Game?");
 				if( exit == JOptionPane.YES_OPTION )
 					System.exit(0);
+			}
+		});
+		
+		btnOptions = new JButton("Options");
+		btnOptions.setBounds(0, 0, 215, 25);
+		bottomPanel.add(btnOptions);
+		btnOptions.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				optionPanel = new OptionsPanel();
+				optionPanel.setVisible(true);
+			}
+		});
+		
+		JButton btnHelp = new JButton("Help");
+		btnHelp.setBounds(214, 0, 215, 25);
+		bottomPanel.add(btnHelp);
+		btnHelp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				helpPanel = new HelpPanel();
+				helpPanel.setLocationRelativeTo(null);
+				helpPanel.setVisible(true);
 			}
 		});
 		
