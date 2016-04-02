@@ -122,6 +122,11 @@ public class MyFrame extends JFrame{
 		JButton home = new JButton("");
 		home.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				myGame.setGameRunning(false);
+				gamePanel.repaint();
+				gamePanel.repaint(false);
+				build.setVisible(false);
+				gamePanel.setVisible(true);
 			}
 		});
 		home.setIcon(new ImageIcon("imgs/homeSymb.png"));
@@ -131,7 +136,7 @@ public class MyFrame extends JFrame{
 		gamePanel = new GameBoard(level, size, num_dragons);
 		gamePanel.setBounds(0, 25, 650, 650);
 		getContentPane().add(gamePanel);
-		gamePanel.setLayout(null);
+		gamePanel.setLayout(null);		
 		
 		build = new BuildPanel();
 		build.setVisible(false);

@@ -46,6 +46,8 @@ public class GameBoard extends JPanel implements KeyListener{
 	private BufferedImage dragon_sword;
 	private Maze maze;
 	protected Game myGame;
+	
+	private boolean playing = true;
 
 	public GameBoard(int level, int size, int num_dragons){
 
@@ -70,6 +72,7 @@ public class GameBoard extends JPanel implements KeyListener{
 	
 	public void start() throws NumberFormatException, IOException
 	{
+		playing = true;
 		ArrayList<Integer> numbers = readFromFile();
 		myGame = null;
 		myGame = new Game(numbers.get(2), numbers.get(0).toString(), numbers.get(1).toString());
@@ -89,7 +92,7 @@ public class GameBoard extends JPanel implements KeyListener{
 		int width = this.getWidth() - (this.getWidth() % size);
 		int height = this.getHeight() - (this.getHeight() % size);
 		
-		if ( !myGame.isGameRunning() )
+		if ( !myGame.isGameRunning() || !playing)
 			g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), Color.WHITE, null);
 		else
 		{
@@ -256,5 +259,9 @@ public class GameBoard extends JPanel implements KeyListener{
         } 
         else
             myGame.setGameRunning(false);    
+	}
+
+	public void repaint(boolean b) {
+		playing = b;
 	}
 }
