@@ -42,7 +42,7 @@ package gui;
  		ArrayList<Integer> arr = GameBoard.readFromFile();
  		
  		setFont(new Font("Consolas", Font.PLAIN, 11));
- 		this.setSize(481, 468);
+ 		this.setSize(500, 500);
  		getContentPane().setLayout(null);
  
  		
@@ -59,11 +59,11 @@ package gui;
  		txtrGetTheSword.setBackground(UIManager.getColor("Button.background"));
  		txtrGetTheSword.setFont(new Font("Consolas", Font.PLAIN, 11));
  		txtrGetTheSword.setText("Catch the sword, kill all dragons and escape the dungeon! \r\nBE CAREFULL! If you are in an adjacent position to the dragon you will kill it if you have the sword but if you don't have it you'll die!\r\n");
- 		txtrGetTheSword.setBounds(20, 48, 419, 43);
+ 		txtrGetTheSword.setBounds(20, 48, 454, 43);
  		getContentPane().add(txtrGetTheSword);
  		
  		JLabel lblKeys = new JLabel();
- 		lblKeys.setBounds(320, 302, 99, 64);
+ 		lblKeys.setBounds(293, 265, 126, 160);
  		getContentPane().add(lblKeys);
  		
  		
@@ -89,8 +89,8 @@ package gui;
  		txtrUseKeyboardArrows.setLineWrap(true);
  		txtrUseKeyboardArrows.setFont(new Font("Consolas", Font.PLAIN, 11));
  		txtrUseKeyboardArrows.setBackground(UIManager.getColor("Button.background"));
- 		txtrUseKeyboardArrows.setText("Use Keyboard arrows to move the hero");
- 		txtrUseKeyboardArrows.setBounds(293, 234, 162, 32);
+ 		txtrUseKeyboardArrows.setText("Use Keyboard arrows or the good old WASD to move the hero");
+ 		txtrUseKeyboardArrows.setBounds(274, 224, 200, 52);
  		getContentPane().add(txtrUseKeyboardArrows);
  		
  		JTextArea txtrThereAre = new JTextArea();
@@ -118,8 +118,17 @@ package gui;
  		txtrToChangeThe.setLineWrap(true);
  		txtrToChangeThe.setFont(new Font("Consolas", Font.PLAIN, 11));
  		txtrToChangeThe.setBackground(SystemColor.menu);
- 		txtrToChangeThe.setBounds(21, 124, 418, 64);
+ 		txtrToChangeThe.setBounds(21, 124, 453, 64);
  		getContentPane().add(txtrToChangeThe);
+ 		
+ 		JTextArea rights = new JTextArea();
+ 		rights.setWrapStyleWord(true);
+ 		rights.setText("Lu\u00EDs Melo & Teresa Concei\u00E7\u00E3o \u2122");
+ 		rights.setLineWrap(true);
+ 		rights.setFont(new Font("Consolas", Font.PLAIN, 11));
+ 		rights.setBackground(SystemColor.menu);
+ 		rights.setBounds(150, 436, 200, 25);
+ 		getContentPane().add(rights);
  	}
  }
  
