@@ -31,9 +31,9 @@ public class Game {
 	}
 	
 	//Game criado com maze aleatorio com tamanho especificado
-	public Game(int lvl, String maze_size, String n_Drag){
-		int len = Integer.parseInt(maze_size);
-		int n_Dragons = Integer.parseInt(n_Drag);
+	public Game(int lvl, int len, int n_Dragons){
+		//int len = Integer.parseInt(maze_size);
+		//int n_Dragons = Integer.parseInt(n_Drag);
 		
 		DRAGONS_ALIVE = n_Dragons;
 		

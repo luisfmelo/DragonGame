@@ -54,7 +54,7 @@ public class GameBoard extends JPanel implements KeyListener{
 	
 	public GameBoard(){
 
-		myGame = new Game(1, "7", "1");
+		myGame = new Game(1, 7, 1);
 		
 		try{
 			backgroundImage = ImageIO.read( new File("imgs/background.png"));	
@@ -77,29 +77,23 @@ public class GameBoard extends JPanel implements KeyListener{
 	{
 		ArrayList<Integer> numbers = readFromFile();
 		myGame = null;
-		myGame = new Game(numbers.get(2).intValue(), size, n, maze);
+		myGame = new Game(numbers.get(2), size, n, maze);
 		myGame.setGameRunning(true);
 			
         repaint();
         
-        this.removeKeyListener(this);
-        this.addKeyListener(this);
-        
-		requestFocus();
+	    doSomeMagic();
 	}
 	public void start() throws NumberFormatException, IOException
 	{
 		ArrayList<Integer> numbers = readFromFile();
 		myGame = null;
-		myGame = new Game(numbers.get(2), numbers.get(0).toString(), numbers.get(1).toString());
+		myGame = new Game(numbers.get(2), numbers.get(0), numbers.get(1));
 		myGame.setGameRunning(true);
 			
         repaint();
         
-        this.removeKeyListener(this);
-        this.addKeyListener(this);
-        
-		requestFocus();
+        doSomeMagic();
 	}
 	
 	@Override 
@@ -275,5 +269,12 @@ public class GameBoard extends JPanel implements KeyListener{
         } 
         else
             myGame.setGameRunning(false);    
+	}
+
+	public void doSomeMagic(){
+        this.removeKeyListener(this);
+        this.addKeyListener(this);
+        
+		requestFocus();
 	}
 }

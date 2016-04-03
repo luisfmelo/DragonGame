@@ -126,6 +126,8 @@ public class MyFrame extends JFrame{
 							build.setVisible(false);
 							btnCreate.setText("Build New Maze");
 							gamePanel.setVisible(true);
+							gamePanel.doSomeMagic();
+							
 							
 						} catch (NumberFormatException | IOException e1) {
 							e1.printStackTrace();
