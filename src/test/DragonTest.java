@@ -9,6 +9,11 @@ import logic.Hero;
 import logic.Maze;
 import logic.Sword;
 
+/**
+ * Test some Dragon functionalities
+ * @author Luis
+ * @author Teresa
+ */
 public class DragonTest {
 
 	/**
@@ -25,6 +30,5 @@ public class DragonTest {
 		//he will sleep
 		g.sleepyDragon(maze, 100,g.getDragons().get(0));
 		assertTrue(d.isSleepy());
-		
 	}
 }

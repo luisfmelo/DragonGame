@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import logic.Dragon;
+import logic.Element;
 import logic.Exit;
 import logic.Game;
 import logic.Hero;
@@ -11,6 +12,11 @@ import logic.Maze;
 import logic.Point;
 import logic.Sword;
 
+/**
+ * Test some Hero functionalities
+ * @author Luis
+ * @author Teresa
+ */
 public class HeroTest {
 	
 	/**
@@ -432,5 +438,17 @@ public class HeroTest {
 
 	}
 	
-
+	/**
+	 * Test get Hero
+	 */
+	@Test
+	public void testGetHero() {
+		Hero h = new Hero();
+		
+		Game g = new Game(null, 11, h, new Dragon(), new Sword());
+		
+		Element clone =  g.getHero();
+		
+		assertEquals(h, clone);
+	}
 }

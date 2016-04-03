@@ -38,7 +38,7 @@ public class Interaction {
 		}
 		
 	//Create Game
-		Game myGame = new Game(level, Integer.toString(len), Integer.toString(n_dragons));
+		Game myGame = new Game(level, len, n_dragons);
 		
 	//Run Game
 		String key;
@@ -67,7 +67,7 @@ public class Interaction {
 				myGame.pcMove(myGame.getDragons().get(i));
 			
 		// 4. update game status
-			if ( myGame.defeatOrLose() )
+			if ( myGame.defeatOrVictory() )
 				myGame.setGameRunning(false);
 			round++;
 		}		

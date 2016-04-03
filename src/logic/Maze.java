@@ -13,7 +13,7 @@ public class Maze implements IMazeBuilder{
 	protected char[][] maze; 
 	
 	/**
-	 * Constructor
+	 * Constructor with default maze
 	 */
 	public Maze(){
 		this.setDefaultMaze();
@@ -281,7 +281,7 @@ public class Maze implements IMazeBuilder{
 	}
 	
 	/**
-	 * Get the element position in this maze like a Point (x,y)
+	 * Get the element position in this maze like a {@link logic.Point} (x,y)
 	 * @param el is the element
 	 * @return
 	 */
@@ -305,7 +305,7 @@ public class Maze implements IMazeBuilder{
 	}
 
 	/**
-	 * Build a simple Maze with one dragon only
+	 * Build a simple Maze with one {@link logic.Dragon} only
 	 */
 	@Override
 	public char[][] buildMaze(int size) throws IllegalArgumentException {

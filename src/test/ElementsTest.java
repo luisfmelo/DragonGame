@@ -6,6 +6,11 @@ import org.junit.Test;
 import logic.Hero;
 import logic.Sword;
 
+/**
+ * Test some Element functionalities
+ * @author Luis
+ * @author Teresa
+ */
 public class ElementsTest {
 
 	/**

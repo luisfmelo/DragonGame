@@ -22,7 +22,7 @@ public class Game {
 	private int DRAGONS_ALIVE;
 	
 	/**
-	 * Game with Maze built by the User for test purposes
+	 * Game with {@link logic.Maze} built by the User for test purposes
 	 * @param m
 	 * @param lvl
 	 * @param h
@@ -39,7 +39,7 @@ public class Game {
 	}
 	
 	/**
-	 * Constructor for Game with a random Maze with size user-specified
+	 * Constructor for Game with a random {@link logic.Maze} with size user-specified
 	 * @param lvl level of the game
 	 * @param len: size of the maze
 	 * @param n_Dragons: number of Dragons
@@ -101,8 +101,9 @@ public class Game {
 			setAllDragonsDead(true);
 		}
 	}
+	
 	/**
-	 * Constructor for Game with a Maze built by the user (Gui)
+	 * Constructor for Game with a {@link logic.Maze} built by the user (Gui)
 	 * @param lvl
 	 * @param maze_size
 	 * @param n_Drag
@@ -232,7 +233,7 @@ public class Game {
 	};
 	
 	/**
-	 * Method responsible to change sleeping state of the dragon .
+	 * Method responsible to change sleeping state of the {@link logic.Dragon} .
 	 * @param maze
 	 * @param p: probability of the dragon be asleep
 	 * @param dragon
@@ -262,7 +263,7 @@ public class Game {
 	}
 
 	/**
-	 * Check if the movement of an Element (Hero or Dragon) is possible and handles special states 
+	 * Check if the movement of an {@link logic.Element} ({@link logic.Hero} or {@link logic.Dragon}) is possible and handles special states 
 	 * @param c: direction of the movement
 	 * @param el: element which will move
 	 * @return
@@ -428,7 +429,7 @@ public class Game {
 	}
 	
 	/**
-	 * Get the String which represents the Maze state
+	 * Get the String which represents the {@link logic.Maze} state
 	 * @return
 	 */
 	public String getMazeString(){
@@ -477,7 +478,7 @@ public class Game {
 	}
 	
 	/**
-	 * Check if all dragons are dead - If so, the user can run to the exit
+	 * Check if all {@link logic.Dragon}s are dead - If so, the {@link logic.Hero} can run to the {@link logic.Exit}
 	 * @return
 	 */
 	public boolean isAllDragonsDead() {
@@ -485,7 +486,7 @@ public class Game {
 	}
 
 	/**
-	 * Set Dead for all Dragons
+	 * Set Dead for all {@link logic.Dragon}s
 	 * @param allDragonsDead
 	 */
 	public void setAllDragonsDead(boolean allDragonsDead) {
@@ -496,12 +497,12 @@ public class Game {
 	 * Check if the game is already Over: The user won or lost the game
 	 * @return
 	 */
-	public boolean defeatOrLose() {
+	public boolean defeatOrVictory() {
 		return this.Defeat || this.Victory;
 	}
 
 	/**
-	 * Get the maze which is currently being used in this game
+	 * Get the {@link logic.Maze} which is currently being used in this game
 	 * @return
 	 */
 	public Maze getMaze() {
@@ -509,7 +510,7 @@ public class Game {
 	}
 
 	/**
-	 * Get the Array of all Dragons which are currently being used in this game
+	 * Get the Array of all {@link logic.Dragon}s which are currently being used in this game
 	 * @return
 	 */
 	public ArrayList <Dragon> getDragons() {
@@ -517,7 +518,7 @@ public class Game {
 	}
 
 	/**
-	 * Get the Hero which is currently being used in this game
+	 * Get the {@link logic.Hero} which is currently being used in this game
 	 * @return
 	 */
 	public Element getHero() {

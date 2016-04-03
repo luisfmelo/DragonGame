@@ -1,7 +1,7 @@
 package logic;
 
 /**
- * Class who creates a new Dragon which is an Element
+ * Class who creates a new Dragon which is an {@link logic.Element}
  * @author Luis
  * @author Teresa
  */

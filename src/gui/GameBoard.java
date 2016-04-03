@@ -19,7 +19,7 @@ import logic.Game;
 import logic.Point;
 
 /**
- * Panel contained in the frame MyFrame
+ * Panel contained in the frame {@link gui.MyFrame}
  * In this panel, if the user is in the middle of a game, it will display, graphically the game
  * if not, it will display the background image with the title of the Game
  * @author Luis
@@ -44,7 +44,7 @@ public class GameBoard extends JPanel implements KeyListener{
 	private boolean playing = true;
 
 	/**
-	 * Builder for the game panel.
+	 * Builder for the game panel - {@link gui.GameBoard}.
 	 * @param level 
 	 * @param size
 	 * @param num_dragons
@@ -178,7 +178,8 @@ public class GameBoard extends JPanel implements KeyListener{
 	}
 
 	/**
-	 * Depending on the User's move, sends the information... updates the window and, if necessary, calls the victory(@see handleWin() ) or defeat(@see handleDefeat() ) functions.
+	 * Depending on the User's move, sends the information... updates the window and, if necessary, 
+	 * calls the victory({@link gui.GameBoard#handleWin()} ) or defeat({@link gui.GameBoard#handleDefeat()} ) functions.
 	 */
 	public void goGetIt(String key){
 		try {
@@ -315,7 +316,7 @@ public class GameBoard extends JPanel implements KeyListener{
 	}
 	
 	/**
-	 * Allows the game to continue if the user clicks one of the following menus: Options(@see OptionsPanel) or Help(@see HelpPanel), in the middle of a game.
+	 * Allows the game to continue if the user clicks one of the following menus: Options({@link gui.OptionsPanel}) or Help({@link gui.HelpPanel}), in the middle of a game.
 	 */
 	public void doSomeMagic(){
         this.removeKeyListener(this);

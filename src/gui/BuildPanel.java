@@ -65,7 +65,9 @@ public class BuildPanel extends JPanel implements MouseListener{
 	}
 	
 	public BuildPanel(boolean t) {		
-			try{
+		if ( !t )
+			return;
+		try{
 			backgroundImage = ImageIO.read( new File("imgs/background.png"));	
 			wall = ImageIO.read( new File("imgs/wall.png"));	
 			path = ImageIO.read( new File("imgs/path.png"));	

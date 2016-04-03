@@ -12,6 +12,11 @@ import logic.Hero;
 import logic.Maze;
 import logic.Sword;
 
+/**
+ * Test some Maze functionalities
+ * @author Luis
+ * @author Teresa
+ */
 public class TestMazeBuilder {
 	// Auxiliary class
 	public static class Point {		
@@ -238,6 +243,41 @@ public class TestMazeBuilder {
 						d.getPos().getX() == 1 && d.getPos().getY() == 1 );
 		}
 
+	}
+	
+	/**
+	 * Test New Maze...sent by the use
+	 */
+	@Test
+	public void testUserMaze(){
+		char [][] lab = new char[][]{
+			{'X','X','X','X'},
+			{'X',' ',' ','X'},
+			{'X',' ','X','X'},
+			{'X','X','X','X'}
+		};
+		Maze m = new Maze(lab);
+		
+		for (int i = 0; i < 4; i++) {	
+			for (int j = 0; j < 4; j++) {
+				assertEquals(m.getMaze()[i][j], lab[i][j]);
+			}
+		}
+		
+		char [][] lab2 = new char[][]{
+			{'X','X','X','X'},
+			{'X','X',' ','X'},
+			{'X',' ','X','X'},
+			{'X','X','X','X'}
+		};
+		
+		m.setMaze(lab2, 4);
+		
+		for (int i = 0; i < 4; i++) {	
+			for (int j = 0; j < 4; j++) {
+				assertEquals(m.getMaze()[i][j], lab2[i][j]);
+			}
+		}
 	}
 	
 }

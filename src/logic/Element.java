@@ -18,7 +18,7 @@ public class Element {
 	}
 
 	/**
-	 * Method to change the letter that identifies this element
+	 * Method to change the letter that identifies this {@link logic.Element}
 	 * @return
 	 */
 	public void setLetter(char letter) {
@@ -26,7 +26,7 @@ public class Element {
 	}
 
 	/**
-	 * Method to change the position of thi element
+	 * Method to change the position of this element
 	 * @return
 	 */
 	public void setPos(Maze maze, Point p){
@@ -51,7 +51,7 @@ public class Element {
 		// Get 2 random numbers between 0 and ( size - 1 )
 		p.setX( rand.nextInt(maze.getLen()) );
 		p.setY( rand.nextInt(maze.getLen()) );
-		//check if pos is blank -> atribuiçao de chars na matriz ao contrario (y,x)
+		//check if pos is blank -> atribuicao de chars na matriz ao contrario (y,x)
 		if ( maze.charAt(p) != ' ' )
 			this.setRandomPos(maze);
 		else
@@ -59,7 +59,7 @@ public class Element {
 	}
 	
 	/**
-	 * Method which will retrieve the Point of the choosen move in order to process if it's a valid move or not
+	 * Method which will retrieve the Point of the chosen move in order to process if it's a valid move or not
 	 * @return
 	 */
 	public Point newPosition(char c) throws IllegalArgumentException{

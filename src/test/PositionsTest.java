@@ -9,6 +9,11 @@ import logic.Element;
 import logic.Hero;
 import logic.Point;
 
+/**
+ * Test some Positions functionalities
+ * @author Luis
+ * @author Teresa
+ */
 public class PositionsTest {
 
 	/**

@@ -74,7 +74,7 @@ public class Point {
 	}
 	
 	/**
-	 * Method to print the coordenates(x and y coord) of this point
+	 * Method to print the coordinates(x and y coord) of this point
 	 */
 	@Override
 	public String toString(){
@@ -82,7 +82,7 @@ public class Point {
 	}
 	
 	/**
-	 * Method to check if two points have the same coordenates(x and y coord)
+	 * Method to check if two points have the same coordinates(x and y coord)
 	 */
 	 @Override
 	public boolean equals(Object obj) {

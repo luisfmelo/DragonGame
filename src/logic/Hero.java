@@ -1,7 +1,7 @@
 package logic;
 
 /**
- * Class who creates a new Hero which is an Element
+ * Class who creates a new Hero which is an {@link logic.Element}
  * @author Luis
  * @author Teresa
  */
@@ -47,6 +47,4 @@ public class Hero extends Element{
 	public void setDead(boolean dead) {
 		this.dead = dead;
 	};
-	
-
 }

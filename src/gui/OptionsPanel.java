@@ -20,7 +20,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 /**
- * Panel contained in the frame MyFrame(@see {@link MyFrame})
+ * Panel contained in the frame MyFrame({@link gui.MyFrame})
  * In this panel, it will show the Configuration of the Game. The user can change and save them.
  * @author Luis
  * @author Teresa

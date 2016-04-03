@@ -17,7 +17,7 @@ import javax.swing.UIManager;
 import java.awt.SystemColor;
  
 /**
- * Panel contained in the frame MyFrame(@see {@link MyFrame})
+ * Panel contained in the frame MyFrame({@link gui.MyFrame})
  * In this panel, it will show the rules of the game
  * @author Luis
  * @author Teresa
