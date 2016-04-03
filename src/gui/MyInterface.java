@@ -11,9 +11,12 @@ package gui;
  	protected static final int MAX_LEVEL = 3;
  	protected static final int MIN_LEVEL = 1;
  	
- 	/**
- 	 * Launch the application.
- 	 */
+	/**
+	 * Main Class for <b>G</b>raphical <b>U</b>ser <b>I</b>nterface
+ 	 * Launch the application.	 
+ 	 * * @author Luis
+	 * @author Teresa
+	 */
  	public static void main(String[] args) {
  		EventQueue.invokeLater(new Runnable() {
  			@Override

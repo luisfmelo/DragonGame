@@ -3,13 +3,16 @@ package logic;
 import java.util.ArrayList;
 import java.util.Random;
 
-import gui.GameBoard;
-
+/**
+ * Class who creates a new Game
+ * @author Luis
+ * @author Teresa
+ */
 public class Game {
-	protected Hero hero = new Hero(); 			//pos (1,1)
-	protected ArrayList <Dragon> dragons = new ArrayList<Dragon> ();  	//pos (1,3)
-	private Sword sword = new Sword(); 		//pos (1,8)
-	protected Exit exit = new Exit(); 		//pos (9,5)
+	protected Hero hero = new Hero(); 		
+	protected ArrayList <Dragon> dragons = new ArrayList<Dragon> ();  	
+	private Sword sword = new Sword(); 		
+	protected Exit exit = new Exit(); 
 	private boolean GameRunning = false;
 	private int level = 1;
 	protected Maze maze = new Maze();
@@ -18,7 +21,14 @@ public class Game {
 	private boolean allDragonsDead = false;
 	private int DRAGONS_ALIVE;
 	
-	//Game com Maze enviado pelo utilizador -> TESTE
+	/**
+	 * Game with Maze built by the User for test purposes
+	 * @param m
+	 * @param lvl
+	 * @param h
+	 * @param d
+	 * @param s
+	 */
 	public Game(Maze m,int lvl, Hero h, Dragon d, Sword s){
 		level = lvl;
 		maze = m;
@@ -28,7 +38,12 @@ public class Game {
 		this.GameRunning = true;
 	}
 	
-	//Game criado com maze aleatorio com tamanho especificado
+	/**
+	 * Constructor for Game with a random Maze with size user-specified
+	 * @param lvl level of the game
+	 * @param maze_size: size of the maze
+	 * @param n_Drag: number of Dragons
+	 */
 	public Game(int lvl, String maze_size, String n_Drag){
 		int len = Integer.parseInt(maze_size);
 		int n_Dragons = Integer.parseInt(n_Drag);
@@ -87,6 +102,10 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Handles end of the game
+	 * @param state: lose or win depending of the situation
+	 */
 	public void endGame(String state){
 		if (state.equals("lose"))
 		{
@@ -104,19 +123,31 @@ public class Game {
 		//setGameRunning(false);
 	};
 	
+	/**
+	 * Check if the game is still running
+	 * @return
+	 */
 	public boolean isGameRunning() {
 		return GameRunning;
 	}
 
+	/**
+	 * Set end or start of the game
+	 * @param gameRunning
+	 */
 	public void setGameRunning(boolean gameRunning) {
 		GameRunning = gameRunning;
 	};
 
+	/**
+	 * Method responsible for the movement of dragons
+	 * @param dragon
+	 */
 	public void pcMove(Dragon dragon){
 		
 		if ( !GameRunning || dragon.isDead() || level == 1) //if level 1(pc move don't exist) or game ended... return
 			return;
-		else if (level == 2)
+		else if (level == 2 && dragon.getLetter() != 'F')
 			sleepyDragon(maze, 50,dragon); //probabilidade de o Dragao estar a dormir. Podemos fazer: Rand.nextInt(2); 
 		
 		Random Rand = new Random();
@@ -151,6 +182,12 @@ public class Game {
 		}
 	};
 	
+	/**
+	 * Method responsible to change sleeping state of the dragon .
+	 * @param maze
+	 * @param p: probability of the dragon be asleep
+	 * @param dragon
+	 */
 	public void sleepyDragon(Maze maze, int p, Dragon dragon) {
 		Random Rand = new Random();
 		int sleep = Rand.nextInt(100);
@@ -172,6 +209,13 @@ public class Game {
 		}	
 	}
 
+	/**
+	 * Check if the movement of an Element (Hero or Dragon) is possible and handles special states 
+	 * @param c: direction of the movement
+	 * @param el: element which will move
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 	public boolean checkPos (char c, Element el) throws IllegalArgumentException {
 		if ( DRAGONS_ALIVE == 0 )
 		{
@@ -331,6 +375,10 @@ public class Game {
 		return true;
 	}
 	
+	/**
+	 * Get the String which represents the Maze state
+	 * @return
+	 */
 	public String getMazeString(){
 		String res = "";
 		
@@ -344,42 +392,82 @@ public class Game {
 		return res;
 	}
 
+	/**
+	 * Verifies if the user has lost the game
+	 * @return
+	 */
 	public boolean isDefeat() {
 		return Defeat;
 	}
 
+	/**
+	 * Set Defeat of the user
+	 * @param defeat
+	 */
 	public void setDefeat(boolean defeat) {
 		Defeat = defeat;
 	}
 
+	/**
+	 * Verifies if the user has won the game
+	 * @return
+	 */
 	public boolean isVictory() {
 		return Victory;
 	}
 
+	/**
+	 * Set Victory of the user
+	 * @param defeat
+	 */
 	public void setVictory(boolean victory) {
 		Victory = victory;
 	}
 	
+	/**
+	 * Check if all dragons are dead - If so, the user can run to the exit
+	 * @return
+	 */
 	public boolean isAllDragonsDead() {
 		return allDragonsDead;
 	}
 
+	/**
+	 * Set Dead for all Dragons
+	 * @param allDragonsDead
+	 */
 	public void setAllDragonsDead(boolean allDragonsDead) {
 		this.allDragonsDead = allDragonsDead;
 	}
 
+	/**
+	 * Check if the game is already Over: The user won or lost the game
+	 * @return
+	 */
 	public boolean defeatOrLose() {
 		return this.Defeat || this.Victory;
 	}
 
+	/**
+	 * Get the maze which is currently being used in this game
+	 * @return
+	 */
 	public Maze getMaze() {
 		return this.maze;
 	}
 
+	/**
+	 * Get the Array of all Dragons which are currently being used in this game
+	 * @return
+	 */
 	public ArrayList <Dragon> getDragons() {
 		return this.dragons;
 	}
 
+	/**
+	 * Get the Hero which is currently being used in this game
+	 * @return
+	 */
 	public Element getHero() {
 		return this.hero;
 	}

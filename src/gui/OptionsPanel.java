@@ -1,7 +1,5 @@
 package gui;
 
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -21,12 +19,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+/**
+ * Panel contained in the frame MyFrame(@see {@link MyFrame})
+ * In this panel, it will show the Configuration of the Game. The user can change and save them.
+ * @author Luis
+ * @author Teresa
+ */
 public class OptionsPanel extends JFrame{
 
 	private static final long serialVersionUID = -1956181248993244529L;
 	private JTextField inSize;
 	private JTextField inND;
 
+	/**
+	 * Builder for the Options Panel
+	 * @param gamePanel
+	 */
 	public OptionsPanel(GameBoard gamePanel) {
 		ArrayList<Integer> arr = GameBoard.readFromFile();
 		

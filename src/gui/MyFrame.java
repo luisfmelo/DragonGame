@@ -1,20 +1,21 @@
 package gui;
 
 import javax.swing.JPanel;
-
-import logic.Game;
-
 import java.io.IOException;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
 import java.awt.Rectangle;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 
+/**
+ * Main Frame of the whole game
+ * This frame is always visible and is the "Mother" of all Panels
+ * @author Luis
+ * @author Teresa
+ */
 public class MyFrame extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
@@ -35,6 +36,10 @@ public class MyFrame extends JFrame{
 
 	private BuildPanel build;
 	
+	/**
+	 * Builder for the Frame
+	 * @throws IOException
+	 */
 	public MyFrame() throws IOException {
 		setResizable(false);
 		setSize(650, 725);
@@ -137,7 +142,7 @@ public class MyFrame extends JFrame{
 		getContentPane().add(gamePanel);
 		gamePanel.setLayout(null);		
 		
-		build = new BuildPanel();
+		build = new BuildPanel(false);
 		build.setVisible(false);
 		
 	}

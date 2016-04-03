@@ -9,14 +9,17 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import logic.Game;
-
+/**
+ * Class who lets the User create a custom Maze
+ * @author Luis
+ * @author Teresa
+ */
 public class BuildPanel extends JPanel {
 	
+	private static final long serialVersionUID = 2362472189193020913L;
 	private BufferedImage backgroundImage;
 	private BufferedImage wall;
 	private BufferedImage path;
@@ -30,14 +33,15 @@ public class BuildPanel extends JPanel {
 	private BufferedImage dragon_sword;
 	
 	private char[][] matrix;
-	
 	private int size = 7;
 
-	public BuildPanel() {		
-	}
-	
-	public BuildPanel(boolean t) {		
-			try{
+	/**
+	 * Constructor to build the panel
+	 */
+	public BuildPanel(boolean t) {
+		if ( t == false )
+			return;
+		try{
 			backgroundImage = ImageIO.read( new File("imgs/background.png"));	
 			wall = ImageIO.read( new File("imgs/wall.png"));	
 			path = ImageIO.read( new File("imgs/path.png"));	

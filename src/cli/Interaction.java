@@ -5,6 +5,11 @@ import logic.Game;
 
 public class Interaction {	
 
+	/**
+	 * Main Class for <b>C</b>ommand <b>L</b>ine <b>I</b>nterface 
+	 * @author Luis
+	 * @author Teresa
+	 */
 	public static void main(String[] args) {
 		System.out.println("Dragon Game!");
 		Scanner sc = new Scanner(System.in);
@@ -34,21 +39,16 @@ public class Interaction {
 		
 	//Create Game
 		Game myGame = new Game(level, Integer.toString(len), Integer.toString(n_dragons));
-
-		
-		//maze.print();
-		
 		
 	//Run Game
 		String key;
-		boolean c;
 		myGame.setGameRunning(true);
 
 		while( myGame.isGameRunning() )
 		{
 		// 0. Round Status Maze
 			System.out.println("\nRound: " + round + "\n");
-			myGame.maze.print();
+			myGame.getMaze().print();
 
 		// 1. receive command
 			sc = new Scanner(System.in);
@@ -56,15 +56,15 @@ public class Interaction {
 			
 		// 2. Check
 			try {
-				if ( !myGame.checkPos(key.charAt(0), myGame.hero) )
+				if ( !myGame.checkPos(key.charAt(0), myGame.getHero() ) )
 					continue;
 			} catch (IllegalArgumentException e) {
 				continue;
 			}
 			
 		// 3. pc faz o seu move
-			for(int i=0; i<myGame.dragons.size();i++)
-				myGame.pcMove(myGame.dragons.get(i));
+			for(int i=0; i<myGame.getDragons().size();i++)
+				myGame.pcMove(myGame.getDragons().get(i));
 			
 		// 4. update game status
 			if ( myGame.defeatOrLose() )

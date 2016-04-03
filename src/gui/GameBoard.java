@@ -4,36 +4,30 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Scanner;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 
-import logic.Dragon;
 import logic.Game;
-import logic.Maze;
 import logic.Point;
 
+/**
+ * Panel contained in the frame MyFrame
+ * In this panel, if the user is in the middle of a game, it will display, graphically the game
+ * if not, it will display the background image with the title of the Game
+ * @author Luis
+ * @author Teresa
+ */
 public class GameBoard extends JPanel implements KeyListener{
 
+	private static final long serialVersionUID = 4398508935921388250L;
 	private BufferedImage backgroundImage;
 	private BufferedImage wall;
 	private BufferedImage path;
@@ -49,6 +43,12 @@ public class GameBoard extends JPanel implements KeyListener{
 	
 	private boolean playing = true;
 
+	/**
+	 * Builder for the game panel.
+	 * @param level 
+	 * @param size
+	 * @param num_dragons
+	 */
 	public GameBoard(int level, int size, int num_dragons){
 
 		myGame = new Game(1, "7", "1");
@@ -70,6 +70,11 @@ public class GameBoard extends JPanel implements KeyListener{
 		}	
 	}
 	
+	/**
+	 * Method invoked at the beginning of the game. Prepare everything that is important for the next actions.
+	 * @throws NumberFormatException
+	 * @throws IOException
+	 */
 	public void start() throws NumberFormatException, IOException
 	{
 		playing = true;
@@ -86,6 +91,9 @@ public class GameBoard extends JPanel implements KeyListener{
 		requestFocus();
 	}
 	
+	/**
+	 * Method responsible for printing the game state on the user's screen.
+	 */
 	@Override 
 	protected void paintComponent(Graphics g){
 		int size = this.myGame.getMaze().getLen();
@@ -124,12 +132,21 @@ public class GameBoard extends JPanel implements KeyListener{
 		}
 	}
 
+	/**
+	 * Does nothing.
+	 */
 	@Override
 	public void keyTyped(KeyEvent e) {}
 
+	/**
+	 * Does nothing.
+	 */
 	@Override
 	public void keyPressed(KeyEvent e) {}
 
+	/**
+	 * Handle the user movement... lets players use the arrow keys or WASD.
+	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()) {
@@ -143,7 +160,10 @@ public class GameBoard extends JPanel implements KeyListener{
 			case KeyEvent.VK_RIGHT: goGetIt("D"); break;
 		}
 	}
-	
+
+	/**
+	 * Depending on the User's move, sends the information... updates the window and, if necessary, calls the victory(@see handleWin() ) or defeat(@see handleDefeat() ) functions.
+	 */
 	public void goGetIt(String key){
 		try {
 			if ( myGame.checkPos(key.charAt(0), myGame.getHero() ) )
@@ -163,6 +183,10 @@ public class GameBoard extends JPanel implements KeyListener{
 		}
 	}
 
+	/**
+	 * Lê o ficheiro de configurações.
+	 * @return Array de inteiros com configurações lidas do ficheiro .config 
+	 */
 	protected static ArrayList<Integer> readFromFile(){
 		
 		ArrayList<Integer> numbers = new ArrayList<>();
@@ -201,6 +225,9 @@ public class GameBoard extends JPanel implements KeyListener{
 		return numbers;
 	}
 	
+	/**
+	 * Invoked when the user wins the game.
+	 */
 	public void handleWin(){
         this.removeKeyListener(this);
         int res = JOptionPane.showConfirmDialog(null,
@@ -231,6 +258,9 @@ public class GameBoard extends JPanel implements KeyListener{
             myGame.setGameRunning(false);    
 	}
 	
+	/**
+	 * Invoked when the user loses the game.
+	 */
 	public void handleDefeat() {  
         this.removeKeyListener(this);
         int res = JOptionPane.showConfirmDialog(null,
@@ -260,11 +290,17 @@ public class GameBoard extends JPanel implements KeyListener{
         else
             myGame.setGameRunning(false);    
 	}
-
+	
+	/**
+	 * Allows MyFrame to go back to Home Panel, ending the game and printing the main panel.
+	 */
 	public void repaint(boolean b) {
 		playing = b;
 	}
 	
+	/**
+	 * Allows the game to continue if the user clicks one of the following menus: Options(@see OptionsPanel) or Help(@see HelpPanel), in the middle of a game.
+	 */
 	public void doSomeMagic(){
         this.removeKeyListener(this);
         this.addKeyListener(this);

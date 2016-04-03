@@ -3,7 +3,11 @@ package logic;
 import java.util.Random;
 import java.util.Stack;
 
-
+/**
+ * Class who creates a new Maze
+ * @author Luis
+ * @author Teresa
+ */
 public class Maze implements IMazeBuilder{
 	private int len;
 	protected char[][] maze; 
@@ -15,18 +19,33 @@ public class Maze implements IMazeBuilder{
 		this.setDefaultMaze();
 	}	
 	
+	/**
+	 * Constructor for a specific maze
+	 * @param m
+	 */
 	public Maze(char[][] m){
 		this.maze = m;
 	}
 
+	/**
+	 * returns the size of this maze
+	 * @return
+	 */
 	public int getLen() {
 		return len;
 	}
 
+	/**
+	 * Check the size of the Maze
+	 * @param len
+	 */
 	public void setLen(int len) {
 		this.len = len;
 	}
 
+	/**
+	 * Set a default Maze - in case of some error
+	 */
 	public void setDefaultMaze() {
 		this.maze = new char[][]{
 			{'X','X','X','X','X','X','X','X','X','X'},
@@ -42,6 +61,11 @@ public class Maze implements IMazeBuilder{
 		};
 	};
 
+	/**
+	 * Set a Custom Maze 
+	 * @param m is the maze in question
+	 * @param size
+	 */
 	public void setMaze(char[][] m, int size) {
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
@@ -50,11 +74,17 @@ public class Maze implements IMazeBuilder{
 		}
 	};
 
-
+	/**
+	 * get this maze
+	 * @return 2D char array - Maze
+	 */
 	public char[][] getMaze() {
 		return this.maze;
 	};
 	
+	/**
+	 * Set a 5x5 Maze for the purpose of unit testing
+	 */
 	public void setTestMaze() {
 		this.len = 5;
 		this.maze = new char[][] {
@@ -66,6 +96,14 @@ public class Maze implements IMazeBuilder{
 		};
 	};
 
+	/**
+	 * Build a new Random Maze which respect all the restrictions
+	 * @param size of the maze
+	 * @param exit
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @throws NumberFormatException
+	 */
 	public char[][] buildMaze(int size, Exit exit) throws IllegalArgumentException, NumberFormatException{
 		if (size <= 4 )
 			throw new NumberFormatException();	
@@ -233,10 +271,20 @@ public class Maze implements IMazeBuilder{
 		return this.maze;
 	}
 
+	/**
+	 * Get the character that is in a specific point of the matrix
+	 * @param p is the point in question
+	 * @return the corresponding char
+	 */
 	public char charAt(Point p){
 		return this.maze[p.getX()][p.getY()];
 	}
 	
+	/**
+	 * Get the element position in this maze like a Point (x,y)
+	 * @param el is the element
+	 * @return
+	 */
 	public Point getElementPos(char el){
 		for (int i = 0; i < this.getLen(); i++)
 			for (int j = 0; j < this.getLen(); j++)
@@ -245,6 +293,10 @@ public class Maze implements IMazeBuilder{
 		return null;
 	}
 	
+	/**
+	 * Print this maze on the command line and return it like an 2D char array
+	 * @return
+	 */
 	public char[][] print() {
 		for(char[] line: this.maze)
 			System.out.println(line);
@@ -252,9 +304,11 @@ public class Maze implements IMazeBuilder{
 		
 	}
 
+	/**
+	 * Build a simple Maze with one dragon only
+	 */
 	@Override
 	public char[][] buildMaze(int size) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
 		Maze maze =  new Maze();
 		maze.buildMaze(size, new Exit());
 		Sword s = new Sword();

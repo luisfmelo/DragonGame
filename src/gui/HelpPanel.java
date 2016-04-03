@@ -1,44 +1,36 @@
 package gui;
  
- import javax.swing.JPanel;
- import javax.swing.JPasswordField;
- import javax.swing.JTextField;
- import javax.imageio.ImageIO;
- import javax.swing.ButtonGroup;
- import javax.swing.Icon;
- import javax.swing.ImageIcon;
- import javax.swing.JButton;
- import javax.swing.JFrame;
- import javax.swing.JRadioButton;
- import javax.swing.JLabel;
- import javax.swing.JOptionPane;
- 
- import java.awt.Font;
- import java.awt.Image;
- 
- import javax.swing.SwingConstants;
- import java.awt.event.ActionListener;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel; 
+import java.awt.Font;
+import java.awt.Image;
+import javax.swing.SwingConstants;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
- import java.io.File;
- import java.io.FileNotFoundException;
- import java.io.IOException;
- import java.io.PrintWriter;
- import java.io.UnsupportedEncodingException;
- import java.util.ArrayList;
- import java.awt.event.ActionEvent;
- import javax.swing.JTextArea;
- import javax.swing.JTextPane;
- import java.awt.ComponentOrientation;
- import java.awt.Component;
- import java.awt.Point;
- import javax.swing.UIManager;
- import java.awt.SystemColor;
+import java.io.File;
+import java.io.IOException;
+import javax.swing.JTextArea;
+import javax.swing.UIManager;
+import java.awt.SystemColor;
  
- public class HelpPanel extends JFrame{
+/**
+ * Panel contained in the frame MyFrame(@see {@link MyFrame})
+ * In this panel, it will show the rules of the game
+ * @author Luis
+ * @author Teresa
+ */
+public class HelpPanel extends JFrame{
  	
- 	public HelpPanel(GameBoard gamePanel) {
+	private static final long serialVersionUID = 4500517061624611143L;
+
+	/**
+	 * Builder for the Help Panel
+	 * @param gamePanel
+	 */
+	public HelpPanel(GameBoard gamePanel) {
  		getContentPane().setName("");
  		
  		setFont(new Font("Consolas", Font.PLAIN, 11));
