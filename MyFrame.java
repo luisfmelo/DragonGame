@@ -119,9 +119,8 @@ public class MyFrame extends JFrame{
 					build.draw_Maze();
 				}
 				else{
-					if(!build.check_maze())
-						JOptionPane.showMessageDialog(null, "There is no possible way from HERO to the DOOR. Change your PATH!", "About", JOptionPane.INFORMATION_MESSAGE);
-					else{
+					if(build.check_maze())
+					{
 						try {
 							gamePanel.start(build.getN_drag(),build.get_Size(),build.getMatrix());
 							build.setVisible(false);

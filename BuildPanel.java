@@ -47,6 +47,10 @@ public class BuildPanel extends JPanel implements MouseListener{
 	
 	private char[][] matrix;
 	
+
+	boolean[][] wasHere;
+	boolean[][] correctPath; 
+	
 	private int size = 7;
 	private int n_drag;
 	private Point m_Point;
@@ -376,28 +380,30 @@ public class BuildPanel extends JPanel implements MouseListener{
 		    JOptionPane.showMessageDialog(null, "There are some DRAGONS missing", "About", JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
-		if(getElement('H')==null){
+		else if(getElement('H')==null){
 			JOptionPane.showMessageDialog(null, "The HERO is missing", "About", JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
-		if(getElement('E')==null){
+		else if(getElement('E')==null){
 			JOptionPane.showMessageDialog(null, "The SWORD is missing", "About", JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
-		if(getElement('S')==null){
+		else if(getElement('S')==null){
 			JOptionPane.showMessageDialog(null, "The DOOR is missing", "About", JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
-		if (!this.solvable_maze())
+		else if (!this.solvable_maze()){
+			JOptionPane.showMessageDialog(null, "There is no possible way from HERO to the DOOR. Change your PATH!", "About", JOptionPane.INFORMATION_MESSAGE);
 			return false;
-		
+		}
 		return true;
 	}
 	
 	private boolean solvable_maze(){
-		
-		boolean[][] wasHere = new boolean[size][size];
-		boolean[][] correctPath = new boolean[size][size]; // The solution to the maze
+		 // The solution to the maze
+
+		wasHere = new boolean[size][size];
+		correctPath = new boolean[size][size];
 		Point hero= getElement('H');
 		Point door =getElement('S');
 		
@@ -408,34 +414,40 @@ public class BuildPanel extends JPanel implements MouseListener{
 		            wasHere[row][col] = false;
 		            correctPath[row][col] = false;
 		        }
-		    return recursiveSolve(hero.getX(), hero.getY(),wasHere,correctPath,door);
+		    return recursiveSolve(hero.getX(), hero.getY(),door);
 		    // Will leave you with a boolean array (correctPath) 
 		    // with the path indicated by true values.
 		    // If b is false, there is no solution to the maze
 		}
-		public boolean recursiveSolve(int x, int y, boolean[][] wasHere, boolean[][] correctPath, Point door) {
-			
-		    if (x == door.getX() && y == door.getY()) return true; // If you reached the end
-		    if (getMatrix()[x][y] == 'X' || wasHere[x][y]) return false;  
+		public boolean recursiveSolve(int x, int y, Point door) {
+
+		    if (x == door.getX() && y == door.getY()){    		
+	    		return true;
+		    	
+		    }  // If you reached the end
+		    if (getMatrix()[y][x] == 'X' || wasHere[x][y])
+		    	{
+		    		return false;  
+		    	}
 		    // If you are on a wall or already were here
 		    wasHere[x][y] = true;
 		    if (x != 0) // Checks if not on left edge
-		        if (recursiveSolve(x-1, y,wasHere,correctPath,door)) { // Recalls method one to the left
+		        if (recursiveSolve(x-1, y,door)) { // Recalls method one to the left
 		            correctPath[x][y] = true; // Sets that path value to true;
 		            return true;
 		        }
 		    if (x != size - 1) // Checks if not on right edge
-		        if (recursiveSolve(x+1, y,wasHere,correctPath,door)) { // Recalls method one to the right
+		        if (recursiveSolve(x+1, y,door)) { // Recalls method one to the right
 		            correctPath[x][y] = true;
 		            return true;
 		        }
 		    if (y != 0)  // Checks if not on top edge
-		        if (recursiveSolve(x, y-1,wasHere,correctPath,door)) { // Recalls method one up
+		        if (recursiveSolve(x, y-1,door)) { // Recalls method one up
 		            correctPath[x][y] = true;
 		            return true;
 		        }
 		    if (y != size- 1) // Checks if not on bottom edge
-		        if (recursiveSolve(x, y+1,wasHere,correctPath,door)) { // Recalls method one down
+		        if (recursiveSolve(x, y+1,door)) { // Recalls method one down
 		            correctPath[x][y] = true;
 		            return true;
 		        }
