@@ -41,12 +41,12 @@ public class Game {
 	/**
 	 * Constructor for Game with a random Maze with size user-specified
 	 * @param lvl level of the game
-	 * @param maze_size: size of the maze
-	 * @param n_Drag: number of Dragons
+	 * @param len: size of the maze
+	 * @param n_Dragons: number of Dragons
 	 */
-	public Game(int lvl, String maze_size, String n_Drag){
-		int len = Integer.parseInt(maze_size);
-		int n_Dragons = Integer.parseInt(n_Drag);
+	public Game(int lvl, int len, int n_Dragons){
+		//int len = Integer.parseInt(maze_size);
+		//int n_Dragons = Integer.parseInt(n_Drag);
 		
 		DRAGONS_ALIVE = n_Dragons;
 		
@@ -93,6 +93,55 @@ public class Game {
 					dragons.get(i).setLetter('d');
 					dragons.get(i).setPos(maze, dragons.get(i).getPos());	
 			}			
+		}
+		if ( DRAGONS_ALIVE == 0 )
+		{
+			exit.setLetter('s');
+			exit.setPos(maze, exit.getPos());
+			setAllDragonsDead(true);
+		}
+	}
+	/**
+	 * Constructor for Game with a Maze built by the user (Gui)
+	 * @param lvl
+	 * @param maze_size
+	 * @param n_Drag
+	 * @param matrix
+	 */
+	public Game(int lvl,  int maze_size,int n_Drag, char [][]matrix){
+		
+		DRAGONS_ALIVE = n_Drag;
+		level = lvl;
+		maze = new Maze(matrix);
+		for (int i = 0; i < maze_size; i++) {
+			for (int j = 0; j < maze_size; j++) {
+				if ( matrix[i][j] == 'H'){
+					hero.getPos().setX(i);
+					hero.getPos().setY(j);
+				}
+				if ( matrix[i][j] == 'S'){
+					exit.getPos().setX(i);
+					exit.getPos().setY(j);
+				}
+				if ( matrix[i][j] == 'E'){
+					sword.getPos().setX(i);
+					sword.getPos().setY(j);
+				}
+				if ( matrix[i][j] == 'D'){
+					Dragon d=new Dragon();
+					d.getPos().setX(i);
+					d.getPos().setY(j);
+					dragons.add(d);
+				}
+				
+			}
+		}
+		if ( level == 1)
+		{
+			 for(int i=0;i<n_Drag;i++){
+				 dragons.get(i).setLetter('d');
+				 dragons.get(i).setPos(maze, dragons.get(i).getPos());	
+			 }			
 		}
 		if ( DRAGONS_ALIVE == 0 )
 		{
@@ -201,10 +250,13 @@ public class Game {
 			dragon.setLetter('d');
 			dragon.setPos(maze, dragon.getPos());	
 		}
-		else if (sleep > p && dragon.isSleepy())//wake up sunshine
+		else if (sleep > p && dragon.isSleepy()) // wake up sunshine
 		{
 			dragon.setSleepy(false);
-			dragon.setLetter('D');
+			if(dragon.getPos().equals(sword.getPos()))
+				dragon.setLetter('F');
+			else
+				dragon.setLetter('D');
 			dragon.setPos(maze, dragon.getPos());
 		}	
 	}

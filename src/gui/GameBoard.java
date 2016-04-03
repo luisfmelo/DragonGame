@@ -51,7 +51,7 @@ public class GameBoard extends JPanel implements KeyListener{
 	 */
 	public GameBoard(int level, int size, int num_dragons){
 
-		myGame = new Game(1, "7", "1");
+		myGame = new Game(1, 7, 1);
 		
 		try{
 			backgroundImage = ImageIO.read( new File("imgs/background.png"));	
@@ -80,17 +80,33 @@ public class GameBoard extends JPanel implements KeyListener{
 		playing = true;
 		ArrayList<Integer> numbers = readFromFile();
 		myGame = null;
-		myGame = new Game(numbers.get(2), numbers.get(0).toString(), numbers.get(1).toString());
+		myGame = new Game(numbers.get(2), numbers.get(0), numbers.get(1));
 		myGame.setGameRunning(true);
 			
         repaint();
         
-        this.removeKeyListener(this);
-        this.addKeyListener(this);
-        
-		requestFocus();
+        doSomeMagic();
 	}
 	
+	/**
+	 * Method invoked after user finished his maze. Prepare everything that is important for the next actions.
+	 * @param n
+	 * @param size
+	 * @param maze
+	 * @throws NumberFormatException
+	 * @throws IOException
+	 */
+	public void start(int n, int size, char[][] maze) throws NumberFormatException, IOException
+	{
+		ArrayList<Integer> numbers = readFromFile();
+		myGame = null;
+		myGame = new Game(numbers.get(2), size, n, maze);
+		myGame.setGameRunning(true);
+			
+        repaint();
+        
+	    doSomeMagic();
+	}
 	/**
 	 * Method responsible for printing the game state on the user's screen.
 	 */

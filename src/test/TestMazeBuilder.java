@@ -206,7 +206,7 @@ public class TestMazeBuilder {
 	 */
 	@Test
 	public void testRandomMaze(){
-		Game g = new Game(1, "10", "0");
+		Game g = new Game(1, 10, 0);
 		assertEquals( 11, g.getMaze().getLen());
 	}
 	

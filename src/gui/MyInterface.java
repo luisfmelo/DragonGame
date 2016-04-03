@@ -14,7 +14,7 @@ package gui;
 	/**
 	 * Main Class for <b>G</b>raphical <b>U</b>ser <b>I</b>nterface
  	 * Launch the application.	 
- 	 * * @author Luis
+ 	 * @author Luis
 	 * @author Teresa
 	 */
  	public static void main(String[] args) {

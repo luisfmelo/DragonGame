@@ -34,7 +34,7 @@ public class MyFrame extends JFrame{
 	
 	private JButton btnCreate;
 
-	private BuildPanel build;
+	protected BuildPanel build;
 	
 	/**
 	 * Builder for the Frame
@@ -73,6 +73,7 @@ public class MyFrame extends JFrame{
 		btnOptions.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				optionPanel = new OptionsPanel(gamePanel);
+				optionPanel.setLocationRelativeTo(null);
 				optionPanel.setVisible(true);
 			}
 		});
@@ -112,12 +113,34 @@ public class MyFrame extends JFrame{
 		btnCreate = new JButton("Build New Maze");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				build = new BuildPanel(true);				
-				build.setVisible(true);
-				build.setBounds(0, 25, 650, 650);
-				getContentPane().add(build);
-				build.setLayout(null);
-				gamePanel.setVisible(false);
+				if(btnCreate.getText().equals("Build New Maze")){
+					build = new BuildPanel(true);				
+					build.setVisible(true);
+					build.setBounds(0, 25, 650, 650);
+					getContentPane().add(build);
+					build.setLayout(null);
+					gamePanel.setVisible(false);
+					btnCreate.setText("Finalize Maze");
+					build.draw_Maze();
+				}
+				else{
+					if(build.check_maze())
+					{
+						try {
+							gamePanel.start(build.getN_drag(),build.get_Size(),build.getMatrix());
+							build.setVisible(false);
+							btnCreate.setText("Build New Maze");
+							gamePanel.setVisible(true);
+							gamePanel.doSomeMagic();
+							
+							
+						} catch (NumberFormatException | IOException e1) {
+							e1.printStackTrace();
+						}
+						
+					}
+						
+				}
 			}
 		});
 		btnCreate.setBounds(450, 0, 200, 25);
@@ -138,6 +161,7 @@ public class MyFrame extends JFrame{
 		topPanel.add(home);
 		
 		gamePanel = new GameBoard(level, size, num_dragons);
+		
 		gamePanel.setBounds(0, 25, 650, 650);
 		getContentPane().add(gamePanel);
 		gamePanel.setLayout(null);		
