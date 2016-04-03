@@ -10,9 +10,11 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import java.awt.Component;
 import java.awt.Rectangle;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.ImageIcon;
 
 public class MyFrame extends JFrame{
 	
@@ -54,10 +56,24 @@ public class MyFrame extends JFrame{
 		btnExit = new JButton("Exit");
 		btnExit.setBounds(429, 0, 221, 25);
 		bottomPanel.add(btnExit);
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int exit = JOptionPane.showConfirmDialog(rootPane, "Are you sure you want to exit the Game?");
+				if( exit == JOptionPane.YES_OPTION )
+					System.exit(0);
+			}
+		});
 		
 		btnOptions = new JButton("Options");
 		btnOptions.setBounds(0, 0, 215, 25);
 		bottomPanel.add(btnOptions);
+		btnOptions.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				optionPanel = new OptionsPanel();
+				optionPanel.setLocationRelativeTo(null);
+				optionPanel.setVisible(true);
+			}
+		});
 		
 		JButton btnHelp = new JButton("Help");
 		btnHelp.setBounds(214, 0, 215, 25);
@@ -67,22 +83,6 @@ public class MyFrame extends JFrame{
 				helpPanel = new HelpPanel();
 				helpPanel.setLocationRelativeTo(null);
 				helpPanel.setVisible(true);
-			}
-		});
-		btnOptions.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				optionPanel = new OptionsPanel();
-				//optionPanel.setDefaultCloseOperation(optionPanel.setVisible(false);
-				optionPanel.setLocationRelativeTo(null);
-				optionPanel.setVisible(true);
-			}
-		});
-		btnExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				int exit = JOptionPane.showConfirmDialog(rootPane, "Are you sure you want to exit the Game?");
-				if( exit == JOptionPane.YES_OPTION )
-					System.exit(0);
 			}
 		});
 		
@@ -95,36 +95,72 @@ public class MyFrame extends JFrame{
 		JButton btnNewGame = new JButton("New Game");
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//int ng = JOptionPane.showConfirmDialog(null, "Are you sure you want to start a new Game?");
-				//if( ng == JOptionPane.YES_OPTION )
-				//{
-					try {
-						gamePanel.start();
-					} catch (NumberFormatException | IOException e1) {
-						e1.printStackTrace();
-					}
-				//}
+				try {
+					gamePanel.start();
+					build.setVisible(false);
+					gamePanel.setVisible(true);
+				} catch (NumberFormatException | IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
-		btnNewGame.setBounds(0, 0, 450, 25);
-		topPanel.add(btnNewGame);
 		
 		btnCreate = new JButton("Build New Maze");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				build = new BuildPanel();
-				//optionPanel.setDefaultCloseOperation(optionPanel.setVisible(false);
-				
-				build.setVisible(true);
+				if(btnCreate.getText().equals("Build New Maze")){
+					build = new BuildPanel(true);				
+					build.setVisible(true);
+					build.setBounds(0, 25, 650, 650);
+					getContentPane().add(build);
+					build.setLayout(null);
+					gamePanel.setVisible(false);
+					btnCreate.setText("Finalize Maze");
+					build.draw_Maze();
+				}
+				else{
+					if(!build.check_maze())
+						JOptionPane.showMessageDialog(null, "There is no possible way from HERO to the DOOR. Change your PATH!", "About", JOptionPane.INFORMATION_MESSAGE);
+					else{
+						try {
+							gamePanel.start(build.getN_drag(),build.get_Size(),build.getMatrix());
+							build.setVisible(false);
+							btnCreate.setText("Build New Maze");
+							gamePanel.setVisible(true);
+							
+						} catch (NumberFormatException | IOException e1) {
+							e1.printStackTrace();
+						}
+						
+					}
+						
+				}
 			}
 		});
 		btnCreate.setBounds(450, 0, 200, 25);
 		topPanel.add(btnCreate);
+		btnNewGame.setBounds(50, 0, 400, 25);
+		topPanel.add(btnNewGame);
 		
-		gamePanel = new GameBoard(level, size, num_dragons);
+		JButton home = new JButton("");
+		home.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		home.setIcon(new ImageIcon("imgs/homeSymb.png"));
+		home.setBounds(0, 0, 50, 25);
+		topPanel.add(home);
+		
+		gamePanel = new GameBoard();
 		gamePanel.setBounds(0, 25, 650, 650);
 		getContentPane().add(gamePanel);
 		gamePanel.setLayout(null);
+		
+	
+		
+			
+		build = new BuildPanel();
+		build.setVisible(false);
 		
 	}
 }
