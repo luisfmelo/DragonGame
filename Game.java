@@ -216,7 +216,10 @@ public class Game {
 		else if (sleep > p && dragon.isSleepy())//wake up sunshine
 		{
 			dragon.setSleepy(false);
-			dragon.setLetter('D');
+			if(dragon.pos.equals(sword.pos))
+				dragon.setLetter('F');
+			else
+				dragon.setLetter('D');
 			dragon.setPos(maze, dragon.pos);
 		}	
 	}
