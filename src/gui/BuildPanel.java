@@ -19,6 +19,12 @@ import logic.Point;
 import javax.swing.JButton;
 import javax.swing.JSplitPane;
 
+/**
+ * Panel contained in the frame {@link gui.MyFrame}
+ * In this panel, the user can build a new maze according to chosen size and number of dragons
+ * @author Luis
+ * @author Teresa
+ */
 public class BuildPanel extends JPanel implements MouseListener{
 	
 	private BufferedImage backgroundImage;
@@ -59,8 +65,16 @@ public class BuildPanel extends JPanel implements MouseListener{
 	private Object selectedValue= null;
 
 
+	/**
+	 * Builder for the Build Maze panel - {@link gui.BuildPanel}.
+	 */
 	public BuildPanel() {
 	}
+	
+	/**
+	 * Builder for the Build Maze panel - {@link gui.BuildPanel}.
+	 * @param t 
+	 */
 	
 	public BuildPanel(boolean t) {		
 		if ( !t )
@@ -127,27 +141,35 @@ public class BuildPanel extends JPanel implements MouseListener{
 		
 	}
 	
+	/**
+	 * Method invoked at the beginning of the maze's drawing. Set the initial state . 
+	 */
 	public void draw_Maze(){
 		setState("DOOR");
 	}
 	
+	/**
+	 * Method invoked in the builder of the BuildPanel to initialize the Maze's matrix
+	 */
 	private void newMaze() {
 		setMatrix(new char[size][size]);
 		
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
-				//if ( i == 0 || i == size - 1 || j == 0 || j == size - 1 )
 					matrix[i][j] = 'X';
-				//else
-					//matrix[i][j] = ' ';
 			}
 		}
 	}
 
+	/**
+	 * 
+	 * @return size/lenght of the maze's matrix
+	 */
 	public int get_Size(){
 		return this.size;
 	}
 	@Override 
+	
 	protected void paintComponent(Graphics g){
 		
 		int width = this.getWidth() - (this.getWidth() % size);
@@ -183,8 +205,15 @@ public class BuildPanel extends JPanel implements MouseListener{
 		
 		
 	}
-	
+	/**
+	 * Convert mouse clicked point in the frame to its corresponding Point (x,y) in the maze's matrix
+	 * @param x
+	 * @param y
+	 * @return matrix Point if parameters are correct. Otherwise returns null
+	 */
 	private Point get_Point(int x, int y){
+		if(x<0 ||y<0)
+			return null;
 		Point p=new Point();
 		int i,j;
 		int width = this.getWidth() - (this.getWidth() % size);
@@ -196,6 +225,12 @@ public class BuildPanel extends JPanel implements MouseListener{
 		p.setY(j);
 		return p;
 	}
+	
+/**
+ *  Method draws (if possible) or deletes the desired element on the last mouse_clicked point on its corresponding matrix point. 
+ *  Repaints the panel in the ende
+ * @param el
+ */
 	private void draw_element(String el){
 		Point p;
 		switch (el){
@@ -316,6 +351,10 @@ public class BuildPanel extends JPanel implements MouseListener{
 			System.out.println(line);		
 	}
 
+	/**
+	 * Handles the mouseClick regarding the state of the drawing and the clicked square/element. 
+	 * Calls the draw_element method of the chosen element (if possible)
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 	    m_Point=get_Point(e.getX(),e.getY());
@@ -366,40 +405,60 @@ public class BuildPanel extends JPanel implements MouseListener{
 
 	}
 
-
+	/**
+	 * Does nothing.
+	 */
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	/**
+	 * Does nothing.
+	 */
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	/**
+	 * Does nothing.
+	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	/**
+	 * Does nothing.
+	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	/**
+	 * Getter of the BuildMaze's state
+	 * @return current state of the building
+	 */
 	public String getState() {
 		return state;
 	}
-
+/**
+ * Setter of the BuildMaze's state
+ * @param desired state to be written
+ */
 	public void setState(String s) {
 		String old =this.state;
 		this.state = s;
 		stateChanged(old);
 	}
+	
+   /**
+    * Handles the desired actions when the state of the building is changed. Called by setState
+    * @param old_state - previous BuildMaze's state
+    */
 	public void stateChanged(String old_state){
 		switch(old_state){
 			case "INIT":
@@ -422,6 +481,12 @@ public class BuildPanel extends JPanel implements MouseListener{
 		
 	
     }
+	
+/**
+ *  Gets the matrix point of a given Element (Hero or Sword)
+ * @param el
+ * @return Matrix Point (x,y) of the Element or null if the element doesn't exist
+ */
 	private Point getElement(char el){
 		if(getMatrix()==null)
 			return null;
@@ -434,6 +499,9 @@ public class BuildPanel extends JPanel implements MouseListener{
 		return null;
 	}
 	
+	/**
+	 * @return current number of dragons already present in the matrix
+	 */
 	private int get_nDragons(){
 		if(getMatrix()==null)
 			return -1;
@@ -447,6 +515,10 @@ public class BuildPanel extends JPanel implements MouseListener{
 		return cont;
 	}
 	
+	/**
+	 * Checks if the current maze fulfill all necessary parameters for the game
+	 * @return true if it's OK, false if there is something wrong
+	 */
 	public boolean check_maze(){
 
 		if(state=="ELEMENTS"){
@@ -504,7 +576,11 @@ public class BuildPanel extends JPanel implements MouseListener{
 		}		
 		return true;
 	}
-	
+	/**
+	 * Checks if the maze can reach to the end (DOOR) beginning in the given Point
+	 * @param begin
+	 * @return true if the maze is solvable and false otherwise
+	 */
 	private boolean solvable_maze(Point begin){
 		 // The solution to the maze
 
@@ -524,6 +600,14 @@ public class BuildPanel extends JPanel implements MouseListener{
 		    // with the path indicated by true values.
 		    // If b is false, there is no solution to the maze
 		}
+	
+	/**
+	 * Method invoked by solvable_maze to solve the maze recursively 
+	 * @param x - parameter x of the begin point
+	 * @param y - parameter y of the begin point
+	 * @param door - final point
+	 * @return
+	 */
 	public boolean recursiveSolve(int x, int y, Point door) {
 
 		    if (x == door.getX() && y == door.getY()){    		
@@ -559,22 +643,40 @@ public class BuildPanel extends JPanel implements MouseListener{
 		    return false;
 		}
 
+	/**
+	 * Getter of the BuildMaze's matrix
+	 * @return matrix
+	 */
 	public char[][] getMatrix() {
 			return matrix;
 	}
 
+	/**
+	 * Setter of the BuildMaze's matrix
+	 * @param matrix
+	 */
 	public void setMatrix(char[][] matrix) {
 			this.matrix = matrix;
 	}
 
+	/**
+	 * Getter of BuildMaze's n_drag
+	 * @return the desired number of dragons chosen by the user
+	 */
 	public int getN_drag() {
 			return n_drag;
 	}
-
+	/**
+	 * Setter of BuildMaze's n_drag 
+	 * @param n_drag - the desired number of dragons chosen by the user
+	 */
 	public void setN_drag(int n_drag) {
 			this.n_drag = n_drag;
 	}
-		
+	/**
+	 * 	
+	 * @return ArrayList with the Point's location in the matrix of Dragons already drawn. Null if there weren't any Dragons drawn
+	 */
 	private ArrayList <Point> getDragons_pos(){
 		ArrayList <Point> dragons = new ArrayList<Point>();
 	
@@ -590,6 +692,11 @@ public class BuildPanel extends JPanel implements MouseListener{
 		return dragons;
 
 	}
+	/**
+	 * Checks if some pattern (matrix of characters) can be found in the BuildMaze's matrix
+	 * @param pattern to check
+	 * @return true if the pattern is in the matrix, false otherwise
+	 */
 	private boolean check_squares( char pattern [][]){
 		
 		for (int or = 0; or <= size - pattern.length; or++) {
