@@ -46,6 +46,21 @@ public class BuildPanel extends JPanel implements MouseListener{
 	private BufferedImage dragon_sword;
 	
 	private char[][] matrix;
+	private char[][] p1 =new char[][] {
+		{'X',' '},{' ', 'X'}
+	};
+	private char[][] p2 =new char[][] {
+		{' ','X'},{'X',' '}
+	};
+	
+	private char[][] p3 =new char[][] {
+		{' ',' '},{' ',' '}
+	};
+	private char[][] p4 =new char[][] {
+		{'X','X','X'},{'X', 'X','X'},{'X', 'X','X'}
+	};
+
+
 	
 
 	boolean[][] wasHere;
@@ -201,6 +216,14 @@ public class BuildPanel extends JPanel implements MouseListener{
 		switch (el){
 			case "DOOR":
 			{	if( getMatrix()[m_Point.getY()][m_Point.getX()]=='X' && (m_Point.getX() == 0 || m_Point.getY()==0  || m_Point.getX() == size-1 ||  m_Point.getY() == size-1)){
+					if((m_Point.getX()==0 && m_Point.getY()==0) ||
+					   (m_Point.getX()==0 && m_Point.getY()==size-1) ||
+					   (m_Point.getX()==size-1 && m_Point.getY()==size-1) ||
+					   (m_Point.getX()==size-1 && m_Point.getY()==0)
+					   ){
+				        	JOptionPane.showMessageDialog(null, "The DOOR can't be placed in a CORNER", "About", JOptionPane.INFORMATION_MESSAGE);
+							return;
+						}
 					p=getElement('S');
 					matrix[m_Point.getY()][m_Point.getX()]='S';
 					if(p!=null){
@@ -353,7 +376,6 @@ public class BuildPanel extends JPanel implements MouseListener{
 	private Point getElement(char el){
 		if(getMatrix()==null)
 			return null;
-		
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
 				if ( getMatrix()[i][j] == el)
@@ -377,15 +399,16 @@ public class BuildPanel extends JPanel implements MouseListener{
 	}
 	
 	public boolean check_maze(){
-		
-		if(get_nDragons()!=getN_drag()){
-		    JOptionPane.showMessageDialog(null, "There are some DRAGONS missing", "About", JOptionPane.INFORMATION_MESSAGE);
-			return false;
-		}
-		else if(getElement('H')==null){
+
+		if(getElement('H')==null){
 			JOptionPane.showMessageDialog(null, "The HERO is missing", "About", JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
+		else if(get_nDragons()!=getN_drag()){
+		    JOptionPane.showMessageDialog(null, "There are some DRAGONS missing", "About", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		
 		else if(getElement('E')==null){
 			JOptionPane.showMessageDialog(null, "The SWORD is missing", "About", JOptionPane.INFORMATION_MESSAGE);
 			return false;
@@ -394,19 +417,48 @@ public class BuildPanel extends JPanel implements MouseListener{
 			JOptionPane.showMessageDialog(null, "The DOOR is missing", "About", JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
-		else if (!this.solvable_maze()){
-			JOptionPane.showMessageDialog(null, "There is no possible way from HERO to the DOOR. Change your PATH!", "About", JOptionPane.INFORMATION_MESSAGE);
+		
+		ArrayList <Point> dragons=getDragons_pos();
+		if(dragons!=null && get_nDragons()!=0){
+			for(int i=0; i<dragons.size();i++)
+			{
+				if(getElement('H').adjacentTo(dragons.get(i))){
+				    JOptionPane.showMessageDialog(null, "The Dragon can't be next to the HERO", "About", JOptionPane.INFORMATION_MESSAGE);
+					return false;
+				}
+			}
+		}
+		if(check_squares(p1) || check_squares(p2)){
+			JOptionPane.showMessageDialog(null, "No squares with PATH on a diagonal and WALL on the other", "About", JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
+		else if (check_squares(p3)){
+			JOptionPane.showMessageDialog(null, "No 2x2 squares with only PATH squares", "About", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		else if(check_squares(p4)){
+			JOptionPane.showMessageDialog(null, "No 3x3 squares with only WALL's!", "About", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				if ( getMatrix()[i][j] == ' ' || getMatrix()[i][j] == 'E' || getMatrix()[i][j] == 'S' || getMatrix()[i][j] == 'D')
+					if(!solvable_maze(new Point(j,i)))
+					{
+						JOptionPane.showMessageDialog(null, "There is some Path way with no possible way to the DOOR. Change your PATH!", "About", JOptionPane.INFORMATION_MESSAGE);
+						return false;
+					}
+			}
+		}		
 		return true;
 	}
 	
-	private boolean solvable_maze(){
+	private boolean solvable_maze(Point begin){
 		 // The solution to the maze
 
 		wasHere = new boolean[size][size];
 		correctPath = new boolean[size][size];
-		Point hero= getElement('H');
 		Point door =getElement('S');
 		
 
@@ -416,12 +468,12 @@ public class BuildPanel extends JPanel implements MouseListener{
 		            wasHere[row][col] = false;
 		            correctPath[row][col] = false;
 		        }
-		    return recursiveSolve(hero.getX(), hero.getY(),door);
+		    return recursiveSolve(begin.getX(), begin.getY(),door);
 		    // Will leave you with a boolean array (correctPath) 
 		    // with the path indicated by true values.
 		    // If b is false, there is no solution to the maze
 		}
-		public boolean recursiveSolve(int x, int y, Point door) {
+	public boolean recursiveSolve(int x, int y, Point door) {
 
 		    if (x == door.getX() && y == door.getY()){    		
 	    		return true;
@@ -456,25 +508,57 @@ public class BuildPanel extends JPanel implements MouseListener{
 		    return false;
 		}
 
-		public char[][] getMatrix() {
+	public char[][] getMatrix() {
 			return matrix;
-		}
+	}
 
-		public void setMatrix(char[][] matrix) {
+	public void setMatrix(char[][] matrix) {
 			this.matrix = matrix;
-		}
+	}
 
-		public int getN_drag() {
+	public int getN_drag() {
 			return n_drag;
-		}
+	}
 
-		public void setN_drag(int n_drag) {
+	public void setN_drag(int n_drag) {
 			this.n_drag = n_drag;
-		}
+	}
 		
-
+	private ArrayList <Point> getDragons_pos(){
+		ArrayList <Point> dragons = new ArrayList<Point>();
 	
-	
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+					if(matrix[i][j] == 'D')
+						dragons.add(new Point(i,j));		
+			}
+		
+		}
+		if(dragons.isEmpty())
+			return null;
+		return dragons;
 
+	}
+	private boolean check_squares( char pattern [][]){
+		char [][] m;
+		m=matrix.clone();
+		for(int i=0; i<size;i++){
+			for(int j=0;j<size;j++)
+				if(m[i][j]=='H' || m[i][j]=='D' || m[i][j]=='E')
+					m[i][j]=' ';
+			
+		}
+		for (int or = 0; or <= size - pattern.length; or++) {
+			    outerCol:
+			    for (int oc = 0; oc <= matrix[or].length - pattern[0].length; oc++) {
+			        for (int ir = 0; ir < pattern.length; ir++)
+			            for (int ic = 0; ic < pattern[ir].length; ic++)
+			                if (matrix[or + ir][oc + ic] != pattern[ir][ic])
+			                    continue outerCol;
+			        return true;
+			    }
+			}
+		return false;
+	}
+	
 }
-
