@@ -120,8 +120,15 @@ public class MyFrame extends JFrame{
 					getContentPane().add(build);
 					build.setLayout(null);
 					gamePanel.setVisible(false);
-					btnCreate.setText("Finalize Maze");
+					btnCreate.setText("Path Done");
 					build.draw_Maze();
+				}
+				else if(btnCreate.getText().equals("Path Done")){
+					if(build.check_maze()){
+						btnCreate.setText("Finalize Maze");
+						build.setState("ELEMENTS");
+					}
+					
 				}
 				else{
 					if(build.check_maze())
@@ -141,7 +148,9 @@ public class MyFrame extends JFrame{
 						}
 						
 					}
-						
+					
+					
+					
 				}
 			}
 		});
@@ -156,6 +165,13 @@ public class MyFrame extends JFrame{
 				//gamePanel.repaint(false);
 				build.setVisible(false);
 				gamePanel.setVisible(true);
+				
+				btnCreate.setText("Build New Maze");
+				/*build = new BuildPanel(false);				
+				build.setVisible(true);
+				build.setBounds(0, 25, 650, 650);
+				getContentPane().add(build);
+				build.setLayout(null);*/
 			}
 		});
 		home.setIcon(new ImageIcon("imgs/homeSymb.png"));

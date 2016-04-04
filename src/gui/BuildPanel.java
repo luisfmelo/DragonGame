@@ -2,34 +2,22 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import logic.Game;
 import logic.Point;
-import javax.swing.JSplitPane;
-import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JLayeredPane;
 import javax.swing.JButton;
-import java.awt.FlowLayout;
-import java.awt.Dimension;
-import java.awt.Component;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.ButtonGroup;
+import javax.swing.JSplitPane;
 
 public class BuildPanel extends JPanel implements MouseListener{
 	
@@ -60,23 +48,18 @@ public class BuildPanel extends JPanel implements MouseListener{
 		{'X','X','X'},{'X', 'X','X'},{'X', 'X','X'}
 	};
 
-
-	
-
 	boolean[][] wasHere;
 	boolean[][] correctPath; 
 	
 	private int size = 7;
 	private int n_drag;
 	private Point m_Point;
-	private String state= "INIT";
-	private Object[] possibleValues = {"DOOR", "PATH", "HERO", "DRAGON","SWORD","WALL" };
+	private String state = "INIT";
+	private Object[] possibleValues = {"DOOR", "PATH", "HERO","SWORD","WALL","DRAGON"};
 	private Object selectedValue= null;
 
 
 	public BuildPanel() {
-		
-		
 	}
 	
 	public BuildPanel(boolean t) {		
@@ -197,6 +180,8 @@ public class BuildPanel extends JPanel implements MouseListener{
 					g.drawImage(dragon_sword, i * width / size, j * height / size, width / size, height / size, null);
 			}
 		}
+		
+		
 	}
 	
 	private Point get_Point(int x, int y){
@@ -245,7 +230,14 @@ public class BuildPanel extends JPanel implements MouseListener{
 			        JOptionPane.showMessageDialog(null, "You can't put a PATH Square on the Borders", "About", JOptionPane.INFORMATION_MESSAGE);
 				else
 				{
-					matrix[m_Point.getY()][m_Point.getX()]=' ';
+					if(state=="PATH"){
+						if(	matrix[m_Point.getY()][m_Point.getX()]==' ')
+							matrix[m_Point.getY()][m_Point.getX()]='X';
+						else
+							matrix[m_Point.getY()][m_Point.getX()]=' ';
+					}
+					else
+						matrix[m_Point.getY()][m_Point.getX()]=' ';
 					
 				}
 
@@ -262,29 +254,46 @@ public class BuildPanel extends JPanel implements MouseListener{
 			        JOptionPane.showMessageDialog(null, "You can't put the HERO on the Borders", "About", JOptionPane.INFORMATION_MESSAGE);
 				else{
 					p=getElement('H');
-					if(p!=null)
-						matrix[p.getY()][p.getX()]=' ';
-					matrix[m_Point.getY()][m_Point.getX()]='H';
+					if(p!=null && !p.equals(m_Point)){
+				        JOptionPane.showMessageDialog(null, "You already have a HERO!\nIf you want to change its position, click on him to delete it", "About", JOptionPane.INFORMATION_MESSAGE);						
 					}
-			}
+					else if(p!=null && p.equals(m_Point))
+						matrix[m_Point.getY()][m_Point.getX()]=' ';
+					else
+						matrix[m_Point.getY()][m_Point.getX()]='H';
+
+					}
+				}
 			break;
 			case "SWORD":
 			{	
 				if(m_Point.getX() == 0 || m_Point.getY()==0)
-			        JOptionPane.showMessageDialog(null, "You can't put the SWORD on the Borders", "About", JOptionPane.INFORMATION_MESSAGE);
+			        JOptionPane.showMessageDialog(null, "You can't put a SWORD on the Borders", "About", JOptionPane.INFORMATION_MESSAGE);
 				else{
-				p=getElement('E');
-				if(p!=null)
-					matrix[p.getY()][p.getX()]=' ';
-				matrix[m_Point.getY()][m_Point.getX()]='E';
+					p=getElement('E');
+					if(p!=null && !p.equals(m_Point)){
+				        JOptionPane.showMessageDialog(null, "You already have a SWORD!\nIf you want to change its position, click on it to delete it", "About", JOptionPane.INFORMATION_MESSAGE);						
+					}
+					else if(p!=null && p.equals(m_Point))
+						matrix[m_Point.getY()][m_Point.getX()]=' ';
+					else
+						matrix[m_Point.getY()][m_Point.getX()]='E';
+
 				}
 			}
 			break;
 			case "DRAGON":
 			{	
+				
 				if(m_Point.getX() == 0 || m_Point.getY()==0)
 			        JOptionPane.showMessageDialog(null, "You can't put a DRAGON on the Borders", "About", JOptionPane.INFORMATION_MESSAGE);
 				else{
+					if(getDragons_pos()!=null)
+						if(getDragons_pos().contains(m_Point)){
+							matrix[m_Point.getY()][m_Point.getX()]=' ';
+							repaint();
+							return;
+						}
 					if(get_nDragons()>=getN_drag())
 						if(getN_drag()==0)
 							JOptionPane.showMessageDialog(null, 
@@ -292,7 +301,7 @@ public class BuildPanel extends JPanel implements MouseListener{
 					        		, "About", JOptionPane.INFORMATION_MESSAGE);
 						else	
 							JOptionPane.showMessageDialog(null, 
-				        		"You already have the desired nº of DRAGONS\n\nIf you want to add a Dragon on this square\nyou need to remove one of the others by\nreplacing its square for another element"
+				        		"You already have the desired nº of DRAGONS\n\nIf you want to add a Dragon on this square\nyou need to remove one of the others by clicking it"
 				        		, "About", JOptionPane.INFORMATION_MESSAGE);
 					else
 						matrix[m_Point.getY()][m_Point.getX()]='D';
@@ -310,14 +319,49 @@ public class BuildPanel extends JPanel implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 	    m_Point=get_Point(e.getX(),e.getY());
-	    if(state=="PATH"){
-	    	selectedValue = JOptionPane.showInputDialog(null,
-		    "Choose the Element", "Input",
-		    JOptionPane.INFORMATION_MESSAGE, null,
-		    possibleValues, possibleValues[0]);
-	    	draw_element(selectedValue.toString());
+	    
+
+    	if(state=="ELEMENTS"){
+    		Point hero=getElement('H');
+    		Point sword = getElement('E');
+    		
+    		if(hero!=null){
+	    		if(getElement('H').equals(m_Point)){
+	    	    	draw_element("HERO");
+	    	    	return;
+	    		}
+    		} 
+    		if(sword!=null){
+	    		if(getElement('E').equals(m_Point)){
+	    	    	draw_element("SWORD");
+	    	    	return;
+	    		}
+    		} 
+    		
+        	
+        	if(this.n_drag!=0){
+        		if(getDragons_pos()!=null){
+        			if(getDragons_pos().contains(m_Point)){
+        				draw_element("DRAGON");
+	    	    		return;
+        			}
+        		}
+		    	selectedValue = JOptionPane.showInputDialog(null,
+			    "Choose the Element", "Input",
+			    JOptionPane.INFORMATION_MESSAGE, null,
+			    possibleValues, possibleValues[0]);
+		    	draw_element(selectedValue.toString());
+		    }
+	    	else{
+	    		selectedValue = JOptionPane.showInputDialog(null,
+	    			    "Choose the Element", "Input",
+	    			    JOptionPane.INFORMATION_MESSAGE, null,
+	    			    Arrays.copyOfRange(possibleValues, 0, 5), possibleValues[0]);
+	    		    	draw_element(selectedValue.toString());;
+
+	    	}
 	    }
-	    else if(state=="DOOR")
+	    else if(state=="DOOR" || state=="PATH")
 	    	draw_element(state);
 
 	}
@@ -366,7 +410,12 @@ public class BuildPanel extends JPanel implements MouseListener{
 			case "DOOR":
 			{
 				//final ImageIcon icon = new ImageIcon("imgs/path.png");
-			    JOptionPane.showMessageDialog(null, "Now you can click on a square and\nchoose which element you want to draw", "About", JOptionPane.INFORMATION_MESSAGE);
+			    JOptionPane.showMessageDialog(null, "Now you click on the squares to draw your PATH!\nIf you want to remove a Path square just click again\nWhen you're done click PATH DONE", "About", JOptionPane.INFORMATION_MESSAGE);
+			}break;
+			case "ELEMENTS":
+			{
+				//final ImageIcon icon = new ImageIcon("imgs/path.png");
+			    JOptionPane.showMessageDialog(null, "Now you click on the squares and choose your ELEMENTS!\nWhen you're done click FINALIZE PATH", "About", JOptionPane.INFORMATION_MESSAGE);
 			}break;	
 		
 		}
@@ -400,31 +449,33 @@ public class BuildPanel extends JPanel implements MouseListener{
 	
 	public boolean check_maze(){
 
-		if(getElement('H')==null){
-			JOptionPane.showMessageDialog(null, "The HERO is missing", "About", JOptionPane.INFORMATION_MESSAGE);
-			return false;
-		}
-		else if(get_nDragons()!=getN_drag()){
-		    JOptionPane.showMessageDialog(null, "There are some DRAGONS missing", "About", JOptionPane.INFORMATION_MESSAGE);
-			return false;
-		}
-		
-		else if(getElement('E')==null){
-			JOptionPane.showMessageDialog(null, "The SWORD is missing", "About", JOptionPane.INFORMATION_MESSAGE);
-			return false;
-		}
-		else if(getElement('S')==null){
-			JOptionPane.showMessageDialog(null, "The DOOR is missing", "About", JOptionPane.INFORMATION_MESSAGE);
-			return false;
-		}
-		
-		ArrayList <Point> dragons=getDragons_pos();
-		if(dragons!=null && get_nDragons()!=0){
-			for(int i=0; i<dragons.size();i++)
-			{
-				if(getElement('H').adjacentTo(dragons.get(i))){
-				    JOptionPane.showMessageDialog(null, "The Dragon can't be next to the HERO", "About", JOptionPane.INFORMATION_MESSAGE);
-					return false;
+		if(state=="ELEMENTS"){
+			if(getElement('H')==null){
+				JOptionPane.showMessageDialog(null, "The HERO is missing", "About", JOptionPane.INFORMATION_MESSAGE);
+				return false;
+			}
+			else if(get_nDragons()!=getN_drag()){
+			    JOptionPane.showMessageDialog(null, "There are some DRAGONS missing", "About", JOptionPane.INFORMATION_MESSAGE);
+				return false;
+			}
+			
+			else if(getElement('E')==null){
+				JOptionPane.showMessageDialog(null, "The SWORD is missing", "About", JOptionPane.INFORMATION_MESSAGE);
+				return false;
+			}
+			else if(getElement('S')==null){
+				JOptionPane.showMessageDialog(null, "The DOOR is missing", "About", JOptionPane.INFORMATION_MESSAGE);
+				return false;
+			}
+			
+			ArrayList <Point> dragons=getDragons_pos();
+			if(dragons!=null && get_nDragons()!=0){
+				for(int i=0; i<dragons.size();i++)
+				{
+					if(getElement('H').adjacentTo(dragons.get(i))){
+					    JOptionPane.showMessageDialog(null, "The Dragon can't be next to the HERO", "About", JOptionPane.INFORMATION_MESSAGE);
+						return false;
+					}
 				}
 			}
 		}
@@ -530,7 +581,7 @@ public class BuildPanel extends JPanel implements MouseListener{
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
 					if(matrix[i][j] == 'D')
-						dragons.add(new Point(i,j));		
+						dragons.add(new Point(j,i));		
 			}
 		
 		}
@@ -540,21 +591,20 @@ public class BuildPanel extends JPanel implements MouseListener{
 
 	}
 	private boolean check_squares( char pattern [][]){
-		char [][] m;
-		m=matrix.clone();
-		for(int i=0; i<size;i++){
-			for(int j=0;j<size;j++)
-				if(m[i][j]=='H' || m[i][j]=='D' || m[i][j]=='E')
-					m[i][j]=' ';
-			
-		}
+		
 		for (int or = 0; or <= size - pattern.length; or++) {
 			    outerCol:
 			    for (int oc = 0; oc <= matrix[or].length - pattern[0].length; oc++) {
 			        for (int ir = 0; ir < pattern.length; ir++)
-			            for (int ic = 0; ic < pattern[ir].length; ic++)
-			                if (matrix[or + ir][oc + ic] != pattern[ir][ic])
-			                    continue outerCol;
+			            for (int ic = 0; ic < pattern[ir].length; ic++){
+			            	if(matrix[or + ir][oc + ic]=='H' || matrix[or + ir][oc + ic]=='D' || matrix[or + ir][oc + ic]=='E'){
+			            		if (pattern[ir][ic]!=' ')
+			            			continue outerCol;
+			            	}
+			            	else if( matrix[or + ir][oc + ic] != pattern[ir][ic])
+			            			continue outerCol;
+			            	
+			            }
 			        return true;
 			    }
 			}
