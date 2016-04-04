@@ -249,7 +249,7 @@ public class GameBoard extends JPanel implements KeyListener{
         this.removeKeyListener(this);
         int res = JOptionPane.showConfirmDialog(null,
         		"You Win! Congratulations! Do you want to start a new Game?", "WIN", 
-                JOptionPane.INFORMATION_MESSAGE,
+        		JOptionPane.YES_NO_OPTION,
                 JOptionPane.PLAIN_MESSAGE);
         
         if ( res == JOptionPane.YES_OPTION )
