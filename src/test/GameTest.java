@@ -42,6 +42,50 @@ public class GameTest {
 	}
 	
 	/**
+	 * Test GAME RUNNING
+	 */
+	@Test
+	public void testGameRunning() {
+		char [][] lab = new char[][]{
+			{'X','S','X','X','X'},
+			{'X','H',' ','D','X'},
+			{'X','E','X',' ','X'},
+			{'X','d','X',' ','X'},
+			{'X','X','X','X','X'}
+		};
+		
+		Game g = new Game(1, 5, 2, lab);
+		
+		assertFalse( g.isGameRunning() );
+		g.setGameRunning(true);
+		assertTrue( g.isGameRunning() );
+		assertTrue( g.getExit().getLetter() == 'S' );
+		
+		
+		
+		lab = new char[][]{
+			{'X','S','X','X','X'},
+			{'X','H',' ','d','X'},
+			{'X','E','X',' ','X'},
+			{'X',' ','X',' ','X'},
+			{'X','X','X','X','X'}
+		};
+		g = new Game(2, 5, 1, lab);
+		
+		// Without Dragons
+		lab = new char[][]{
+			{'X','S','X','X','X'},
+			{'X','H',' ',' ','X'},
+			{'X','E','X',' ','X'},
+			{'X',' ','X',' ','X'},
+			{'X','X','X','X','X'}
+		};
+		g = new Game(2, 5, 0, lab);
+		
+		assertTrue( g.getExit().getLetter() == 's' );
+	}
+	
+	/**
 	 * Test get Maze String
 	 */
 	@Test

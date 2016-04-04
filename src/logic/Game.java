@@ -114,30 +114,30 @@ public class Game {
 		maze = new Maze(matrix);
 		for (int i = 0; i < maze_size; i++) {
 			for (int j = 0; j < maze_size; j++) {
-				if ( matrix[i][j] == 'H'){
+				if ( matrix[i][j] == 'H' ){
 					hero.getPos().setX(i);
 					hero.getPos().setY(j);
 				}
-				if ( matrix[i][j] == 'S'){
+				if ( matrix[i][j] == 'S' ){
 					exit.getPos().setX(i);
 					exit.getPos().setY(j);
 				}
-				if ( matrix[i][j] == 'E'){
+				if ( matrix[i][j] == 'E' ){
 					sword.getPos().setX(i);
 					sword.getPos().setY(j);
 				}
-				if ( matrix[i][j] == 'D'){
+				if ( matrix[i][j] == 'D' ){
 					Dragon d=new Dragon();
 					d.getPos().setX(i);
 					d.getPos().setY(j);
 					dragons.add(d);
-				}
-				
+				}			
 			}
 		}
 		if ( level == 1)
 		{
 			 for(int i=0;i<n_Drag;i++){
+				 dragons.add(new Dragon()); //add this
 				 dragons.get(i).setLetter('d');
 				 dragons.get(i).setPos(maze, dragons.get(i).getPos());	
 			 }			
@@ -527,5 +527,10 @@ public class Game {
 	 */
 	public Element getHero() {
 		return this.hero;
+	}
+
+	
+	public Element getExit() {
+		return exit;
 	}
 }
