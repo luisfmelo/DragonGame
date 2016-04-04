@@ -127,12 +127,14 @@ public class MyFrame extends JFrame{
 					if(build.check_maze())
 					{
 						try {
-							gamePanel.start(build.getN_drag(),build.get_Size(),build.getMatrix());
-							build.setVisible(false);
-							btnCreate.setText("Build New Maze");
-							gamePanel.setVisible(true);
-							gamePanel.doSomeMagic();
-							
+							if(JOptionPane.showConfirmDialog(rootPane, "Do you want to start new game with this maze?",null,JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION)
+							{	
+								gamePanel.start(build.getN_drag(),build.get_Size(),build.getMatrix());
+								build.setVisible(false);
+								btnCreate.setText("Build New Maze");
+								gamePanel.setVisible(true);
+								gamePanel.doSomeMagic();
+							}
 							
 						} catch (NumberFormatException | IOException e1) {
 							e1.printStackTrace();
