@@ -45,8 +45,6 @@ public class Game {
 	 * @param n_Dragons: number of Dragons
 	 */
 	public Game(int lvl, int len, int n_Dragons){
-		//int len = Integer.parseInt(maze_size);
-		//int n_Dragons = Integer.parseInt(n_Drag);
 		
 		DRAGONS_ALIVE = n_Dragons;
 		
@@ -331,9 +329,15 @@ public class Game {
 				//check if all Dragons are dead
 				allDragonsDead = true;
 				
-				for (Dragon d : dragons) {
+				for (Dragon d : dragons) 
 					if ( !d.isDead() )
 						allDragonsDead = false;
+				
+				if ( allDragonsDead )
+				{
+					exit.setLetter('s');
+					exit.setPos(maze, exit.getPos());
+					setAllDragonsDead(true);
 				}
 			}
 			// encounter with dragon - hero loses -> GAME OVER
