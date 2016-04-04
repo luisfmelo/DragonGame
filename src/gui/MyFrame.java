@@ -156,13 +156,6 @@ public class MyFrame extends JFrame{
 				//gamePanel.repaint(false);
 				build.setVisible(false);
 				gamePanel.setVisible(true);
-				
-				btnCreate.setText("Build New Maze");
-				/*build = new BuildPanel(false);				
-				build.setVisible(true);
-				build.setBounds(0, 25, 650, 650);
-				getContentPane().add(build);
-				build.setLayout(null);*/
 			}
 		});
 		home.setIcon(new ImageIcon("imgs/homeSymb.png"));

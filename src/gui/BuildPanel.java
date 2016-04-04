@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -11,10 +13,23 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import logic.Game;
 import logic.Point;
+import javax.swing.JSplitPane;
+import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JLayeredPane;
+import javax.swing.JButton;
+import java.awt.FlowLayout;
+import java.awt.Dimension;
+import java.awt.Component;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.ButtonGroup;
 
 public class BuildPanel extends JPanel implements MouseListener{
 	
@@ -45,18 +60,23 @@ public class BuildPanel extends JPanel implements MouseListener{
 		{'X','X','X'},{'X', 'X','X'},{'X', 'X','X'}
 	};
 
+
+	
+
 	boolean[][] wasHere;
 	boolean[][] correctPath; 
 	
 	private int size = 7;
 	private int n_drag;
 	private Point m_Point;
-	private String state = "INIT";
+	private String state= "INIT";
 	private Object[] possibleValues = {"DOOR", "PATH", "HERO", "DRAGON","SWORD","WALL" };
 	private Object selectedValue= null;
 
 
-	public BuildPanel() {		
+	public BuildPanel() {
+		
+		
 	}
 	
 	public BuildPanel(boolean t) {		
