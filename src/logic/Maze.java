@@ -25,6 +25,7 @@ public class Maze implements IMazeBuilder{
 	 */
 	public Maze(char[][] m){
 		this.maze = m;
+		this.setLen(m.length);
 	}
 
 	/**
